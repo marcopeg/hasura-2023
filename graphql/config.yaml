@@ -1,0 +1,7 @@
+version: 3
+endpoint: http://graphql:8080
+metadata_directory: metadata
+admin_secret: password
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000

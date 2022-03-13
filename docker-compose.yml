@@ -1,0 +1,84 @@
+version: '3.6'
+services:
+  db:
+    restart: unless-stopped
+    image: postgres:14
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    volumes:
+      - ../volumes/db:/var/lib/postgresql/data
+
+  graphql:
+    restart: unless-stopped
+    env_file:
+      - ./graphql/.env
+    depends_on:
+      - db
+    build:
+      context: graphql
+    volumes:
+      - ./graphql:/project
+    ports:
+      - 5000:8080
+
+  hasura_cli_console:
+    restart: unless-stopped
+    depends_on:
+      - graphql
+    build:
+      context: graphql
+      dockerfile: cli.Dockerfile
+    volumes:
+      - ./graphql:/project
+    expose:
+      - 9695
+    command: > 
+      hasura console 
+      --log-level DEBUG 
+      --address "hasura_cli_console" 
+      --no-browser 
+      --api-host https://9693-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST} 
+      --api-port 443
+      --endpoint https://5000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}
+    working_dir: /project
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hasura_cli_console.rule=Host(`9695-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}`)"
+      - "traefik.http.routers.hasura_cli_console.entrypoints=web"
+
+  hasura_cli_api:
+    restart: unless-stopped
+    depends_on:
+      - graphql
+    build:
+      context: graphql
+      dockerfile: cli.Dockerfile
+    volumes:
+      - ./graphql:/project
+    expose:
+      - 9693
+    command:  hasura console --log-level DEBUG --address "hasura_cli_api" --no-browser 
+    working_dir: /project
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hasura_cli_api.rule=Host(`9693-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}`)"
+      - "traefik.http.routers.hasura_cli_api.entrypoints=web"
+
+  traefik:
+    image: "traefik:v2.6"
+    container_name: "traefik"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "9693:80"
+      - "9695:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"

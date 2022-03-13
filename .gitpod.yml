@@ -1,0 +1,16 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: docker-compose build
+    command: docker-compose up -d
+
+ports:
+# Because GitPod's auth proxy will only work through the browser, but Hasura needs 
+# to ping the server from the CLI, we need to make this port public.
+  - port: 5000
+    visibility: public
+
+# For some reason, we run into CORS issues if this port is not made public.
+  - port: 9693
+    visibility: public
