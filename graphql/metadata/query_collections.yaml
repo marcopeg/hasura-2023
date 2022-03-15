@@ -1,1 +1,16 @@
-[]
+- name: allowed-queries
+  definition:
+    queries:
+    - name: InsertWelcomePost
+      query: |-
+        mutation InsertWelcomePost($userId: uuid!, $content: String!) {
+          insert_posts_one(object: {
+            title: "Welcome to the platform!"
+            user_id: $userId
+            content: $content
+          }) {
+            id
+            title
+            user_id
+          }
+        }

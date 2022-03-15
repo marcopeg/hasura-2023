@@ -9,3 +9,24 @@ array_relationships:
       table:
         name: posts
         schema: public
+event_triggers:
+- definition:
+    enable_manual: false
+    insert:
+      columns: "*"
+  headers:
+  - name: x-hasura-admin-secret
+    value: password
+  name: new_user_welcome_post
+  request_transform:
+    body: "{\n  \"userId\": {{$body.event.data.new.id}},\n  \"content\": \"Hello and welcome to the platform {{$body.event.data.new.username}}!\"\n}"
+    content_type: application/json
+    method: POST
+    query_params: {}
+    template_engine: Kriti
+    url: "{{$base_url}}/api/rest/insert-welcome-post"
+  retry_conf:
+    interval_sec: 10
+    num_retries: 0
+    timeout_sec: 60
+  webhook: http://localhost:8080

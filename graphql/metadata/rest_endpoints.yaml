@@ -1,1 +1,9 @@
-[]
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: InsertWelcomePost
+  url: insert-welcome-post
+  methods:
+  - POST
+  name: InsertWelcomePost
+  comment: Insert a welcome post for a new user
