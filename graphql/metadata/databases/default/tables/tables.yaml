@@ -1,2 +1,3 @@
+- "!include public_categories.yaml"
 - "!include public_posts.yaml"
 - "!include public_users.yaml"
