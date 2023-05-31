@@ -1,6 +1,14 @@
+#
+# HasuraCLI
+# =========
+#
+# This settings are specific to the hasura-cli
+# that is running in Docker and the main purpose
+# is to make that feature available in GitPod.io
+#
+# If you are trying to run migrations or stuff,
+# please take a look at the main Makefile.
+#
+
 version: 3
-endpoint: http://localhost:5000
-metadata_directory: metadata
-actions:
-  kind: synchronous
-  handler_webhook_baseurl: http://localhost:3000
+endpoint: http://hasura-engine:8080

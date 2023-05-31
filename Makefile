@@ -3,6 +3,7 @@
 
 passwd?=hasura
 project?=hasura-state
+endpoint?=http://localhost:5000
 db?=default
 schema?=public
 from?=default
@@ -74,18 +75,21 @@ export: migrate-export metadata-export
 
 status:
 	@hasura migrate status \
+		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db)
 
 migrate:
 	@hasura migrate apply \
+		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db)
 
 migrate-up:
 	@hasura migrate apply \
+		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
@@ -93,6 +97,7 @@ migrate-up:
 
 migrate-down:
 	@hasura migrate apply \
+		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
@@ -100,6 +105,7 @@ migrate-down:
 
 migrate-destroy:
 	@hasura migrate apply \
+		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
@@ -111,6 +117,7 @@ migrate-rebuild: migrate-destroy migrate
 migrate-create:
 	@hasura migrate create \
 		"$(name)" \
+		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
@@ -124,6 +131,7 @@ migrate-create:
 migrate-export:
 	@hasura migrate create \
 		"__full-export___" \
+		--endpoint $(endpoint) \
   	--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
@@ -133,6 +141,7 @@ migrate-export:
 
 seed:
 	@hasura seed apply \
+		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
@@ -146,11 +155,13 @@ seed:
 
 apply:
 	@hasura metadata apply \
+		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project)
 
 metadata-export:
 	@hasura metadata apply \
+		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project)
 
