@@ -9,16 +9,6 @@ tasks:
 
 # Exposed services:
 ports:
-  - name: Hasura APIs
-    description: Runs the Hasura Engine APIs
-    port: 5000
-    visibility: public
-    onOpen: ignore
-  - name: Hasura CLI APIs
-    description: Runs the Hasura CLI APIs
-    port: 9693
-    visibility: public
-    onOpen: ignore
   - name: Hasura Console
     description: Runs the Hasura Web Console
     port: 9695
@@ -27,6 +17,16 @@ ports:
   - name: Adminer
     description: Runs Adminer database Web Client
     port: 8081
+    visibility: public
+    onOpen: ignore
+  - name: Hasura CLI APIs
+    description: Runs the Hasura CLI APIs
+    port: 9693
+    visibility: public
+    onOpen: ignore
+  - name: Hasura APIs
+    description: Runs the Hasura Engine APIs
+    port: 5000
     visibility: public
     onOpen: ignore
   - name: Postgres
