@@ -6,38 +6,47 @@ tasks:
     command: code README.md
     openMode: tab-after
 
+ports:
+# Because GitPod's auth proxy will only work through the browser, but Hasura needs 
+# to ping the server from the CLI, we need to make this port public.
+  - port: 5000
+    visibility: public
+
+# For some reason, we run into CORS issues if this port is not made public.
+  - port: 9693
+    visibility: public
 
 # Exposed services:
-ports:
-  - name: Hasura Console
-    description: Runs the Hasura Web Console
-    port: 9695
-    visibility: public
-    onOpen: open-preview
-  - name: Adminer
-    description: Runs Adminer database Web Client
-    port: 8081
-    visibility: public
-    onOpen: ignore
-  - name: Hasura CLI APIs
-    description: Runs the Hasura CLI APIs
-    port: 9693
-    visibility: public
-    onOpen: ignore
-  - name: Hasura APIs
-    description: Runs the Hasura Engine APIs
-    port: 5000
-    visibility: public
-    onOpen: ignore
-  - name: Postgres
-    port: 5432
-    onOpen: ignore
+#ports:
+#  - name: Hasura Console
+#    description: Runs the Hasura Web Console
+#    port: 9695
+#    visibility: public
+#    onOpen: open-preview
+#  - name: Adminer
+#    description: Runs Adminer database Web Client
+#    port: 8081
+#    visibility: public
+#    onOpen: ignore
+#  - name: Hasura CLI APIs
+#    description: Runs the Hasura CLI APIs
+#    port: 9693
+#    visibility: public
+#    onOpen: ignore
+#  - name: Hasura APIs
+#    description: Runs the Hasura Engine APIs
+#    port: 5000
+#    visibility: public
+#    onOpen: ignore
+#  - name: Postgres
+#    port: 5432
+#    onOpen: ignore
     
-vscode:
-  extensions:
-    - Codeium.codeium
-    - mtxr.sqltools
-    - mtxr.sqltools-driver-pg
-    - eamodio.gitlens
-    - esbenp.prettier-vscode
-    - darkriszty.markdown-table-prettify
+#vscode:
+#  extensions:
+#    - Codeium.codeium
+#    - mtxr.sqltools
+#    - mtxr.sqltools-driver-pg
+#    - eamodio.gitlens
+#    - esbenp.prettier-vscode
+#    - darkriszty.markdown-table-prettify
