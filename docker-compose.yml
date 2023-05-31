@@ -44,16 +44,14 @@ services:
       interval: 2s
       timeout: 1s
       retries: 20
-    # build:
-    #   context: graphql
 
   hasura_cli_console:
     restart: unless-stopped
     depends_on:
-      - graphql
-    build:
-      context: graphql
-      dockerfile: cli.Dockerfile
+      graphql:
+        condition: service_healthy
+    build: 
+      dockerfile: hasura-cli.Dockerfile
     volumes:
       - ./graphql:/project
     expose:
@@ -75,10 +73,10 @@ services:
   hasura_cli_api:
     restart: unless-stopped
     depends_on:
-      - graphql
-    build:
-      context: graphql
-      dockerfile: cli.Dockerfile
+      graphql:
+        condition: service_healthy
+    build: 
+      dockerfile: hasura-cli.Dockerfile
     volumes:
       - ./graphql:/project
     expose:
@@ -92,20 +90,20 @@ services:
 
   traefik:
     image: "traefik:v2.6"
-    container_name: "traefik"
+    # container_name: "traefik"
+    ports:
+      # - "80:80"
+      - "8080:8080"
+      - "9693:80"
+      - "9695:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
     command:
       - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
-    ports:
-      - "80:80"
-      - "8080:8080"
-      - "9693:80"
-      - "9695:80"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
 volumes:
   postgres:
