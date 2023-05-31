@@ -27,14 +27,14 @@ services:
     image: hasura/graphql-engine:v2.25.1.cli-migrations-v3
     ports:
       - "${HASURA_PORT:-5000}:8080"
-    volumes:
-      - ./graphql:/project
+    # volumes:
+    #   - ./hasura-state:/project
     environment:
       # Setup connection & password
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres
       # Apply the migrations at boot
-      HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
-      HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
+      # HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
+      # HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
       # Other settings
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, query-log
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
@@ -61,7 +61,7 @@ services:
     build: 
       dockerfile: hasura-cli.Dockerfile
     volumes:
-      - ./graphql:/project
+      - ./hasura-state:/project
     expose:
       - 9695
     command: > 
@@ -86,7 +86,7 @@ services:
     build: 
       dockerfile: hasura-cli.Dockerfile
     volumes:
-      - ./graphql:/project
+      - ./hasura-state:/project
     expose:
       - 9693
     command:  hasura console --log-level DEBUG --address "hasura-cli-api" --no-browser 
