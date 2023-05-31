@@ -1,9 +1,9 @@
 # Configuration & Defaults
 #
 
+endpoint?=http://localhost:5000
 passwd?=hasura
 project?=hasura-state
-endpoint?=http://localhost:5000
 db?=default
 schema?=public
 from?=default
@@ -140,6 +140,11 @@ migrate-export:
   	--schema $(schema) \
   	--from-server \
 		--down-sql "SELECT NOW();"
+
+# This doesn't seem to work throug Make
+# (copy/paste the command into the CLI)
+migrate-claim:
+	@sudo chown -R $(id -u):$(id -g) ./hasura-state
 
 seed:
 	@hasura seed apply \

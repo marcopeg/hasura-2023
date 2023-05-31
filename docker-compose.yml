@@ -26,23 +26,22 @@ services:
   hasura-engine:
     image: hasura/graphql-engine:v2.25.1.cli-migrations-v3
     ports:
-      - "${HASURA_PORT:-5000}:8080"
+      - 5000:8080
     volumes:
       - ./hasura-state:/project
     environment:
-      # Setup connection & password
+      # Setup main db connection
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres
+      HASURA_ADMIN_SECRET: ${HASURA_ADMIN_SECRET:-hasura}
       # Apply the migrations at boot
-      # HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
-      # HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
+      HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
+      HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
       # Other settings
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, query-log
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
       HASURA_GRAPHQL_INFER_FUNCTION_PERMISSIONS: "false"
-      # This container only runs the APIs, there is no need for the password?
-      # HASURA_GRAPHQL_ADMIN_SECRET: "${HASURA_ADMIN_SECRET:-hasura}"
     depends_on:
       postgres:
         condition: service_healthy
@@ -54,63 +53,46 @@ services:
       retries: 20
 
   hasura-cli-console:
-    restart: unless-stopped
-    #user: ${GITPOD_UID:-"foobar"}
-    depends_on:
-      hasura-engine:
-        condition: service_healthy
     build: 
       dockerfile: hasura-cli.Dockerfile
+    ports:
+      - 8080:8080
     volumes:
       - ./hasura-state:/project
-    expose:
-      - 9695
     command: > 
       hasura console 
-      --log-level DEBUG 
-      --address "hasura-cli-console" 
-      --no-browser 
-      --api-host https://9693-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST} 
-      --api-port 443
-      --endpoint https://5000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}
+        --log-level DEBUG 
+        --address "hasura-cli-console" 
+        --console-port 8080
+        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
+        --no-browser 
+        --api-host https://9693-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST} 
+        --api-port 443
+        --endpoint https://5000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}
     working_dir: /project
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.hasura-cli-console.rule=Host(`9695-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}`)"
-      - "traefik.http.routers.hasura-cli-console.entrypoints=web"
-
-  hasura-cli-api:
     restart: unless-stopped
     depends_on:
       hasura-engine:
         condition: service_healthy
+
+  hasura-cli-api:
     build: 
       dockerfile: hasura-cli.Dockerfile
+    ports:
+      - 9693:9693
     volumes:
       - ./hasura-state:/project
-    expose:
-      - 9693
-    command:  hasura console --log-level DEBUG --address "hasura-cli-api" --no-browser --endpoint http://hasura-engine:8080
+    command: >
+      hasura console
+        --log-level DEBUG
+        --address "hasura-cli-api"
+        --no-browser
+        --endpoint http://hasura-engine:8080
     working_dir: /project
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.hasura-cli-api.rule=Host(`9693-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}`)"
-      - "traefik.http.routers.hasura-cli-api.entrypoints=web"
-
-  traefik:
-    image: "traefik:v2.6"
-    ports:
-      # - "8080:8080"
-      - "9693:80"
-      - "9695:80"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    command:
-      - "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
+    restart: unless-stopped
+    depends_on:
+      hasura-engine:
+        condition: service_healthy
 
 volumes:
   postgres:

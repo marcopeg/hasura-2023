@@ -11,7 +11,7 @@ tasks:
 ports:
  - name: Hasura Console
    description: Runs the Hasura Web Console
-   port: 9695
+   port: 8080
    visibility: private
    onOpen: open-preview
  - name: Adminer
@@ -24,10 +24,10 @@ ports:
    port: 9693
    visibility: private
    onOpen: ignore
- - name: Hasura APIs
+ - name: Hasura GraphQL APIs
    description: Runs the Hasura Engine APIs
    port: 5000
-   visibility: private # CORS issues if private
+   visibility: private # CORS issues if private?!?
    onOpen: ignore
  - name: Postgres
    port: 5432
