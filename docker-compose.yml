@@ -27,8 +27,8 @@ services:
     image: hasura/graphql-engine:v2.25.1.cli-migrations-v3
     ports:
       - "${HASURA_PORT:-5000}:8080"
-    # volumes:
-    #   - ./hasura-state:/project
+    volumes:
+      - ./hasura-state:/project
     environment:
       # Setup connection & password
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres
@@ -55,6 +55,7 @@ services:
 
   hasura-cli-console:
     restart: unless-stopped
+    #user: ${GITPOD_UID:-"foobar"}
     depends_on:
       hasura-engine:
         condition: service_healthy
@@ -80,7 +81,6 @@ services:
 
   hasura-cli-api:
     restart: unless-stopped
-    user: $(id -u):$(id -g)
     depends_on:
       hasura-engine:
         condition: service_healthy
@@ -90,7 +90,7 @@ services:
       - ./hasura-state:/project
     expose:
       - 9693
-    command:  hasura console --log-level DEBUG --address "hasura-cli-api" --no-browser 
+    command:  hasura console --log-level DEBUG --address "hasura-cli-api" --no-browser --endpoint http://hasura-engine:8080
     working_dir: /project
     labels:
       - "traefik.enable=true"

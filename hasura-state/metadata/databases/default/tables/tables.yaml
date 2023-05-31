@@ -1,1 +1,3 @@
-- "!include public_cdcdw.yaml"
+- "!include public_users.yaml"
+- "!include public_posts.yaml"
+- "!include public_categories.yaml"

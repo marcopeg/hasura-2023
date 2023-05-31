@@ -46,6 +46,8 @@ help:
 	@echo "18) make pagila-reset"
 	@echo ""
 	@echo "19) make ports"
+	@echo "20) make install-hasura"
+	@echo "20) make install-humble"
 	@echo ""
 	@echo "98) make clean"
 	@echo "99) make reset"
@@ -56,7 +58,7 @@ help:
 #
 
 start:
-	@docker compose up -d
+	@GITPOD_UID=$(id -u):$(id -g) docker compose up -d
 	@docker compose logs -f
 
 logs:
@@ -197,6 +199,10 @@ pagila-destroy:
 	@docker compose exec postgres psql -U postgres postgres -c 'create schema public;'
 
 pagila-reset: pagila-destroy pagila-init
+
+
+install-hasura:
+	@curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 
 clean:
 	@docker compose down -v
