@@ -26,7 +26,7 @@ services:
   hasura-engine:
     image: hasura/graphql-engine:v2.25.1.cli-migrations-v3
     ports:
-      - 5000:8080
+      - 8080:8080
     volumes:
       - ./hasura-state:/project
     environment:
@@ -56,19 +56,17 @@ services:
     build: 
       dockerfile: hasura-cli.Dockerfile
     ports:
-      - 8080:8080
+      - 9695:9695
     volumes:
       - ./hasura-state:/project
     command: > 
       hasura console 
         --log-level DEBUG 
         --address "hasura-cli-console" 
-        --console-port 8080
-        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
         --no-browser 
         --api-host https://9693-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST} 
         --api-port 443
-        --endpoint https://5000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}
+        --endpoint https://8080-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}
     working_dir: /project
     restart: unless-stopped
     depends_on:
@@ -86,6 +84,7 @@ services:
       hasura console
         --log-level DEBUG
         --address "hasura-cli-api"
+        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
         --no-browser
         --endpoint http://hasura-engine:8080
     working_dir: /project
