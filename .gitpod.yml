@@ -1,9 +1,9 @@
-image:
-  file: .gitpod.Dockerfile
+#image:
+#  file: .gitpod.Dockerfile
 
-tasks:
-  - init: docker-compose build
-    command: docker-compose up -d
+#tasks:
+#  - init: docker-compose build
+#    command: docker-compose up -d
 
 ports:
 # Because GitPod's auth proxy will only work through the browser, but Hasura needs 
