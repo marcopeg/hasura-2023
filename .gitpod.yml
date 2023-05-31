@@ -1,9 +1,14 @@
-image:
-  file: .gitpod.Dockerfile
+# image:
+#   file: .gitpod.Dockerfile
 
-#tasks:
-#  - init: docker-compose build
-#    command: docker-compose up -d
+tasks:
+  - name: Boot
+    init: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+    command: docker compose up
+  - name: Readme
+    command: code README.md
+    openMode: tab-after
+
 
 ports:
 # Because GitPod's auth proxy will only work through the browser, but Hasura needs 
