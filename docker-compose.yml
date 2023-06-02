@@ -34,8 +34,8 @@ services:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres
       HASURA_ADMIN_SECRET: ${HASURA_ADMIN_SECRET:-hasura}
       # Apply the migrations at boot
-      # HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
-      # HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
+      HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
+      HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
       # Other settings
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"

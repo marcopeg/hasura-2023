@@ -186,7 +186,7 @@ apply:
 		--project $(project)
 
 metadata-export:
-	@hasura metadata apply \
+	@hasura metadata export \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project)

@@ -1,0 +1,3 @@
+table:
+  name: demo_events
+  schema: public

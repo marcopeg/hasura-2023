@@ -1,1 +1,1 @@
-SELECT NOW();
+DROP TABLE "public"."demo_events" CASCADE;
