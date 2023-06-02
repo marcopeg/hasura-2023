@@ -259,15 +259,10 @@ reset:
 #
 
 # Run a script from the project's scripts folder
-export HASURA_GRAPHQL_ENDPOINT=$(endpoint)/v1/graphql
-export HASURA_GRAPHQL_ADMIN_SECRET=$(passwd)
-py:
-	@python $(project)/scripts/$(from).py
-
 env?="F=F"
-pyd:
+py:
 	@docker images -q hasura-2023-py | grep -q . || docker build -t hasura-2023-py ./docker-images/python
-	docker run --rm \
+	@docker run --rm \
 		-e $(env) \
 		-e HASURA_GRAPHQL_ENDPOINT=http://hasura-engine:8080/v1/graphql \
 		-e HASURA_GRAPHQL_ADMIN_SECRET=$(passwd) \
@@ -276,7 +271,7 @@ pyd:
 		hasura-2023-py \
 		sh -c "python /scripts/$(from).py"
 
-pyd-build:
+py-build:
 	docker build --no-cache -t hasura-2023-py ./docker-images/python
 
 
