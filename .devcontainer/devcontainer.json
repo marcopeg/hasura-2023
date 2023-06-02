@@ -16,16 +16,20 @@
     "forwardPorts": [8080, 8081, 9695, 9693],
     "portsAttributes": {
         "8081": {
-            "label": "Adminer Web Client"
+            "label": "Adminer Web Client",
+            "onAutoForward": "ignore"
         },
         "8080": {
-            "label": "Hasura Engine API"
+            "label": "Hasura Engine API",
+            "onAutoForward": "ignore"
         },
         "9695": {
-            "label": "Hasura CLI Console"
+            "label": "Hasura CLI Console",
+            "onAutoForward": "openPreview"
         },
         "9693": {
-            "label": "Hasura CLI API"
+            "label": "Hasura CLI API",
+            "onAutoForward": "ignore"
         }
     },
     "postAttachCommand": "/bin/bash .devcontainer/setup.sh",
