@@ -37,9 +37,10 @@ services:
       HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
       HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
       # Other settings
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, query-log
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
-      HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
       HASURA_GRAPHQL_INFER_FUNCTION_PERMISSIONS: "false"
     depends_on:
