@@ -1,3 +1,5 @@
+# Reads the "demo_events" table with default LIMIT=25
+
 import os
 import requests
 import json
@@ -5,7 +7,7 @@ import json
 # Get the values from environment variables
 HASURA_GRAPHQL_ENDPOINT = os.getenv("HASURA_GRAPHQL_ENDPOINT")
 HASURA_GRAPHQL_ADMIN_SECRET = os.getenv("HASURA_GRAPHQL_ADMIN_SECRET")
-LIMIT = int(os.getenv("LIMIT", "10"))
+LIMIT = int(os.getenv("LIMIT", "25"))
 
 # Check if the required environment variables are set
 if not HASURA_GRAPHQL_ENDPOINT or not HASURA_GRAPHQL_ADMIN_SECRET:

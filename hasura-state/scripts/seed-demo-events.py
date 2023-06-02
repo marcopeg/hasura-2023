@@ -1,3 +1,5 @@
+# Generates new events (LIMIT=25) for "demo_events" randomizing
+
 import os
 import requests
 import json
