@@ -4,7 +4,7 @@ services:
     environment:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
       
-hasura-cli-console:
+  hasura-cli-console:
     build: 
       dockerfile: hasura-cli.Dockerfile
     ports:

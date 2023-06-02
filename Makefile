@@ -13,11 +13,10 @@ q?=select now();
 
 # Compose the docker-compose file chain based on an environmental variable
 ifdef DOCKER_COMPOSE_TARGET
-    DOCKER_COMPOSE_CHAIN := "docker-compose.yml -f docker-compose.${DOCKER_COMPOSE_TARGET}.yml"
+    DOCKER_COMPOSE_CHAIN := -f docker-compose.yml -f docker-compose.${DOCKER_COMPOSE_TARGET}.yml
 else
-    DOCKER_COMPOSE_CHAIN := "docker-compose.yml"
+    DOCKER_COMPOSE_CHAIN := -f docker-compose.yml
 endif
-
 
 #
 # Default Action
@@ -71,14 +70,14 @@ help:
 #
 
 start:
-	@GITPOD_UID=$(id -u):$(id -g) docker compose -f $(DOCKER_COMPOSE_CHAIN) up -d
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) logs -f
+	@docker compose $(DOCKER_COMPOSE_CHAIN) up -d
+	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
 
 stop:
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) down
+	@docker compose $(DOCKER_COMPOSE_CHAIN) down
 
 logs:
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) logs -f
+	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
 
 init: migrate metadata seed
 
@@ -200,10 +199,10 @@ metadata-export:
 #
 
 psql:
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres
+	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres
 
 psql-exec:
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) exec -T postgres psql -U postgres postgres < $(from)
+	@docker compose $(DOCKER_COMPOSE_CHAIN) exec -T postgres psql -U postgres postgres < $(from)
 
 
 
@@ -220,8 +219,8 @@ pagila-init:
 	@curl -k -L -s --compressed https://github.com/devrimgunduz/pagila/raw/master/pagila-data-apt-jsonb.sql | docker compose exec -T postgres pg_restore -U postgres -d postgres
 
 pagila-destroy:
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres -c 'drop schema public cascade;'
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres -c 'create schema public;'
+	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres -c 'drop schema public cascade;'
+	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres -c 'create schema public;'
 
 pagila-reset: pagila-destroy pagila-init
 
@@ -243,14 +242,14 @@ hasura-console:
 		--project $(project) \
 
 clean:
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) down -v
+	@docker compose $(DOCKER_COMPOSE_CHAIN) down -v
 
 reset:
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) down -v
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) pull
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) build
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) up -d
-	@docker compose -f $(DOCKER_COMPOSE_CHAIN) logs -f
+	@docker compose $(DOCKER_COMPOSE_CHAIN) down -v
+	@docker compose $(DOCKER_COMPOSE_CHAIN) pull
+	@docker compose $(DOCKER_COMPOSE_CHAIN) build
+	@docker compose $(DOCKER_COMPOSE_CHAIN) up -d
+	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
 
 
 
