@@ -1,7 +1,7 @@
 tasks:
   - name: Boot
     init: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash && echo 'export DOCKER_COMPOSE_TARGET=gitpod' >> ~/.bashrc && export DOCKER_COMPOSE_TARGET=gitpod
-    command: make start
+    command: open README.md && make start
 
 
 # Exposed services:
