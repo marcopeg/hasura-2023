@@ -9,9 +9,13 @@ The only requirements for running this project are:
 - [Docker](https://docker.com)
 - [Make](https://www.gnu.org/software/make/manual/make.html)
 
-> 💡 For simplicity sake I'm also testing this tutorial on [GitPod.io](https://gitpod.io), and you can easily run this project by > clicking the button below:
+> 💡 For simplicity sake I'm also testing this tutorial on [GitPod.io](https://gitpod.io) and [GitHub Codespaces](https://github.com/features/codespaces), and you can easily run this project by clicking the buttons below:
 >
-[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2303)
+> [![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2303)
+>
+>
+> [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
+
 
 ## Table of Contents
 
@@ -32,7 +36,8 @@ The only requirements for running this project are:
 
 ## Quick Start
 
-The project's API are based on a [Makefile](https://www.gnu.org/software/make/manual/make.html); you can run the following commands in a terminal:
+The project's API are based on a [Makefile](https://www.gnu.org/software/make/manual/make.html);  
+You can run the following commands in a terminal:
 
 ```bash
 # Show the help menu
@@ -170,7 +175,7 @@ hasura:
     retries: 20
 ```
 
-The healthcheck is inpired by [this thread](https://github.com/hasura/graphql-engine/issues/1532#issuecomment-1161637925).
+> The healthcheck is inpired by [this thread](https://github.com/hasura/graphql-engine/issues/1532#issuecomment-1161637925).
 
 ## Install HasuraCLI
 
@@ -279,7 +284,14 @@ docker compose up
 
 ## Switch to the Hasura CLI Console
 
-[[ TODO ]]
+Hasura ships an incredible **development experience** through its console application.
+
+It looks exactly like the normal console, but all your activities are automatically tracked and the changes that you make on your Hasura or Postgres services are reflected in your source folder:
+
+- Changes to the Postgres schema are stored as new migrations
+- Hasura's metadata are stored as `yaml` files
+
+Then you can re-distribute those sources to keep in sync different environments.
 
 ### From Localhost
 
@@ -331,7 +343,7 @@ make
 
 # Take a full screenshot of the current state
 # (you may want to remove previous migrations though)
-make export
+make exports
 ```
 
 ## Work With Pagila Demo DB
@@ -382,9 +394,17 @@ ports:
 >
 > It shows the project's ports and you can easily `Ctrl + Click` to open one in your browser.
 
+[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2303)
+
 ## Working With GitHub Codespaces
 
-[[ TODO ]]
+[GitHub Codespaces](https://github.com/features/codespaces) offer a service similar to GitPod.
+
+> 💡 To be honest they overlap almost 100% and I use both to extend my free tier of online available workspace.
+
+Of course, the configuration is a bit different and it is mostly based on the `.devcontainer` standard.
+
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
 
 ---
 
