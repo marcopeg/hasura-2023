@@ -1,5 +1,4 @@
 {
-    "image": "mcr.microsoft.com/devcontainers/universal:2",
     "customizations": {
         "codespaces": {
             "openFiles": [
@@ -21,5 +20,6 @@
         "9693": {
             "label": "Hasura CLI API"
         }
-    }
+    },
+    "postAttachCommand": "/bin/bash .devcontainer/setup.sh"
 }
