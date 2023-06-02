@@ -216,7 +216,7 @@ clean:
 reset:
 	@docker compose down -v
 	@docker compose pull
-	@docker compose build --no-cache
+	@docker compose build
 	@docker compose up -d
 	@docker compose logs -f
 
