@@ -30,9 +30,14 @@ The only requirements for running this project are:
 - [Apply Hasura State at Boot](#apply-hasura-state-at-boot)
 - [Switch to the Hasura CLI Console](#switch-to-the-hasura-cli-console)
 - [The Makefile Interface](#the-makefile-interface)
-- [Work With Pagila Demo DB](#work-with-pagila-demo-db)
 - [Working with GitPod](#working-with-gitpodio)
 - [Working with GitHub Codespaces](#working-with-github-codespaces)
+- [SQL Migrations](#sql-migrations)
+- [Seeding Your Data ](#seeding-your-data)
+- [Scripting With SQL](#scripting-with-sql)
+- [Scripting With Python](#scripting-with-python)
+- [Scripting With ChatGPT](#scripting-with-chatgpt)
+- [Work With Pagila Demo DB](#work-with-pagila-demo-db)
 
 ## Quick Start
 
@@ -346,24 +351,6 @@ make
 make exports
 ```
 
-## Work With Pagila Demo DB
-
-[Pagila](https://github.com/devrimgunduz/pagila) is a **demo database** that provides schema and data for running a DVD rental business.
-
-You can use it to practice how to work with Hasura in exposing data via GraphQL APIs.
-
-```bash
-# Creates the Pagila public schema and load default data into it
-make pagila-init
-
-# Optional, adds a bunch of JSONB data
-make pagila-init-jsonb
-
-# Destroy and recreate the "public" schema
-# -> this is disruptive, you will loose anything you have in the public schema!
-make pagila-destroy
-```
-
 ## Working with GitPod.io
 
 I often use [GitPod.io](https://gitpod.io) to work in isolated, stateless, and fully automated discardable environments.
@@ -406,6 +393,71 @@ Of course, the configuration is a bit different and it is mostly based on the `.
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
 
+## SQL Migrations
+
+Hasura ships with an SQL migration tool and you can use it through the Make interface:
+
+```bash
+# Apply any new migration
+make migrate
+
+# Check the migrations state:
+make migrate-status
+
+# Migrate up and down
+make migrate-up
+make migrate-up steps=4
+
+# Redo a bunch of migrations
+make migrate-redo steps=4
+
+# Undo all the migrations
+make migrate-destroy
+
+# Re-apply all the migrations
+# (down > up all)
+make migrate-rebuild
+
+# Scaffold a new migration
+make migrate-create name=foobar
+
+# Export the an entire schema
+make migrate-export schema=foo
+```
+
+## Seeding Your Data 
+
+[[ TODO ]]
+
+```bash
+# Apply a specific seed
+# > hasura-state/seeds/default/foo.sql
+make seed from=foo
+
+# Apply a specific seed to a different db
+# > hasura-state/seeds/hoho/foo.sql
+make seed from=foo db=hoho
+
+# Target a different data-project
+# > foo/seeds/default/default.sql
+make seed project=foo
+```
+
+## Scripting With SQL
+
+You can run simple SQL files to play around with your schema:
+
+```sql
+-- hasura-state/sql/default/foo.sql
+select now();
+```
+
+You can run this with:
+
+```bash
+make query from=foo
+```
+
 ## Scripting With Python
 
 You can store python scripts into `hasura-state/scripts/foo.py` and run it as:
@@ -414,23 +466,67 @@ You can store python scripts into `hasura-state/scripts/foo.py` and run it as:
 make py from=foo
 ```
 
+If your script needs environmental variables you can pass it a:
+
+```bash
+make py from=foo env=FOO=bar
+```
+
+> NOTE: Your scripts will be executed within a Docker container that is connected to the project's network. Therefore you can use service names as DNS.
+
 ## Scripting With ChatGPT
 
-I use the
+I use [ChatGPT](https://chat.openai.com/) a lot these days.
 
----
+Requirements like:
 
+```
+Given the following table, generate the query to insert 20 new records with a randomic date within last week and a JSON payload that represents a football game metrics. 
 
-TODO: SQL Migrations
+CREATE TABLE "public"."demo_events" (
+    "created_at" timestamp with time zone DEFAULT now() NOT NULL,
+    "data" JSONB NOT NULL,
+    PRIMARY KEY ("created_at")
+);
+```
 
-You can then checkout the state of your SQL migrations:
+and I get something like:
 
+```sql
+INSERT INTO public.demo_events (created_at, data)
+SELECT
+    NOW() - INTERVAL '7 days' * RANDOM() AS created_at,
+    jsonb_build_object(
+        'goals_scored', FLOOR(RANDOM() * 6),
+        'corners', FLOOR(RANDOM() * 11),
+        'yellow_cards', FLOOR(RANDOM() * 4),
+        'red_cards', FLOOR(RANDOM() * 2)
+    ) AS data
+FROM generate_series(1, 20);
+```
 
+I can copy/paste this into Hasura's SQL editor or Admier... Or I can run my next request:
 
-TODO: run the console:  
-- [ ] Run Hasura CLI with sync  
-  https://github.com/ephemerecreative/hasura-cli-gitpod-example  
-  https://www.youtube.com/watch?v=47V40_r1VQo
-- [ ] Run it in GitHub codespaces
-- [ ] Run it locally with ports
-- [ ] Set public ports using devcontainers
+```
+Give me the same result but as a python script that uses Hasura's APIs. There will be two environmental variables: HASURA_GRAPHQL_ENDPOINT and HASURA_GRAPHQL_ADMIN_SECRET.
+```
+
+I will get a - more or less - working scrypt that I can run using the `make py` command.
+
+## Work With Pagila Demo DB
+
+[Pagila](https://github.com/devrimgunduz/pagila) is a **demo database** that provides schema and data for running a DVD rental business.
+
+You can use it to practice how to work with Hasura in exposing data via GraphQL APIs.
+
+```bash
+# Creates the Pagila public schema and load default data into it
+make pagila-init
+
+# Optional, adds a bunch of JSONB data
+make pagila-init-jsonb
+
+# Destroy and recreate the "public" schema
+# -> this is disruptive, you will loose anything you have in the public schema!
+make pagila-destroy
+```

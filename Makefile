@@ -202,8 +202,8 @@ metadata-export:
 psql:
 	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres
 
-psql-exec:
-	@docker compose $(DOCKER_COMPOSE_CHAIN) exec -T postgres psql -U postgres postgres < $(from)
+query:
+	@docker compose $(DOCKER_COMPOSE_CHAIN) exec -T postgres psql -U postgres postgres < $(project)/sql/$(db)/$(from).sql
 
 
 
@@ -266,7 +266,7 @@ py:
 		-e $(env) \
 		-e HASURA_GRAPHQL_ENDPOINT=http://hasura-engine:8080/v1/graphql \
 		-e HASURA_GRAPHQL_ADMIN_SECRET=$(passwd) \
-		-v $(CURDIR)/$(project)/scripts:/scripts:ro \
+		-v $(CURDIR)/$(project)/scripts/$(db):/scripts:ro \
 		--network=hasura_2023 \
 		hasura-2023-py \
 		sh -c "python /scripts/$(from).py"
