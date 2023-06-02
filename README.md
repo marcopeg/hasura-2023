@@ -20,12 +20,15 @@ The only requirements for running this project are:
   - [create Postgres container](#create-postgres-container)
   - [create Adminer container](#create-adminer-container)
   - [create Hasura container](#create-hasura-container)
-- [create `.gitpod.yml`](#create-gitpod-file)
 - [Install Hasura CLI](#install-hasuracli)
 - [Create the Hasura State Project](#create-the-hasura-state-project)
 - [Apply the Hasura Project](#apply-the-hasura-project)
+- [Apply Hasura State at Boot](#apply-hasura-state-at-boot)
+- [Switch to the Hasura CLI Console](#switch-to-the-hasura-cli-console)
 - [The Makefile Interface](#the-makefile-interface)
 - [Work With Pagila Demo DB](#work-with-pagila-demo-db)
+- [Working with GitPod](#working-with-gitpodio)
+- [Working with GitHub Codespaces](#working-with-github-codespaces)
 
 ## Quick Start
 
@@ -169,36 +172,6 @@ hasura:
 
 The healthcheck is inpired by [this thread](https://github.com/hasura/graphql-engine/issues/1532#issuecomment-1161637925).
 
-## Create GitPod File
-
-I often use [GitPod.io](https://gitpod.io) to work in isolated, stateless, and fully automated discardable environments.
-
-The cool thing about it is that most of the automation is just a _YAML_ file away:
-
-```yml
-# Workspace automation at startup:
-tasks:
-  - name: Boot
-    command: docker compose up
-
-# Exposed services:
-ports:
-  - name: Postgres
-    port: 5432
-    onOpen: ignore
-  - name: Hasura
-    port: 8080
-    onOpen: open-preview
-```
-
-> If you run this project from your local VSCode you may find this command useful:
->
-> ```
-> gp ports list
-> ```
->
-> It shows the project's ports and you can easily `Ctrl + Click` to open one in your browser.
-
 ## Install HasuraCLI
 
 [Hasura ships a CLI](https://hasura.io/docs/latest/hasura-cli/overview/) utility that we will use to automate the state management of the project.
@@ -283,6 +256,37 @@ hasura metadata apply \
   --project hasura-state
 ```
 
+## Apply Hasura State at Boot
+
+Now that we have an **Hasura State Project** as a codebase, it would be nice to apply it at boot time so that our APIs are ready-to-use when we run the project for the first time.
+
+Luckily, it is just a matter of provinding 2 new _environmental variables_ to the `hasura-engine` container, then connect the sourcecode as a volume:
+
+```yml
+volumes:
+  - ./hasura-state:/project
+environment:
+  HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
+  HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
+```
+
+Now you can rest your project as much as you want, and as long you commit your changes, your state will always start fully prepared:
+
+```bash
+docker compose down -v # removes the associated volume to reset the db
+docker compose up
+```
+
+## Switch to the Hasura CLI Console
+
+[[ TODO ]]
+
+> 🚧 The HasuraCLI containers runs with user `root:root` and creates files accordingly. You need to claim those files to your host user after running a bunch of changes:
+> 
+> ```bash
+> sudo chown -R $(id -u):$(id -g) ./hasura-state
+> ```
+
 ## The Makefile Interface
 
 From now on, we are going to issue HasuraCLI commands that need some configuration. It may become quite a pain to remember everything. 
@@ -331,6 +335,40 @@ make pagila-init-jsonb
 make pagila-destroy
 ```
 
+## Working with GitPod.io
+
+I often use [GitPod.io](https://gitpod.io) to work in isolated, stateless, and fully automated discardable environments.
+
+The cool thing about it is that most of the automation is just a _YAML_ file away:
+
+```yml
+# Workspace automation at startup:
+tasks:
+  - name: Boot
+    command: docker compose up
+
+# Exposed services:
+ports:
+  - name: Postgres
+    port: 5432
+    onOpen: ignore
+  - name: Hasura
+    port: 8080
+    onOpen: open-preview
+```
+
+> If you run this project from your local VSCode you may find this command useful:
+>
+> ```
+> gp ports list
+> ```
+>
+> It shows the project's ports and you can easily `Ctrl + Click` to open one in your browser.
+
+## Working With GitHub Codespaces
+
+[[ TODO ]]
+
 ---
 
 
@@ -341,5 +379,9 @@ You can then checkout the state of your SQL migrations:
 
 
 TODO: run the console:  
-https://github.com/ephemerecreative/hasura-cli-gitpod-example
-https://www.youtube.com/watch?v=47V40_r1VQo
+- [ ] Run Hasura CLI with sync  
+  https://github.com/ephemerecreative/hasura-cli-gitpod-example  
+  https://www.youtube.com/watch?v=47V40_r1VQo
+- [ ] Run it in GitHub codespaces
+- [ ] Run it locally with ports
+- [ ] Set public ports using devcontainers
