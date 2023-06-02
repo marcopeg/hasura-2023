@@ -1,6 +1,7 @@
 # Configuration & Defaults
 #
 
+host?=gitpod
 endpoint?=http://localhost:5000
 passwd?=hasura
 project?=hasura-state
@@ -59,14 +60,18 @@ help:
 #
 
 start:
-	@GITPOD_UID=$(id -u):$(id -g) docker compose up -d
-	@docker compose logs -f
+	@GITPOD_UID=$(id -u):$(id -g) docker compose -f docker-compose.$(host).yml up -d
+	@docker compose -f docker-compose.$(host).yml logs -f
+
+start-cli-gitpod:
+	@GITPOD_UID=$(id -u):$(id -g) docker compose -f docker-compose.$(host).yml up -d
+	@docker compose -f docker-compose.$(host).yml logs -f
 
 logs:
-	@docker compose logs -f
+	@docker compose -f docker-compose.$(host).yml logs -f
 
 stop:
-	@docker compose down
+	@docker compose -f docker-compose.$(host).yml down
 
 init: migrate-rebuild apply seed
 
@@ -181,10 +186,10 @@ metadata-export:
 #
 
 psql:
-	@docker compose exec postgres psql -U postgres postgres
+	@docker compose -f docker-compose.$(host).yml exec postgres psql -U postgres postgres
 
 psql-exec:
-	@docker compose exec -T postgres psql -U postgres postgres < $(from)
+	@docker compose -f docker-compose.$(host).yml exec -T postgres psql -U postgres postgres < $(from)
 
 
 
@@ -201,8 +206,8 @@ pagila-init:
 	@curl -k -L -s --compressed https://github.com/devrimgunduz/pagila/raw/master/pagila-data-apt-jsonb.sql | docker compose exec -T postgres pg_restore -U postgres -d postgres
 
 pagila-destroy:
-	@docker compose exec postgres psql -U postgres postgres -c 'drop schema public cascade;'
-	@docker compose exec postgres psql -U postgres postgres -c 'create schema public;'
+	@docker compose -f docker-compose.$(host).yml exec postgres psql -U postgres postgres -c 'drop schema public cascade;'
+	@docker compose -f docker-compose.$(host).yml exec postgres psql -U postgres postgres -c 'create schema public;'
 
 pagila-reset: pagila-destroy pagila-init
 
@@ -211,14 +216,14 @@ install-hasura:
 	@curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 
 clean:
-	@docker compose down -v
+	@docker compose -f docker-compose.$(host).yml down -v
 
 reset:
-	@docker compose down -v
-	@docker compose pull
-	@docker compose build
-	@docker compose up -d
-	@docker compose logs -f
+	@docker compose -f docker-compose.$(host).yml down -v
+	@docker compose -f docker-compose.$(host).yml pull
+	@docker compose -f docker-compose.$(host).yml build
+	@docker compose -f docker-compose.$(host).yml up -d
+	@docker compose -f docker-compose.$(host).yml logs -f
 
 #
 # GitPod Utilities
