@@ -479,10 +479,12 @@ make py from=foo env=FOO=bar
 
 I use [ChatGPT](https://chat.openai.com/) a lot these days.
 
-Requirements like:
+I give **requirements** like:
 
 ```
-Given the following table, generate the query to insert 20 new records with a randomic date within last week and a JSON payload that represents a football game metrics. 
+Given the following table, generate the query to insert 20 new 
+records with a randomic date within last week and a JSON payload 
+that represents a football game metrics. 
 
 CREATE TABLE "public"."demo_events" (
     "created_at" timestamp with time zone DEFAULT now() NOT NULL,
