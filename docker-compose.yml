@@ -14,6 +14,8 @@ services:
       interval: 2s
       timeout: 1s
       retries: 20
+    networks:
+      - hasura
 
   adminer:
     image: adminer:4.8.1
@@ -22,8 +24,11 @@ services:
     links:
       - postgres:db
     restart: unless-stopped
+    networks:
+      - hasura
 
   hasura-engine:
+    container_name: hasura-engine
     image: hasura/graphql-engine:v2.25.1.cli-migrations-v3
     ports:
       - 8080:8080
@@ -52,6 +57,13 @@ services:
       interval: 2s
       timeout: 1s
       retries: 20
+    networks:
+      - hasura
 
 volumes:
   postgres:
+
+networks:
+  hasura:
+    name: hasura_2023
+    driver: bridge

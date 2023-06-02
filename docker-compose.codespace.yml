@@ -2,8 +2,7 @@ version: '3.6'
 services:
 
   hasura-cli-console:
-    build: 
-      dockerfile: hasura-cli.Dockerfile
+    build: ./docker-images/hasura-cli
     ports:
       - 9695:9695
     volumes:
@@ -21,10 +20,11 @@ services:
     depends_on:
       hasura-engine:
         condition: service_healthy
+    networks:
+      - hasura
 
   hasura-cli-api:
-    build: 
-      dockerfile: hasura-cli.Dockerfile
+    build: ./docker-images/hasura-cli
     ports:
       - 9693:9693
     volumes:
@@ -41,6 +41,5 @@ services:
     depends_on:
       hasura-engine:
         condition: service_healthy
-
-volumes:
-  postgres:
+    networks:
+      - hasura

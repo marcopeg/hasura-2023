@@ -406,6 +406,18 @@ Of course, the configuration is a bit different and it is mostly based on the `.
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
 
+## Scripting With Python
+
+You can store python scripts into `hasura-state/scripts/foo.py` and run it as:
+
+```bash
+make py from=foo
+```
+
+## Scripting With ChatGPT
+
+I use the
+
 ---
 
 

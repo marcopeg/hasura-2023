@@ -60,6 +60,7 @@ help:
 	@echo ""
 	@echo "90) make hasura-install"
 	@echo "91) make hasura-console"
+	@echo "91) make py"
 	@echo ""
 	@echo "98) make clean"
 	@echo "99) make reset"
@@ -254,6 +255,34 @@ reset:
 
 
 #
+# Python Utilities
+#
+
+# Run a script from the project's scripts folder
+export HASURA_GRAPHQL_ENDPOINT=$(endpoint)/v1/graphql
+export HASURA_GRAPHQL_ADMIN_SECRET=$(passwd)
+py:
+	@python $(project)/scripts/$(from).py
+
+env?="F=F"
+pyd:
+	@docker images -q hasura-2023-py | grep -q . || docker build -t hasura-2023-py ./docker-images/python
+	docker run --rm \
+		-e $(env) \
+		-e HASURA_GRAPHQL_ENDPOINT=http://hasura-engine:8080/v1/graphql \
+		-e HASURA_GRAPHQL_ADMIN_SECRET=$(passwd) \
+		-v $(CURDIR)/$(project)/scripts:/scripts:ro \
+		--network=hasura_2023 \
+		hasura-2023-py \
+		sh -c "python /scripts/$(from).py"
+
+pyd-build:
+	docker build --no-cache -t hasura-2023-py ./docker-images/python
+
+
+	
+
+#
 # Numeric API
 #
 
@@ -281,5 +310,6 @@ reset:
 72: pagila-reset
 90: hasura-install
 91: hasura-console
+92: py
 98: clean
 99: reset
