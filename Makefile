@@ -58,6 +58,11 @@ help:
 	@echo "71) make pagila-destroy"
 	@echo "72) make pagila-reset"
 	@echo ""
+	@echo "80) make pgtap"
+	@echo "81) make pgtap-run"
+	@echo "82) make pgtap-schema"
+	@echo "83) make pgtap-build"
+	@echo ""
 	@echo "90) make hasura-install"
 	@echo "91) make hasura-console"
 	@echo "91) make py"
@@ -275,7 +280,37 @@ py-build:
 	docker build --no-cache -t hasura-2023-py ./docker-images/python
 
 
+
+#
+# SQL Testing Utilities
+#
+
+case?=*
+pgtap-reset:
+	@docker exec -i hasura-pg psql -U postgres < $(project)/tests/reset-test-db.sql
 	
+pgtap-schema: $(CURDIR)/$(project)/migrations/$(db)/*
+	@for file in $(shell find $(CURDIR)/$(project)/migrations/$(db) -name 'up.sql' | sort ) ; do \
+		echo "---> Apply:" $${file}; \
+		docker exec -i hasura-pg psql -U postgres test-db < $${file};	\
+	done
+
+pgtap-build:
+	docker build --no-cache -t hasura-2023-pgtap ./docker-images/pg-tap
+
+pgtap-run:
+	@docker images -q hasura-2023-pgtap | grep -q . || docker build -t hasura-2023-pgtap ./docker-images/pg-tap
+	clear
+	@echo "Running Unit Tests ..."
+	@docker run --rm \
+		--name pgtap \
+		--network=hasura_2023 \
+		--link hasura-pg:db \
+		-v $(CURDIR)/$(project)/tests/$(db)/:/tests \
+		hasura-2023-pgtap \
+    	-h db -u postgres -w postgres -d test-db -t '/tests/$(case).sql'
+
+pgtap: pgtap-reset pgtap-schema pgtap-run
 
 #
 # Numeric API
@@ -303,6 +338,10 @@ py-build:
 70: pagila-init
 71: pagila-destroy
 72: pagila-reset
+80: pgtap
+81: pgtap-run
+82: pgtap-schema
+83: pgtap-build
 90: hasura-install
 91: hasura-console
 92: py

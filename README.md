@@ -37,6 +37,7 @@ The only requirements for running this project are:
 - [Scripting With SQL](#scripting-with-sql)
 - [Scripting With Python](#scripting-with-python)
 - [Scripting With ChatGPT](#scripting-with-chatgpt)
+- [SQL Unit Testing](#sql-unit-testing)
 - [Work With Pagila Demo DB](#work-with-pagila-demo-db)
 
 ## Quick Start
@@ -512,6 +513,25 @@ Give me the same result but as a python script that uses Hasura's APIs. There wi
 ```
 
 I will get a - more or less - working scrypt that I can run using the `make py` command.
+
+## SQL Unit Testing
+
+SQL is a language, and as with any language you can run **Unit Tests**. It's even better because with SQL you have transactions so you can safely mess around even an existing db without really affecting it.
+
+We use [PgTap](https://pgtap.org/) as testing framework.
+
+```bash
+# Run a stateless unit test session:
+# (it destroys and re-create the test database)
+make pgtap
+
+# Run tests on an existing test database:
+make pgtap-run
+
+# Run only a specific test:
+# > hasura-state/tests/default/foo.sql
+make pgtap-run case=foo
+```
 
 ## Work With Pagila Demo DB
 
