@@ -11,6 +11,7 @@ steps?=1
 name?=new-migration
 q?=select now();
 
+
 #
 # Default Action
 #
@@ -27,7 +28,7 @@ help:
 	@echo " 3) make logs"
 	@echo ""
 	@echo " 4) make init"
-	@echo " 5) make export"
+	@echo " 5) make exports"
 	@echo ""
 	@echo " 6) make status"
 	@echo " 7) make migrate"
@@ -69,7 +70,7 @@ stop:
 
 init: migrate-rebuild apply seed
 
-export: migrate-export metadata-export
+exports: migrate-export metadata-export
 
 #
 # Hasura Migrations Utilities
