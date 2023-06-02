@@ -4,6 +4,13 @@
             "openFiles": [
                 "README.md"
             ]
+        },
+        "vscode": {
+            "extensions": [
+				"mtxr.sqltools",
+				"mtxr.sqltools-driver-pg",
+				"ms-vscode.makefile-tools"
+			]
         }
     },
     "forwardPorts": [8080, 8081, 9695, 9693],
@@ -21,5 +28,8 @@
             "label": "Hasura CLI API"
         }
     },
-    "postAttachCommand": "/bin/bash .devcontainer/setup.sh"
+    "postAttachCommand": "/bin/bash .devcontainer/setup.sh",
+    "containerEnv": {
+        "DOCKER_COMPOSE_TARGET": "codespace"
+    }
 }
