@@ -53,46 +53,5 @@ services:
       timeout: 1s
       retries: 20
 
-  hasura-cli-console:
-    build: 
-      dockerfile: hasura-cli.Dockerfile
-    ports:
-      - 9695:9695
-    volumes:
-      - ./hasura-state:/project
-    command: > 
-      hasura console 
-        --log-level DEBUG 
-        --address "hasura-cli-console" 
-        --no-browser 
-        --api-host http://localhost:9693
-        --api-port 80
-        --endpoint http://localhost:8080
-    working_dir: /project
-    restart: unless-stopped
-    depends_on:
-      hasura-engine:
-        condition: service_healthy
-
-  hasura-cli-api:
-    build: 
-      dockerfile: hasura-cli.Dockerfile
-    ports:
-      - 9693:9693
-    volumes:
-      - ./hasura-state:/project
-    command: >
-      hasura console
-        --log-level DEBUG
-        --address "hasura-cli-api"
-        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
-        --no-browser
-        --endpoint http://hasura-engine:8080
-    working_dir: /project
-    restart: unless-stopped
-    depends_on:
-      hasura-engine:
-        condition: service_healthy
-
 volumes:
   postgres:

@@ -1,59 +1,10 @@
 version: '3.6'
 services:
-  postgres:
-    image: postgres:15
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"
-    environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 2s
-      timeout: 1s
-      retries: 20
-
-  adminer:
-    image: adminer:4.8.1
-    ports:
-      - "${ADMINER_PORT:-8081}:8080"
-    links:
-      - postgres:db
-    restart: unless-stopped
-
   hasura-engine:
-    image: hasura/graphql-engine:v2.25.1.cli-migrations-v3
-    ports:
-      - 8080:8080
-    volumes:
-      - ./hasura-state:/project
     environment:
-      # Setup main db connection
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres
-      HASURA_ADMIN_SECRET: ${HASURA_ADMIN_SECRET:-hasura}
-      # Apply the migrations at boot
-      HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
-      HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
-      # Other settings
-      HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, query-log
-      HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
-      HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
-      HASURA_GRAPHQL_INFER_FUNCTION_PERMISSIONS: "false"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
-    healthcheck:
-      test: timeout 1s bash -c ':> /dev/tcp/127.0.0.1/8080' || exit 1
-      interval: 2s
-      timeout: 1s
-      retries: 20
-
-  hasura-cli-console:
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
+      
+hasura-cli-console:
     build: 
       dockerfile: hasura-cli.Dockerfile
     ports:
