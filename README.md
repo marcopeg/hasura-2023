@@ -281,6 +281,23 @@ docker compose up
 
 [[ TODO ]]
 
+### From Localhost
+
+In order to run the _Hasura Console_ with source code sync you need to install the [Hasura CLI](https://hasura.io/docs/latest/hasura-cli/install-hasura-cli/) and then start it:
+
+```bash
+make hasura-install
+make hasura-console
+```
+
+👉 Then open your browser on [`http://localhost:9695`](http://localhost:9695) 👈
+
+### From GitPod.io or GitHub Spaces
+
+This project is configured as so to automatically run the _Hasura Console_ with source code sync. All the details are available through the `docker-compose.xxx.yml` extension.
+
+👉 Open your workspace public url on port `9695` 👈
+
 > 🚧 The HasuraCLI containers runs with user `root:root` and creates files accordingly. You need to claim those files to your host user after running a bunch of changes:
 > 
 > ```bash

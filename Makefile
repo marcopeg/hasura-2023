@@ -261,7 +261,7 @@ reset:
 2: stop
 3: logs
 4: init
-5: export
+5: exports
 20: migrate
 21: mifrate-status
 22: migrate-up

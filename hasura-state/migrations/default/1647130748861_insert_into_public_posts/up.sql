@@ -1,1 +1,0 @@
-INSERT INTO "public"."posts"("id", "created_at", "updated_at", "title", "content") VALUES (E'067ba72b-cb37-407e-9437-c4808a16dd31', E'2022-03-13T00:19:08.780699+00:00', E'2022-03-13T00:19:08.780699+00:00', E'Potato', E'Some potatoes');

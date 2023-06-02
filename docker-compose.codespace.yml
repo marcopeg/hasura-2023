@@ -1,8 +1,5 @@
 version: '3.6'
 services:
-  hasura-engine:
-    environment:
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
 
   hasura-cli-console:
     build: 
