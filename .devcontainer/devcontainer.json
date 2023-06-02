@@ -1,0 +1,25 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "customizations": {
+        "codespaces": {
+            "openFiles": [
+                "README.md"
+            ]
+        }
+    },
+    "forwardPorts": [8080, 8081, 9695, 9693],
+    "portsAttributes": {
+        "8081": {
+            "label": "Adminer Web Client"
+        },
+        "8080": {
+            "label": "Hasura Engine API"
+        },
+        "9695": {
+            "label": "Hasura CLI Console"
+        },
+        "9693": {
+            "label": "Hasura CLI API"
+        }
+    }
+}
