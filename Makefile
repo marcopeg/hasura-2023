@@ -63,6 +63,7 @@ help:
 	@echo ""
 	@echo "60) make psql"
 	@echo "61) make psql-exec"
+	@echo "62) make pgbench"
 	@echo ""
 	@echo "70) make pagila-init"
 	@echo "71) make pagila-destroy"
@@ -301,6 +302,25 @@ query:
 	@docker compose $(DOCKER_COMPOSE_CHAIN) exec -T postgres psql -U postgres $(dbName) < $(project)/sql/$(db)/$(from).sql
 
 
+# https://www.postgresql.org/docs/current/pgbench.html
+numClients?=10
+numThreads?=10
+numTransactions?=10
+pgbench:
+	@clear
+	@echo "\n# Running PgBench to:\n> db=$(dbName); query=$(project)/sql/$(db).sql\n"
+	@docker run --rm \
+		-e $(env) \
+		-e PGPASSWORD=postgres \
+		-v $(CURDIR)/$(project)/sql/$(db):/sql:ro \
+		--network=hasura_2023 \
+		postgres:15 \
+		pgbench -h postgres -p 5432 -U postgres -d $(dbName) \
+			-c $(numClients) -j $(numThreads) -t $(numTransactions) \
+			-f /sql/$(from).sql
+
+
+
 
 #
 # Pagila Demo DB
@@ -364,7 +384,39 @@ reset:
 	@docker compose $(DOCKER_COMPOSE_CHAIN) build
 	@$(MAKE) -f Makefile _boot
 
-
+# Experimental
+# takes a full dump to copy/paste into ChatGPT
+dump:
+	@rm -f $(project)/dump.txt
+	@echo "Given the following Hasura metadata and related Postgres schema," > $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "please create some SQL instruction to seed the database with a randomic amount of rows" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "and also randomize the data that you insert.\n" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "Then, also give me a GraphQL example to fetch an event and update it using Apollo Client in React." >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "\n\n" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "=================\nHASURA METADATA\n=================" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@hasura metadata export \
+		--endpoint $(endpoint) \
+		--admin-secret $(passwd) \
+		--project $(project) \
+		--output json >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "\n\n\n" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "=================\nPOSTGRES SCHEMA\n=================\n" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@hasura migrate create \
+		"__full-export___" \
+		--endpoint $(endpoint) \
+  	--admin-secret $(passwd) \
+		--project $(project) \
+		--database-name $(db) \
+  	--schema $(schema) \
+  	--from-server
+	@latest_folder=$$(ls -dt $(CURDIR)/$(project)/migrations/$(db)/*/ | head -1); \
+		latest_folder=$${latest_folder%/}; \
+		latest_folder=$${latest_folder##*/}; \
+		cat $(CURDIR)/$(project)/migrations/$(db)/$$latest_folder/up.sql >> $(CURDIR)/dump-$(project)-$(db).txt
+	@latest_folder=$$(ls -dt $(CURDIR)/$(project)/migrations/$(db)/*/ | head -1); \
+		latest_folder=$${latest_folder%/}; \
+		latest_folder=$${latest_folder##*/}; \
+		rm -rf $(CURDIR)/$(project)/migrations/$(db)/$$latest_folder
 
 #
 # Python Utilities
@@ -378,7 +430,7 @@ py:
 		-e $(env) \
 		-e HASURA_GRAPHQL_ENDPOINT=http://hasura-engine:8080/v1/graphql \
 		-e HASURA_GRAPHQL_ADMIN_SECRET=$(passwd) \
-		-v $(CURDIR)/$(project)/scripts/$(db):/scripts:ro \
+		-v $(CURDIR)/$(project)/scripts/$(db):/scripts \
 		--network=hasura_2023 \
 		hasura-2023-py \
 		sh -c "python /scripts/$(from).py"
@@ -419,6 +471,8 @@ pgtap-run:
 
 pgtap: pgtap-reset pgtap-schema pgtap-run
 
+
+
 #
 # Numeric API
 #
@@ -443,6 +497,7 @@ pgtap: pgtap-reset pgtap-schema pgtap-run
 41: metadata-export
 60: psql
 61: psql-exec
+62: pgbench
 70: pagila-init
 71: pagila-destroy
 72: pagila-reset

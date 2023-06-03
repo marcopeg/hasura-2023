@@ -1,6 +1,6 @@
 tasks:
   - name: Boot
-    init: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash && echo 'export DOCKER_COMPOSE_TARGET=gitpod' >> ~/.bashrc && export DOCKER_COMPOSE_TARGET=gitpod
+    init: make hasura-install && echo 'export DOCKER_COMPOSE_TARGET=gitpod' >> ~/.bashrc && export DOCKER_COMPOSE_TARGET=gitpod
     command: open README.md && make boot
 
 
@@ -32,9 +32,10 @@ ports:
     
 vscode:
  extensions:
-   - Codeium.codeium
+   - ms-azuretools.vscode-docker
    - mtxr.sqltools
    - mtxr.sqltools-driver-pg
    - esbenp.prettier-vscode
    - darkriszty.markdown-table-prettify
-   #- eamodio.gitlens
+   - Codeium.codeium
+   - eamodio.gitlens

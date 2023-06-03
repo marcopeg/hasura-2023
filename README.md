@@ -51,6 +51,7 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
   - [SQL Migrations](#sql-migrations)
   - [Seeding Your Data ](#seeding-your-data)
   - [Scripting With SQL](#scripting-with-sql)
+  - [Benchmarking SQL](#benchmarking-sql)
   - [Scripting With Python](#scripting-with-python)
   - [Scripting With ChatGPT](#scripting-with-chatgpt)
   - [SQL Unit Testing](#sql-unit-testing)
@@ -507,6 +508,14 @@ You can run this with:
 make query from=foo
 ```
 
+## Benchmarking SQL
+
+You can run the very same SQL file agains [pg_bench](https://www.postgresql.org/docs/current/pgbench.html) to test its performances:
+
+```bash
+make pgbench from=foo
+```
+
 ## Scripting With Python
 
 You can store python scripts into `fake-hasura-state/scripts/foo.py` and run it as:
@@ -610,4 +619,4 @@ make clean && make boot project=hasura-todos
 
 ## Work In Progress
 
-- Test diffent queries using `pg_bench` through Docker.
+- Create a full dump SQL + metadata into a single file to facilitate the copy/paste into ChatGPT
