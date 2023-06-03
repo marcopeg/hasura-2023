@@ -43,10 +43,11 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
   - [Apply the Hasura Project](#apply-the-hasura-project)
   - [Apply Hasura State at Boot](#apply-hasura-state-at-boot)
   - [Switch to the Hasura CLI Console](#switch-to-the-hasura-cli-console)
-  - [The Makefile Interface](#the-makefile-interface)
   - [Working with GitPod](#working-with-gitpodio)
   - [Working with GitHub Codespaces](#working-with-github-codespaces)
 - Reference & Documentation
+  - [The Makefile Interface](#the-makefile-interface)
+  - [Environmental Variables](#environmental-variables)
   - [SQL Migrations](#sql-migrations)
   - [Seeding Your Data ](#seeding-your-data)
   - [Scripting With SQL](#scripting-with-sql)
@@ -54,6 +55,7 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
   - [Scripting With ChatGPT](#scripting-with-chatgpt)
   - [SQL Unit Testing](#sql-unit-testing)
   - [Work With Pagila Demo DB](#work-with-pagila-demo-db)
+  - [Working With Different Data Projects](#working-with-different-data-projects)
 - [Work In Progress](#work-in-progress)
 
 ## Quick Start
@@ -594,6 +596,16 @@ make pagila-init
 # Destroy and recreate the "public" schema
 # -> this is disruptive, you will loose anything you have in the public schema!
 make pagila-destroy
+```
+
+## Working With Different Data Projects
+
+```bash
+# Initialize with "/hasura-state" project:
+make clean && make boot project=hasura-state
+
+# Initialize with "/hasura-todos" project:
+make clean && make boot project=hasura-todos
 ```
 
 ## Work In Progress
