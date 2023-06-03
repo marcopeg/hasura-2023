@@ -1,3 +1,4 @@
+#
 # Configuration & Defaults
 #
 
@@ -5,18 +6,26 @@ endpoint?=http://localhost:8080
 passwd?=hasura
 project?=fake-hasura-state
 db?=default
+dbName=postgres
 schema?=public
 from?=default
 steps?=1
 name?=new-migration
 q?=select now();
 
-# Compose the docker-compose file chain based on an environmental variable
+# -- Optional --
+# overrides of the variables using a gitignored file
+-include ./Makefile.env
+
+# Compose the docker-compose file chain based on an environmental variable.
+# On GitPod and Codespaces the $DOCKER_COMPOSE_TARGET is set at workspace boot time.
+# It is ignored for local development as the console runs with the Hasura CLI installed natively.
 ifdef DOCKER_COMPOSE_TARGET
     DOCKER_COMPOSE_CHAIN := -f docker-compose.yml -f docker-compose.${DOCKER_COMPOSE_TARGET}.yml
 else
     DOCKER_COMPOSE_CHAIN := -f docker-compose.yml
 endif
+
 
 #
 # Default Action
@@ -29,12 +38,13 @@ help:
 	@echo "Hasura 2023 Make APIs"
 	@echo "---------------------"
 	@echo ""
-	@echo " 1) make start"
-	@echo " 2) make stop"
-	@echo " 3) make logs"
+	@echo " 1) make boot"
+	@echo " 2) make start"
+	@echo " 3) make stop"
+	@echo " 4) make logs"
 	@echo ""
-	@echo " 4) make init"
-	@echo " 5) make exports"
+	@echo " 5) make init"
+	@echo " 6) make exports"
 	@echo ""
 	@echo "20) make migrate"
 	@echo "21) make migrate-status"
@@ -48,7 +58,7 @@ help:
 	@echo ""
 	@echo "30) make seed"
 	@echo ""
-	@echo "40) make metadata"
+	@echo "40) make apply"
 	@echo "41) make metadata-export"
 	@echo ""
 	@echo "60) make psql"
@@ -71,23 +81,52 @@ help:
 	@echo "99) make reset"
 	@echo ""
 
+
 #
 # High Level APIs
 #
 
+_boot:
+	@docker compose $(DOCKER_COMPOSE_CHAIN) up -d
+	@sleep 5
+	@$(MAKE) -f Makefile _init
+	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
+boot:
+	@clear
+	@echo "\n# Starting Docker Project with Hasura State from:\n> $(DOCKER_COMPOSE_CHAIN)\n> project=$(project); db=$(db) seed=$(from).sql\n"
+	@$(MAKE) -f Makefile _boot
+
 start:
+	@clear
+	@echo "\n# Starting Docker Project:\n> $(DOCKER_COMPOSE_CHAIN)\n"
 	@docker compose $(DOCKER_COMPOSE_CHAIN) up -d
 	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
 
 stop:
+	@clear
+	@echo "\n# Stopping Docker Project:\n> $(DOCKER_COMPOSE_CHAIN)\n"
 	@docker compose $(DOCKER_COMPOSE_CHAIN) down
 
 logs:
+	@clear
+	@echo "\n# Attaching to Docker Project logs:\n> $(DOCKER_COMPOSE_CHAIN)\n"
 	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
 
-init: migrate metadata seed
+_init:
+	@$(MAKE) -f Makefile _migrate
+	@$(MAKE) -f Makefile _apply
+	@$(MAKE) -f Makefile _seed
+init:
+	@clear
+	@echo "\n# Initializing Hasura State from:\n> project=$(project); db=$(db) seed=$(from).sql\n"
+	@$(MAKE) -f Makefile _init
 
-exports: migrate-export metadata-export
+exports: 
+	@clear
+	@echo "\n# Exporting Hasura State to:\n> project=$(project); db=$(db) schema=$(schema)\n"
+	@$(MAKE) -f Makefile _migrate-export
+	@$(MAKE) -f Makefile _metadata-export
+
 
 
 
@@ -96,48 +135,79 @@ exports: migrate-export metadata-export
 # Hasura Migrations Utilities
 #
 
-migrate:
+_migrate:
 	@hasura migrate apply \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db)
+migrate:
+	@clear
+	@echo "\n# Running migrations from:\n> $(project)/migrations/$(db)/*\n"
+	@$(MAKE) -f Makefile _migrate
 
-migrate-status:
+_migrate-status:
 	@hasura migrate status \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db)
+migrate-status:
+	@clear
+	@echo "\n# Checking migrations status on:\n> project=$(project); db=$(db)"
+	@$(MAKE) -f Makefile _migrate-status
 
-migrate-up:
+_migrate-up:
 	@hasura migrate apply \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
 		--up $(steps)
+migrate-up:
+	@clear
+	@echo "\n# Migrate $(steps) UP from:\n> $(project)/migrations/$(db)/*\n"
+	@$(MAKE) -f Makefile _migrate-up
 
-migrate-down:
+_migrate-down:
 	@hasura migrate apply \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
 		--down $(steps)
+migrate-down:
+	@clear
+	@echo "\n# Migrate $(steps) DOWN from:\n> $(project)/migrations/$(db)/*\n"
+	@$(MAKE) -f Makefile _migrate-down
 
-migrate-destroy:
+_migrate-destroy:
 	@hasura migrate apply \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
 		--down all
+migrate-destroy:
+	@clear
+	@echo "\n# Destroy migrations on:\n> project=$(project); db=$(db)\n"
+	@$(MAKE) -f Makefile _migrate-destroy
 
-migrate-redo: migrate-down migrate-up
-migrate-rebuild: migrate-destroy migrate
+migrate-redo: 
+	@clear
+	@echo "\n# Replaying last $(steps) migrations on:\n> project=$(project); db=$(db)\n"
+	@$(MAKE) -f Makefile _migrate-down
+	@$(MAKE) -f Makefile _migrate-up
+
+migrate-rebuild: 
+	@clear
+	@echo "\n# Rebuilding migrations on:\n> project=$(project); db=$(db)\n"
+	@$(MAKE) -f Makefile _migrate-destroy
+	@$(MAKE) -f Makefile _migrate
 
 migrate-create:
+	@clear
+	@echo "\n# Scaffolding a new migration on:\n> project=$(project); db=$(db); name=$(name)\n"
 	@hasura migrate create \
 		"$(name)" \
 		--endpoint $(endpoint) \
@@ -151,7 +221,7 @@ migrate-create:
 		--project $(project) \
 		--database-name $(db)
 
-migrate-export:
+_migrate-export:
 	@hasura migrate create \
 		"__full-export___" \
 		--endpoint $(endpoint) \
@@ -161,6 +231,10 @@ migrate-export:
   	--schema $(schema) \
   	--from-server \
 		--down-sql "SELECT NOW();"
+migrate-export:
+	@clear
+	@echo "\n# Dumping database to a migration:\n> project=$(project); db=$(db); schema=$(schema)\n"
+	@$(MAKE) -f Makefile _migrate-export
 
 
 
@@ -169,13 +243,17 @@ migrate-export:
 # Hasura seeding utilities
 #
 
-seed:
+_seed:
 	@hasura seed apply \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(db) \
 		--file $(from).sql
+seed:
+	@clear
+	@echo "\n# Seeding on:\n> project=$(project); db=$(db)\n"
+	@$(MAKE) -f Makefile _seed
 
 
 
@@ -185,17 +263,25 @@ seed:
 # Hasura Metadata Utilities
 #
 
-apply:
+_apply:
 	@hasura metadata apply \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project)
+apply:
+	@clear
+	@echo "\n# Apply Hasura Metadata on:\n> project=$(project)\n"
+	@$(MAKE) -f Makefile _apply
 
-metadata-export:
+_metadata-export:
 	@hasura metadata export \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project)
+metadata-export:
+	@clear
+	@echo "\n# Exporting Hasura metadata to:\n> project=$(project)\n"
+	@$(MAKE) -f Makefile _metadata-export
 
 
 
@@ -205,10 +291,14 @@ metadata-export:
 #
 
 psql:
-	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres
+	@clear
+	@echo "\n# Attaching SQL Client to:\n> db=$(dbName)\n"
+	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres $(dbName)
 
 query:
-	@docker compose $(DOCKER_COMPOSE_CHAIN) exec -T postgres psql -U postgres postgres < $(project)/sql/$(db)/$(from).sql
+	@clear
+	@echo "\n# Running a SQL script to DB \"$(dbName)\":\n>$(project)/sql/$(db)/$(from).sql\n"
+	@docker compose $(DOCKER_COMPOSE_CHAIN) exec -T postgres psql -U postgres $(dbName) < $(project)/sql/$(db)/$(from).sql
 
 
 
@@ -217,18 +307,32 @@ query:
 # https://github.com/devrimgunduz/pagila
 #
 
+_pagila-init:
+	@curl -vs https://raw.githubusercontent.com/devrimgunduz/pagila/master/pagila-schema.sql | docker compose exec -T postgres psql -U postgres $(dbName)
+	@curl -vs https://raw.githubusercontent.com/devrimgunduz/pagila/master/pagila-data.sql | docker compose exec -T postgres psql -U postgres $(dbName)
+	@curl -vs https://raw.githubusercontent.com/devrimgunduz/pagila/master/pagila-schema-jsonb.sql | docker compose exec -T postgres psql -U postgres $(dbName)
+	@curl -k -L -s --compressed https://github.com/devrimgunduz/pagila/raw/master/pagila-data-yum-jsonb.sql | docker compose exec -T postgres pg_restore -U postgres -d $(dbName)
+	@curl -k -L -s --compressed https://github.com/devrimgunduz/pagila/raw/master/pagila-data-apt-jsonb.sql | docker compose exec -T postgres pg_restore -U postgres -d $(dbName)
 pagila-init:
-	@curl -vs https://raw.githubusercontent.com/devrimgunduz/pagila/master/pagila-schema.sql | docker compose exec -T postgres psql -U postgres postgres
-	@curl -vs https://raw.githubusercontent.com/devrimgunduz/pagila/master/pagila-data.sql | docker compose exec -T postgres psql -U postgres postgres
-	@curl -vs https://raw.githubusercontent.com/devrimgunduz/pagila/master/pagila-schema-jsonb.sql | docker compose exec -T postgres psql -U postgres postgres
-	@curl -k -L -s --compressed https://github.com/devrimgunduz/pagila/raw/master/pagila-data-yum-jsonb.sql | docker compose exec -T postgres pg_restore -U postgres -d postgres
-	@curl -k -L -s --compressed https://github.com/devrimgunduz/pagila/raw/master/pagila-data-apt-jsonb.sql | docker compose exec -T postgres pg_restore -U postgres -d postgres
+	@clear
+	@echo "\n# Initializing Pagila Demo DB to \"$(dbName)\"\n"
+	@$(MAKE) -f Makefile _pagila-init
 
+_pagila-destroy:
+	@$(MAKE) -f Makefile _migrate-destroy
+	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres $(dbName) -c 'drop schema public cascade;'
+	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres $(dbName) -c 'create schema public;'
+	@$(MAKE) -f Makefile _migrate
 pagila-destroy:
-	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres -c 'drop schema public cascade;'
-	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres postgres -c 'create schema public;'
+	@clear
+	@echo "\n# Destroying Pagila Demo DB to \"$(dbName)\"\n"
+	@$(MAKE) -f Makefile _pagila-destroy
 
-pagila-reset: pagila-destroy pagila-init
+pagila-reset:
+	@clear
+	@echo "\n# Resetting Pagila Demo DB to \"$(dbName)\"\n"
+	@$(MAKE) -f Makefile _pagila-destroy
+	@$(MAKE) -f Makefile _pagila-init
 
 
 
@@ -248,14 +352,17 @@ hasura-console:
 		--project $(project) \
 
 clean:
+	@clear
+	@echo "\n# Tearing down the Docker Compose Project (with volumes)\n> $(DOCKER_COMPOSE_CHAIN)\n"
 	@docker compose $(DOCKER_COMPOSE_CHAIN) down -v
 
 reset:
+	@clear
+	@echo "\n# Resetting the Docker Compose Project\n> $(DOCKER_COMPOSE_CHAIN)\n> project=$(project); db=$(db) seed=$(from).sql\n"
 	@docker compose $(DOCKER_COMPOSE_CHAIN) down -v
 	@docker compose $(DOCKER_COMPOSE_CHAIN) pull
 	@docker compose $(DOCKER_COMPOSE_CHAIN) build
-	@docker compose $(DOCKER_COMPOSE_CHAIN) up -d
-	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
+	@$(MAKE) -f Makefile _boot
 
 
 
@@ -316,13 +423,14 @@ pgtap: pgtap-reset pgtap-schema pgtap-run
 # Numeric API
 #
 
-1: start
-2: stop
-3: logs
-4: init
-5: exports
+1: boot
+2: start
+3: stop
+4: logs
+5: init
+6: exports
 20: migrate
-21: mifrate-status
+21: migrate-status
 22: migrate-up
 23: migrate-down
 24: migrate-redo
