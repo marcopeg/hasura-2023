@@ -619,4 +619,4 @@ make clean && make boot project=hasura-todos
 
 ## Work In Progress
 
-No ideas for now.
+- Create a full dump SQL + metadata into a single file to facilitate the copy/paste into ChatGPT

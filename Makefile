@@ -384,7 +384,35 @@ reset:
 	@docker compose $(DOCKER_COMPOSE_CHAIN) build
 	@$(MAKE) -f Makefile _boot
 
-
+# Experimental
+# takes a full dump to copy/paste into ChatGPT
+dump:
+	@rm -f $(project)/dump.txt
+	@echo "Given the following Hasura metadata and related Postgres schema,\nplease create some SQL instruction to seed the database\n\n" > $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "=================\nHASURA METADATA\n=================" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@hasura metadata export \
+		--endpoint $(endpoint) \
+		--admin-secret $(passwd) \
+		--project $(project) \
+		--output json >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "\n\n\n" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "=================\nPOSTGRES SCHEMA\n=================\n" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@hasura migrate create \
+		"__full-export___" \
+		--endpoint $(endpoint) \
+  	--admin-secret $(passwd) \
+		--project $(project) \
+		--database-name $(db) \
+  	--schema $(schema) \
+  	--from-server
+	@latest_folder=$$(ls -dt $(CURDIR)/$(project)/migrations/$(db)/*/ | head -1); \
+		latest_folder=$${latest_folder%/}; \
+		latest_folder=$${latest_folder##*/}; \
+		cat $(CURDIR)/$(project)/migrations/$(db)/$$latest_folder/up.sql >> $(CURDIR)/dump-$(project)-$(db).txt
+	@latest_folder=$$(ls -dt $(CURDIR)/$(project)/migrations/$(db)/*/ | head -1); \
+		latest_folder=$${latest_folder%/}; \
+		latest_folder=$${latest_folder##*/}; \
+		rm -rf $(CURDIR)/$(project)/migrations/$(db)/$$latest_folder
 
 #
 # Python Utilities
@@ -398,7 +426,7 @@ py:
 		-e $(env) \
 		-e HASURA_GRAPHQL_ENDPOINT=http://hasura-engine:8080/v1/graphql \
 		-e HASURA_GRAPHQL_ADMIN_SECRET=$(passwd) \
-		-v $(CURDIR)/$(project)/scripts/$(db):/scripts:ro \
+		-v $(CURDIR)/$(project)/scripts/$(db):/scripts \
 		--network=hasura_2023 \
 		hasura-2023-py \
 		sh -c "python /scripts/$(from).py"
