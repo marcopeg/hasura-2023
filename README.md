@@ -63,19 +63,20 @@ You can run the following commands in a terminal:
 
 ```bash
 # Show the help menu
+# (there are plenty of interesting commands)
 make
 
 # Start Hasura, Postgres, and Adminer
-make start
+# (it also applies migrations, metadata, and seeds)
+make boot
 
-# Apply the Hasura migrations project
-make init
+# Stop your project
+# (clean also removes the data volumes)
+make stop
+make clean
 
 # Create the Pagila demo dataset
 make pagila-init
-
-# Stop your project
-make stop
 ```
 
 The following services will soon be available:
@@ -203,21 +204,23 @@ hasura:
 
 [Hasura ships a CLI](https://hasura.io/docs/latest/hasura-cli/overview/) utility that we will use to automate the state management of the project.
 
-Stuff like:
+It makes life easy for stuff like:
 
 - running migrations
 - applying metadata
 - running the Development Console
 
-> 👉 Read the setup documentation [here](https://hasura.io/docs/latest/hasura-cli/install-hasura-cli/).
+👉 Read the setup documentation [here](https://hasura.io/docs/latest/hasura-cli/install-hasura-cli/).
 
 ```bash
-curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+make hasura-install
 ```
 
-> 🔥 If you are running the project in GitPod this has already been done at the first boot of the environment 😎.
+> 🔥 If you are running the project in _GitPod_ or _GitHub Codespaces_ this has already been done at the first boot of the environment 😎.
 
 ## Create the Hasura State Project
+
+> This paragraph applies whenever you are starting a project from scratch. This repo ships a ready-to-use Hasura project and you should refer to the _Makefile_ API to work with it.
 
 Create an Hasura State project in which we can store SQL migrations and the Hasura metadata:
 
@@ -255,6 +258,8 @@ hasura metadata export \
 
 ## Apply the Hasura Project
 
+> This paragraph applies whenever you are starting a project from scratch. This repo ships a ready-to-use Hasura project and you should refer to the _Makefile_ API to work with it.
+
 Now that we have a local Hasura Project in which we can describe the desired state of our server as code, let's see the commands that you can use to migrate informations from the source-code to the server.
 
 Check the status of the SQL migrations:
@@ -284,6 +289,8 @@ hasura metadata apply \
 ```
 
 ## Apply Hasura State at Boot
+
+> This paragraph applies whenever you are starting a project from scratch. This repo ships a ready-to-use Hasura project and you should refer to the _Makefile_ API to work with it.
 
 Now that we have an **Hasura State Project** as a codebase, it would be nice to apply it at boot time so that our APIs are ready-to-use when we run the project for the first time.
 
@@ -326,7 +333,7 @@ make hasura-console
 
 👉 Then open your browser on [`http://localhost:9695`](http://localhost:9695) 👈
 
-### From GitPod.io or GitHub Spaces
+### From GitPod.io or GitHub Codespaces
 
 This project is configured as so to automatically run the _Hasura Console_ with source code sync. All the details are available through the `docker-compose.xxx.yml` extension.
 
@@ -337,36 +344,6 @@ This project is configured as so to automatically run the _Hasura Console_ with 
 > ```bash
 > sudo chown -R $(id -u):$(id -g) ./hasura-state
 > ```
-
-## The Makefile Interface
-
-From now on, we are going to issue HasuraCLI commands that need some configuration. It may become quite a pain to remember everything. 
-
-A simple solution is to create a `Makefile` and document our **Project's APIs** in there:
-
-```make
-project?=hasura-state
-passwd?=hasura
-
-status:
-  @hasura migrate status \
-    --admin-secret hasura \
-    --project hasura-state \
-    --database-name default
-```
-
-From now on, you can open the [`Makefile`](./Makefile) and read through its comments to find meaningfull commands for your day-to-day activities.
-
-I've added a few commands that make woring with the Hasura state a bit easier:
-
-```bash
-# Init the project
-make
-
-# Take a full screenshot of the current state
-# (you may want to remove previous migrations though)
-make exports
-```
 
 ## Working with GitPod.io
 
@@ -409,6 +386,59 @@ ports:
 Of course, the configuration is a bit different and it is mostly based on the `.devcontainer` standard.
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
+
+
+## The Makefile Interface
+
+From now on, we are going to issue HasuraCLI commands that need some configuration. It may become quite a pain to remember everything. 
+
+A simple solution is to create a `Makefile` and document our **Project's APIs** in there:
+
+```make
+project?=hasura-state
+passwd?=hasura
+
+status:
+  @hasura migrate status \
+    --admin-secret hasura \
+    --project hasura-state \
+    --database-name default
+```
+
+From now on, you can open the [`Makefile`](./Makefile) and read through its comments to find meaningfull commands for your day-to-day activities.
+
+I've added a few commands that make woring with the Hasura state a bit easier:
+
+```bash
+# Init the project
+make
+
+# Take a full screenshot of the current state
+# (you may want to remove previous migrations though)
+make exports
+```
+
+## Environmental Variables
+
+If you take a look at the top of [Makefile](./Makefile) you notice a bunch of variables with their default value.
+
+You can change any of those values on the fly when you run a command:
+
+```bash
+# Apply migrations from a different Hasura Project:
+make migrate project=xxx
+```
+
+You can also create a custom file `Makefile.env` and hardcode different values in there:
+
+```Makefile
+project=xxx
+db=yyy
+```
+
+This file is already _gitignored_ and works much like a normal `.env` file.
+
+> NOTE: For a detailed documentation of each variable and its meaning please refer to the [Makefile](./Makefile) source code and comments.
 
 ## SQL Migrations
 
@@ -561,9 +591,6 @@ You can use it to practice how to work with Hasura in exposing data via GraphQL 
 # Creates the Pagila public schema and load default data into it
 make pagila-init
 
-# Optional, adds a bunch of JSONB data
-make pagila-init-jsonb
-
 # Destroy and recreate the "public" schema
 # -> this is disruptive, you will loose anything you have in the public schema!
 make pagila-destroy
@@ -572,5 +599,3 @@ make pagila-destroy
 ## Work In Progress
 
 - Test diffent queries using `pg_bench` through Docker.
-- Automatically seed on system boot using a custom Docker Image.
-- Add a make command to set the target project as an environmental variable, also read it from an .env file `make set project=foo db=hoho` something like this.
