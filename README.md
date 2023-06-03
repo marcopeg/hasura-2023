@@ -507,6 +507,14 @@ You can run this with:
 make query from=foo
 ```
 
+## Benchmarking SQL
+
+You can run the very same SQL file agains [pg_bench](https://www.postgresql.org/docs/current/pgbench.html) to test its performances:
+
+```bash
+make pgbench from=foo
+```
+
 ## Scripting With Python
 
 You can store python scripts into `hasura-state/scripts/foo.py` and run it as:
