@@ -1,0 +1,3 @@
+table:
+  name: fake_demo_events
+  schema: public

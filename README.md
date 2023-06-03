@@ -39,9 +39,9 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
     - [create Adminer container](#create-adminer-container)
     - [create Hasura container](#create-hasura-container)
   - [Install Hasura CLI](#install-hasuracli)
-  - [Create the Hasura State Project](#create-the-hasura-state-project)
+  - [Create the Hasura State Project](#create-the-fake-hasura-state-project)
   - [Apply the Hasura Project](#apply-the-hasura-project)
-  - [Apply Hasura State at Boot](#apply-hasura-state-at-boot)
+  - [Apply Hasura State at Boot](#apply-fake-hasura-state-at-boot)
   - [Switch to the Hasura CLI Console](#switch-to-the-hasura-cli-console)
   - [The Makefile Interface](#the-makefile-interface)
   - [Working with GitPod](#working-with-gitpodio)
@@ -222,7 +222,7 @@ curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 Create an Hasura State project in which we can store SQL migrations and the Hasura metadata:
 
 ```bash
-hasura init hasura-state
+hasura init fake-hasura-state
 ```
 
 Now take a screenshot of the current state of the Hasura server. That needs to produce the initial migration file and the initial metadata state.
@@ -232,7 +232,7 @@ SQL Migrations:
 ```bash
 hasura migrate create "init" \
   --admin-secret hasura \
-  --project hasura-state \
+  --project fake-hasura-state \
   --database-name default \
   --from-server \
   --schema public
@@ -250,7 +250,7 @@ Hasura metadata:
 ```bash
 hasura metadata export \
   --admin-secret hasura \
-  --project hasura-state
+  --project fake-hasura-state
 ```
 
 ## Apply the Hasura Project
@@ -262,7 +262,7 @@ Check the status of the SQL migrations:
 ```bash
 hasura migrate status \
   --admin-secret hasura \
-  --project hasura-state \
+  --project fake-hasura-state \
   --database-name default
 ```
 
@@ -271,7 +271,7 @@ Apply any missing migration:
 ```bash
 hasura migrate apply \
   --admin-secret hasura \
-  --project hasura-state \
+  --project fake-hasura-state \
   --database-name default
 ```
 
@@ -280,7 +280,7 @@ Then you can apply the Hasura metadata:
 ```bash
 hasura metadata apply \
   --admin-secret hasura \
-  --project hasura-state
+  --project fake-hasura-state
 ```
 
 ## Apply Hasura State at Boot
@@ -291,7 +291,7 @@ Luckily, it is just a matter of provinding 2 new _environmental variables_ to th
 
 ```yml
 volumes:
-  - ./hasura-state:/project
+  - ./fake-hasura-state:/project
 environment:
   HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"
   HASURA_GRAPHQL_MIGRATIONS_DIR: "/project/migrations"
@@ -335,7 +335,7 @@ This project is configured as so to automatically run the _Hasura Console_ with 
 > 🚧 The HasuraCLI containers runs with user `root:root` and creates files accordingly. You need to claim those files to your host user after running a bunch of changes:
 > 
 > ```bash
-> sudo chown -R $(id -u):$(id -g) ./hasura-state
+> sudo chown -R $(id -u):$(id -g) ./fake-hasura-state
 > ```
 
 ## The Makefile Interface
@@ -345,13 +345,13 @@ From now on, we are going to issue HasuraCLI commands that need some configurati
 A simple solution is to create a `Makefile` and document our **Project's APIs** in there:
 
 ```make
-project?=hasura-state
+project?=fake-hasura-state
 passwd?=hasura
 
 status:
   @hasura migrate status \
     --admin-secret hasura \
-    --project hasura-state \
+    --project fake-hasura-state \
     --database-name default
 ```
 
@@ -448,11 +448,11 @@ make migrate-export schema=foo
 
 ```bash
 # Apply a specific seed
-# > hasura-state/seeds/default/foo.sql
+# > fake-hasura-state/seeds/default/foo.sql
 make seed from=foo
 
 # Apply a specific seed to a different db
-# > hasura-state/seeds/hoho/foo.sql
+# > fake-hasura-state/seeds/hoho/foo.sql
 make seed from=foo db=hoho
 
 # Target a different data-project
@@ -465,7 +465,7 @@ make seed project=foo
 You can run simple SQL files to play around with your schema:
 
 ```sql
--- hasura-state/sql/default/foo.sql
+-- fake-hasura-state/sql/default/foo.sql
 select now();
 ```
 
@@ -477,7 +477,7 @@ make query from=foo
 
 ## Scripting With Python
 
-You can store python scripts into `hasura-state/scripts/foo.py` and run it as:
+You can store python scripts into `fake-hasura-state/scripts/foo.py` and run it as:
 
 ```bash
 make py from=foo
@@ -547,7 +547,7 @@ make pgtap
 make pgtap-run
 
 # Run only a specific test:
-# > hasura-state/tests/default/foo.sql
+# > fake-hasura-state/tests/default/foo.sql
 make pgtap-run case=foo
 ```
 

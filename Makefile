@@ -3,7 +3,7 @@
 
 endpoint?=http://localhost:8080
 passwd?=hasura
-project?=hasura-state
+project?=fake-hasura-state
 db?=default
 schema?=public
 from?=default
