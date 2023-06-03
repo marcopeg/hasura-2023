@@ -618,4 +618,4 @@ make clean && make boot project=hasura-todos
 
 ## Work In Progress
 
-- Test diffent queries using `pg_bench` through Docker.
+No ideas for now.
