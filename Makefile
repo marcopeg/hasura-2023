@@ -388,7 +388,11 @@ reset:
 # takes a full dump to copy/paste into ChatGPT
 dump:
 	@rm -f $(project)/dump.txt
-	@echo "Given the following Hasura metadata and related Postgres schema,\nplease create some SQL instruction to seed the database\n\n" > $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "Given the following Hasura metadata and related Postgres schema," > $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "please create some SQL instruction to seed the database with a randomic amount of rows" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "and also randomize the data that you insert.\n" >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "Then, also give me a GraphQL example to fetch an event and update it using Apollo Client in React." >> $(CURDIR)/dump-$(project)-$(db).txt
+	@echo "\n\n" >> $(CURDIR)/dump-$(project)-$(db).txt
 	@echo "=================\nHASURA METADATA\n=================" >> $(CURDIR)/dump-$(project)-$(db).txt
 	@hasura metadata export \
 		--endpoint $(endpoint) \
