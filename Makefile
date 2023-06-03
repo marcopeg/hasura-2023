@@ -63,6 +63,7 @@ help:
 	@echo ""
 	@echo "60) make psql"
 	@echo "61) make psql-exec"
+	@echo "62) make pgbench"
 	@echo ""
 	@echo "70) make pagila-init"
 	@echo "71) make pagila-destroy"
@@ -301,6 +302,25 @@ query:
 	@docker compose $(DOCKER_COMPOSE_CHAIN) exec -T postgres psql -U postgres $(dbName) < $(project)/sql/$(db)/$(from).sql
 
 
+# https://www.postgresql.org/docs/current/pgbench.html
+numClients?=10
+numThreads?=10
+numTransactions?=10
+pgbench:
+	@clear
+	@echo "\n# Running PgBench to:\n> db=$(dbName); query=$(project)/sql/$(db).sql\n"
+	@docker run --rm \
+		-e $(env) \
+		-e PGPASSWORD=postgres \
+		-v $(CURDIR)/$(project)/sql/$(db):/sql:ro \
+		--network=hasura_2023 \
+		postgres:15 \
+		pgbench -h postgres -p 5432 -U postgres -d $(dbName) \
+			-c $(numClients) -j $(numThreads) -t $(numTransactions) \
+			-f /sql/$(from).sql
+
+
+
 
 #
 # Pagila Demo DB
@@ -419,6 +439,8 @@ pgtap-run:
 
 pgtap: pgtap-reset pgtap-schema pgtap-run
 
+
+
 #
 # Numeric API
 #
@@ -443,6 +465,7 @@ pgtap: pgtap-reset pgtap-schema pgtap-run
 41: metadata-export
 60: psql
 61: psql-exec
+62: pgbench
 70: pagila-init
 71: pagila-destroy
 72: pagila-reset

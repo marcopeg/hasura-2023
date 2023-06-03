@@ -10,5 +10,8 @@
             "database": "postgres",
             "username": "postgres"
         }
-    ]
+    ],
+    "workbench.editorAssociations": {
+        "*.md": "vscode.markdown.preview.editor"
+    }
 }
