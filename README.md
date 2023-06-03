@@ -51,6 +51,7 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
   - [SQL Migrations](#sql-migrations)
   - [Seeding Your Data ](#seeding-your-data)
   - [Scripting With SQL](#scripting-with-sql)
+  - [Benchmarking SQL](#benchmarking-sql)
   - [Scripting With Python](#scripting-with-python)
   - [Scripting With ChatGPT](#scripting-with-chatgpt)
   - [SQL Unit Testing](#sql-unit-testing)
