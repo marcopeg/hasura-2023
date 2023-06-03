@@ -7,6 +7,7 @@
         },
         "vscode": {
             "extensions": [
+				"ms-azuretools.vscode-docker",
 				"mtxr.sqltools",
 				"mtxr.sqltools-driver-pg",
 				"ms-vscode.makefile-tools"
@@ -29,6 +30,10 @@
         },
         "9693": {
             "label": "Hasura CLI API",
+            "onAutoForward": "ignore"
+        },
+        "5432": {
+            "label": "Postgres",
             "onAutoForward": "ignore"
         }
     },
