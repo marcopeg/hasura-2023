@@ -54,6 +54,7 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
   - [Benchmarking SQL](#benchmarking-sql)
   - [Scripting With Python](#scripting-with-python)
   - [Scripting With ChatGPT](#scripting-with-chatgpt)
+  - [Full State Dumps for ChatGPT](#full-state-dumps-for-chatgpt)
   - [SQL Unit Testing](#sql-unit-testing)
   - [Work With Pagila Demo DB](#work-with-pagila-demo-db)
   - [Working With Different Data Projects](#working-with-different-data-projects)
@@ -572,6 +573,22 @@ Give me the same result but as a python script that uses Hasura's APIs. There wi
 ```
 
 I will get a - more or less - working scrypt that I can run using the `make py` command.
+
+## Full State Dumps for ChatGPT
+
+One thing that I find amusing is the ability that ChatGPT has to understand context. You can use it to quickly get tedious tasks done and I'm playing a lot with data seeding.
+
+Follow these instructions and be amazed:
+
+```bash
+make clean
+make boot
+make dump
+```
+
+A new file named `dump-{project}-{db}.txt` should appear in your root folder. Open it and copy/paste the results into ChatGPT. 
+
+In this particular example I'm asking to generate a SQL function... and it works with incredible accuracy!!!
 
 ## SQL Unit Testing
 
