@@ -14,17 +14,20 @@ This is a step by step guide to running an [Hasura-based project](https://hasura
 
 > 👉 I'm working this out on a Mac and will assume that you do the very same. Windows users... 😬🫣🤗
 
-The only requirements for running this project are:
+### The only requirements for running this project are:
 
 - [Docker](https://docker.com)
 - [Make](https://www.gnu.org/software/make/manual/make.html)
 
-> 💡 For simplicity sake I'm also testing this tutorial on [GitPod.io](https://gitpod.io) and [GitHub Codespaces](https://github.com/features/codespaces), and you can easily run this project by clicking the buttons below:
->
-> [![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2303)
->
->
-> [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
+### For my fellow Windows users:
+
+Working with Windows, WSL, and Docker can be a bit of a pain, even if there are ways to make it good.
+
+💡 For simplicity sake I'm also testing this tutorial on [GitPod.io](https://gitpod.io) and [GitHub Codespaces](https://github.com/features/codespaces), and you can easily run this project by clicking the buttons below:
+
+[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2303)
+
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
 
 
 ## Table of Contents
