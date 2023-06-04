@@ -347,12 +347,254 @@ Enough with SVGs
 
 Now we get into the serious stuff. I want to build the Hasura metadata so to expose this schema as an API.
 
-I am not yet sure how to proceed.
+I am not yet sure how to proceed. Let's give it a go.
+
+```Markdown
+Prepare the Hasura metadata to expose the schema we prepared.
+
+The role "user" should be able to read and modify only its own row in the users table.
+
+The role "user" should be able to insert new events and to list all its events with max pagination number of 10.
+
+Here is the meta I have so far:
+
+{
+  "version": 3,
+  "sources": [
+    {
+      "name": "default",
+      "kind": "postgres",
+      "tables": [],
+      "configuration": {
+        "connection_info": {
+          "database_url": {
+            "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+          },
+          "isolation_level": "read-committed",
+          "pool_settings": {
+            "connection_lifetime": 600,
+            "idle_timeout": 180,
+            "max_connections": 50,
+            "retries": 1
+          },
+          "use_prepared_statements": true
+        }
+      }
+    }
+  ]
+}
+```
+
+**NOTE:** I used the `make dump` to take a snapshot to my current metadata.
 
 ### 🤖 ChatGPT
+
+```json
+{
+  "version": 3,
+  "sources": [
+    {
+      "name": "default",
+      "kind": "postgres",
+      "tables": [
+        {
+          "table": {
+            "schema": "public",
+            "name": "users"
+          },
+          "insert_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "check": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "allow_upsert": false
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": "*",
+                "filter": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "limit": 1
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "events"
+          },
+          "insert_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "check": {},
+                "allow_upsert": false,
+                "set": {
+                  "user_id": "X-Hasura-User-Id"
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": "*",
+                "filter": {
+                  "user_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "limit": 10
+              }
+            }
+          ]
+        }
+      ],
+      "configuration": {
+        "connection_info": {
+          "database_url": {
+            "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+          },
+          "isolation_level": "read-committed",
+          "pool_settings": {
+            "connection_lifetime": 600,
+            "idle_timeout": 180,
+            "max_connections": 50,
+            "retries": 1
+          },
+          "use_prepared_statements": true
+        }
+      }
+    }
+  ]
+}
+```
+
 ### 🙍‍♂️ Me
+
+Looks like the events are properly set, but the users have an insert permission, I asked for an update.
+
+```Markdown
+Looks like you used the "insert" permission for the users. Can you change it with the "update" instead?
+```
+
 ### 🤖 ChatGPT
+
+```json
+{
+  "version": 3,
+  "sources": [
+    {
+      "name": "default",
+      "kind": "postgres",
+      "tables": [
+        {
+          "table": {
+            "schema": "public",
+            "name": "users"
+          },
+          "update_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "username"
+                ],
+                "filter": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": "*",
+                "filter": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "limit": 1
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "schema": "public",
+            "name": "events"
+          },
+          "insert_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "check": {},
+                "allow_upsert": false,
+                "set": {
+                  "user_id": "X-Hasura-User-Id"
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": "*",
+                "filter": {
+                  "user_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "limit": 10
+              }
+            }
+          ]
+        }
+      ],
+      "configuration": {
+        "connection_info": {
+          "database_url": {
+            "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+          },
+          "isolation_level": "read-committed",
+          "pool_settings": {
+            "connection_lifetime": 600,
+            "idle_timeout": 180,
+            "max_connections": 50,
+            "retries": 1
+          },
+          "use_prepared_statements": true
+        }
+      }
+    }
+  ]
+}
+```
+
 ### 🙍‍♂️ Me
+
+Looks solid to me. I will save it a JSON file and manually import it into Hasura.
+
+F**k me it works. For all I see the metadata are correct and now I can use `make metadata-export` to sync it with my Hasura Project.
+
 ### 🤖 ChatGPT
 ### 🙍‍♂️ Me
 ### 🤖 ChatGPT
