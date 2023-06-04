@@ -595,22 +595,561 @@ Looks solid to me. I will save it a JSON file and manually import it into Hasura
 
 F**k me it works. For all I see the metadata are correct and now I can use `make metadata-export` to sync it with my Hasura Project.
 
+Now I want to spice up things a bit with the querying.
+
+```Markdown
+Please give me an SQL query to fetch only the first 10 football events of a given user.
+```
+
 ### 🤖 ChatGPT
+
+```sql
+SELECT * 
+FROM "public"."events"
+WHERE "user_id" = :userId AND "type" = 'Football'
+ORDER BY "created_at" DESC
+LIMIT 10;
+```
+
 ### 🙍‍♂️ Me
+
+This is quite good. But I see that the data that I get back is a bit dull. Let's spice things up:
+
+```Markdown
+Rebuild the seeding query for the football events, but add more details for every event. Proper stats from a football event.
+```
+
 ### 🤖 ChatGPT
+
+```sql
+INSERT INTO "public"."events" ("user_id", "type", "data", "happened_at")
+SELECT
+  "public"."users"."id",
+  'Football',
+  jsonb_build_object(
+    'teamA', 'Team ' || (random() * 100)::integer,
+    'teamB', 'Team ' || (random() * 100)::integer,
+    'scoreA', (random() * 5)::integer,
+    'scoreB', (random() * 5)::integer,
+    'fouls', (random() * 50)::integer,
+    'corners', (random() * 15)::integer
+  ),
+  NOW() - (random() * (365 * 2)) * interval '1 day' - (random() * 24 * 60 * 60) * interval '1 second'
+FROM
+  "public"."users",
+  generate_series(1, 10000)
+LIMIT 10000;
+```
+
 ### 🙍‍♂️ Me
+
+This is definetly a better dataset, and it rembered all the context... even if the code now looks quite different.
+
+```Markdown
+Please do the same for the other seeds.
+```
+
 ### 🤖 ChatGPT
+
+```sql
+-- Baseball events
+INSERT INTO "public"."events" ("user_id", "type", "data", "happened_at")
+SELECT
+  "public"."users"."id",
+  'Baseball',
+  jsonb_build_object(
+    'teamA', 'Team ' || (random() * 100)::integer,
+    'teamB', 'Team ' || (random() * 100)::integer,
+    'scoreA', (random() * 10)::integer,
+    'scoreB', (random() * 10)::integer,
+    'hits', (random() * 30)::integer,
+    'errors', (random() * 5)::integer
+  ),
+  NOW() - (random() * (365 * 2)) * interval '1 day' - (random() * 24 * 60 * 60) * interval '1 second'
+FROM
+  "public"."users",
+  generate_series(1, 10000)
+LIMIT 10000;
+
+
+-- Golf events
+INSERT INTO "public"."events" ("user_id", "type", "data", "happened_at")
+SELECT
+  "public"."users"."id",
+  'Golf',
+  jsonb_build_object(
+    'player', 'Player ' || (random() * 100)::integer,
+    'course', 'Course ' || (random() * 50)::integer,
+    'par', (random() * 72)::integer,
+    'score', ((random() * 20) + 52)::integer
+  ),
+  NOW() - (random() * (365 * 2)) * interval '1 day' - (random() * 24 * 60 * 60) * interval '1 second'
+FROM
+  "public"."users",
+  generate_series(1, 10000)
+LIMIT 10000;
+```
+
 ### 🙍‍♂️ Me
+
+Fantastic, even if the Basball events are a bit boring still.
+
+Now let's try to focus on some queries through Hasura Graphql API.
+
+```Markdown
+Create the GraphQL query for the role "user" to get all the football events with fouls between 10 and 20.
+```
+
 ### 🤖 ChatGPT
+
+```graphql
+query {
+  events(where: {type: {_eq: "Football"}, data: {fouls: {_gte: 10, _lte: 20}}}) {
+    id
+    user_id
+    type
+    data
+    happened_at
+    created_at
+  }
+}
+```
+
 ### 🙍‍♂️ Me
+
+Here we have troubles. The query doesn't work. I paste the error back in Hasura and it honesly tell me that his knowledge stops at September 2021 and that at that point in time it wasn't possible to achieve this.
+
+Instead, it proposes me to achieve the same result using an SQL function:
+
+```sql
+CREATE OR REPLACE FUNCTION "public"."football_events_with_fouls_range"(min_fouls integer, max_fouls integer)
+RETURNS SETOF "public"."events" AS $$
+SELECT *
+FROM "public"."events"
+WHERE "type" = 'Football' AND ("data"->>'fouls')::integer BETWEEN min_fouls AND max_fouls;
+$$ LANGUAGE sql STABLE;
+```
+
+But I choose a different approach. My idea is to build a view that extracts the fouls into a colum and then I will be able to filter it via Hasura.
+
+```Markdown
+Build an SQL view named events_football that shows only football events, each property in the data field should become a column in the resulting dataset.
+```
+
 ### 🤖 ChatGPT
+
+```sql
+CREATE VIEW "public"."events_football" AS
+SELECT 
+  "id",
+  "user_id",
+  "type",
+  "happened_at",
+  "created_at",
+  ("data"->>'teamA')::text AS "teamA",
+  ("data"->>'teamB')::text AS "teamB",
+  ("data"->>'scoreA')::integer AS "scoreA",
+  ("data"->>'scoreB')::integer AS "scoreB",
+  ("data"->>'fouls')::integer AS "fouls",
+  ("data"->>'corners')::integer AS "corners"
+FROM 
+  "public"."events"
+WHERE 
+  "type" = 'Football';
+```
+
 ### 🙍‍♂️ Me
+
+This works, now I can add it as a migration with:
+
+```bash
+make migrate-create name="events-football-view"
+```
+
+I have the code for the UP migration... I wonder...
+
+```Makefile
+Give me the down migration for this
+```
+
 ### 🤖 ChatGPT
+
+```sql
+DROP VIEW IF EXISTS "public"."events_football";
+```
+
 ### 🙍‍♂️ Me
+
+Wow. Just wow.
+
+Now I need an updated version of my metadata. To avoid any confusion, I take a dump (`make dump`) and work out in there my next request:
+
+```Markdown
+Given the following Hasura metadata and related Postgres schema,
+please track the events_football view so that a role "user" can see its own events.
+
+
+
+=================
+HASURA METADATA
+=================
+{
+  "version": 3,
+  "sources": [
+    {
+      "name": "default",
+      "kind": "postgres",
+      "tables": [
+        {
+          "table": {
+            "name": "events",
+            "schema": "public"
+          },
+          "insert_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "check": {},
+                "set": {
+                  "user_id": "X-Hasura-User-Id"
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": "*",
+                "filter": {
+                  "user_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "limit": 10
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "name": "users",
+            "schema": "public"
+          },
+          "select_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": "*",
+                "filter": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "limit": 1
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "username"
+                ],
+                "filter": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "check": null
+              }
+            }
+          ]
+        }
+      ],
+      "configuration": {
+        "connection_info": {
+          "database_url": {
+            "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+          },
+          "isolation_level": "read-committed",
+          "pool_settings": {
+            "connection_lifetime": 600,
+            "idle_timeout": 180,
+            "max_connections": 50,
+            "retries": 1
+          },
+          "use_prepared_statements": true
+        }
+      }
+    }
+  ]
+}
+
+
+
+=================
+POSTGRES SCHEMA
+=================
+
+SET check_function_bodies = false;
+CREATE TABLE public.events (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    type character varying(255) NOT NULL,
+    data jsonb NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    happened_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+CREATE VIEW public.events_football AS
+ SELECT events.id,
+    events.user_id,
+    events.type,
+    events.happened_at,
+    events.created_at,
+    (events.data ->> 'teamA'::text) AS "teamA",
+    (events.data ->> 'teamB'::text) AS "teamB",
+    ((events.data ->> 'scoreA'::text))::integer AS "scoreA",
+    ((events.data ->> 'scoreB'::text))::integer AS "scoreB",
+    ((events.data ->> 'fouls'::text))::integer AS fouls,
+    ((events.data ->> 'corners'::text))::integer AS corners
+   FROM public.events
+  WHERE ((events.type)::text = 'Football'::text);
+CREATE SEQUENCE public.events_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username character varying(255) NOT NULL
+);
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+```
+
 ### 🤖 ChatGPT
+
+```json
+{
+  "table": {
+    "name": "events_football",
+    "schema": "public"
+  },
+  "is_enum": false,
+  "configuration": {
+    "custom_root_fields": {},
+    "custom_column_names": {}
+  },
+  "object_relationships": [],
+  "array_relationships": [],
+  "computed_fields": [],
+  "select_permissions": [
+    {
+      "role": "user",
+      "permission": {
+        "columns": "*",
+        "filter": {
+          "user_id": {
+            "_eq": "X-Hasura-User-Id"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
 ### 🙍‍♂️ Me
+
+Once again, I try to save this to a temporary file and manually import... But this time it doesn't work because this is just a fragment of a schema.
+
+```Markdown
+Give me the full metadata
+```
+
 ### 🤖 ChatGPT
+
+```json
+{
+  "version": 3,
+  "sources": [
+    {
+      "name": "default",
+      "kind": "postgres",
+      "tables": [
+        {
+          "table": {
+            "name": "events",
+            "schema": "public"
+          },
+          "insert_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "check": {},
+                "set": {
+                  "user_id": "X-Hasura-User-Id"
+                }
+              }
+            }
+          ],
+          "select_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": "*",
+                "filter": {
+                  "user_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "limit": 10
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "name": "users",
+            "schema": "public"
+          },
+          "select_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": "*",
+                "filter": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "limit": 1
+              }
+            }
+          ],
+          "update_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": [
+                  "username"
+                ],
+                "filter": {
+                  "id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "check": null
+              }
+            }
+          ]
+        },
+        {
+          "table": {
+            "name": "events_football",
+            "schema": "public"
+          },
+          "is_enum": false,
+          "configuration": {
+            "custom_root_fields": {},
+            "custom_column_names": {}
+          },
+          "object_relationships": [],
+          "array_relationships": [],
+          "computed_fields": [],
+          "select_permissions": [
+            {
+              "role": "user",
+              "permission": {
+                "columns": "*",
+                "filter": {
+                  "user_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "configuration": {
+        "connection_info": {
+          "database_url": {
+            "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+          },
+          "isolation_level": "read-committed",
+          "pool_settings": {
+            "connection_lifetime": 600,
+            "idle_timeout": 180,
+            "max_connections": 50,
+            "retries": 1
+          },
+          "use_prepared_statements": true
+        }
+      }
+    }
+  ]
+}
+```
+
 ### 🙍‍♂️ Me
+
+And now all worked just fine. Again I can sync this schema to my local project with `make metadata-export`.
+
+Lets try to get the results in between 10 and 20 fouls:
+
+```Markdown
+Give me a graphql query for the role user to get football games with fouls in between of 10 and 20.
+```
+
 ### 🤖 ChatGPT
+
+```graphql
+query GetFootballEventsWithFoulsBetween10And20 {
+  events_football(where: {fouls: {_gte: 10, _lte: 20}}) {
+    id
+    user_id
+    happened_at
+    created_at
+    teamA
+    teamB
+    scoreA
+    scoreB
+    fouls
+    corners
+  }
+}
+```
+
 ### 🙍‍♂️ Me
-### 🤖 ChatGPT
+
+And finally I have the result I want 😎:
+
+## Conclusions
+
+This was a nice experiment that gave me a jump start on a simple event logging system.
+
+It is simple, but it was completely coded by the AI.  
+Of course, I knew what I wanted in the end.
+
+Here is the link to the ChatGPT thread:  
+https://chat.openai.com/share/0c8ae87d-b6b5-4341-8118-28f4bf633800

@@ -13,27 +13,56 @@ VALUES
 
 -- Football events
 INSERT INTO "public"."events" ("user_id", "type", "data", "happened_at")
-SELECT 
-    (random() * 4 + 1)::int, -- Random user_id between 1 and 5
-    'Football',
-    jsonb_build_object('score', (random() * 10)::int, 'stadium', 'Stadium ' || (random() * 10 + 1)::int),
-    NOW() - (random() * interval '2 years')
-FROM generate_series(1,10000);
+SELECT
+  "public"."users"."id",
+  'Football',
+  jsonb_build_object(
+    'teamA', 'Team ' || (random() * 100)::integer,
+    'teamB', 'Team ' || (random() * 100)::integer,
+    'scoreA', (random() * 5)::integer,
+    'scoreB', (random() * 5)::integer,
+    'fouls', (random() * 50)::integer,
+    'corners', (random() * 15)::integer
+  ),
+  NOW() - (random() * (365 * 2)) * interval '1 day' - (random() * 24 * 60 * 60) * interval '1 second'
+FROM
+  "public"."users",
+  generate_series(1, 10000)
+LIMIT 10000;
 
 -- Baseball events
 INSERT INTO "public"."events" ("user_id", "type", "data", "happened_at")
-SELECT 
-    (random() * 4 + 1)::int, -- Random user_id between 1 and 5
-    'Baseball',
-    jsonb_build_object('runs', (random() * 10)::int, 'stadium', 'Stadium ' || (random() * 10 + 1)::int),
-    NOW() - (random() * interval '2 years')
-FROM generate_series(1,10000);
+SELECT
+  "public"."users"."id",
+  'Baseball',
+  jsonb_build_object(
+    'teamA', 'Team ' || (random() * 100)::integer,
+    'teamB', 'Team ' || (random() * 100)::integer,
+    'scoreA', (random() * 10)::integer,
+    'scoreB', (random() * 10)::integer,
+    'hits', (random() * 30)::integer,
+    'errors', (random() * 5)::integer
+  ),
+  NOW() - (random() * (365 * 2)) * interval '1 day' - (random() * 24 * 60 * 60) * interval '1 second'
+FROM
+  "public"."users",
+  generate_series(1, 10000)
+LIMIT 10000;
+
 
 -- Golf events
 INSERT INTO "public"."events" ("user_id", "type", "data", "happened_at")
-SELECT 
-    (random() * 4 + 1)::int, -- Random user_id between 1 and 5
-    'Golf',
-    jsonb_build_object('strokes', (random() * 72)::int, 'course', 'Course ' || (random() * 10 + 1)::int),
-    NOW() - (random() * interval '2 years')
-FROM generate_series(1,10000);
+SELECT
+  "public"."users"."id",
+  'Golf',
+  jsonb_build_object(
+    'player', 'Player ' || (random() * 100)::integer,
+    'course', 'Course ' || (random() * 50)::integer,
+    'par', (random() * 72)::integer,
+    'score', ((random() * 20) + 52)::integer
+  ),
+  NOW() - (random() * (365 * 2)) * interval '1 day' - (random() * 24 * 60 * 60) * interval '1 second'
+FROM
+  "public"."users",
+  generate_series(1, 10000)
+LIMIT 10000;

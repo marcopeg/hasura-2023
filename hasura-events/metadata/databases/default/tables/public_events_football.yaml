@@ -1,0 +1,10 @@
+table:
+  name: events_football
+  schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns: '*'
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
