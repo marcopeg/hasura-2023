@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="800" height="600">
+    <!-- Users Table -->
+    <rect x="50" y="50" width="200" height="150" stroke="black" fill="transparent" stroke-width="2"/>
+    <text x="70" y="80" font-family="Verdana" font-size="20" fill="black">users</text>
+    <line x1="50" y1="90" x2="250" y2="90" style="stroke:black;stroke-width:1" />
+    <text x="70" y="120" font-family="Verdana" font-size="15" fill="black">id: integer</text>
+    <text x="70" y="150" font-family="Verdana" font-size="15" fill="black">username: string</text>
+
+    <!-- Events Table -->
+    <rect x="550" y="50" width="200" height="200" stroke="black" fill="transparent" stroke-width="2"/>
+    <text x="600" y="80" font-family="Verdana" font-size="20" fill="black">events</text>
+    <line x1="550" y1="90" x2="750" y2="90" style="stroke:black;stroke-width:1" />
+    <text x="570" y="120" font-family="Verdana" font-size="15" fill="black">id: integer</text>
+    <text x="570" y="150" font-family="Verdana" font-size="15" fill="black">user_id: integer (FK)</text>
+    <text x="570" y="180" font-family="Verdana" font-size="15" fill="black">type: string</text>
+    <text x="570" y="210" font-family="Verdana" font-size="15" fill="black">data: jsonb</text>
+
+    <!-- Relationship Line -->
+    <line x1="250" y1="120" x2="550" y2="150" style="stroke:black;stroke-width:2" />
+</svg>

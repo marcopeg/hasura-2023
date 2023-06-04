@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="800" height="600">
+    <rect x="50" y="50" width="200" height="100" stroke="black" fill="transparent" stroke-width="2"/>
+    <text x="100" y="90" font-family="Verdana" font-size="20" fill="black">users</text>
+
+    <rect x="550" y="50" width="200" height="100" stroke="black" fill="transparent" stroke-width="2"/>
+    <text x="600" y="90" font-family="Verdana" font-size="20" fill="black">events</text>
+
+    <line x1="250" y1="100" x2="550" y2="100" style="stroke:black;stroke-width:2" />
+    <text x="400" y="90" font-family="Verdana" font-size="15" fill="black">user_id</text>
+</svg>
