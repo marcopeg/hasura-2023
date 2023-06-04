@@ -23,7 +23,6 @@ make seed from=file-name
 project=foobar
 
 # Select Hasura connection to use
-# (will be renamed to "connection")
-db=foobar
+conn=foobar
 ```
 

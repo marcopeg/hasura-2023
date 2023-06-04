@@ -1,53 +1,39 @@
--- Insert 10 users
-INSERT INTO "public"."users" ("name")
-VALUES
-    ('User 1'),
-    ('User 2'),
-    ('User 3'),
-    ('User 4'),
-    ('User 5'),
-    ('User 6'),
-    ('User 7'),
-    ('User 8'),
-    ('User 9'),
-    ('User 10')
-ON CONFLICT DO NOTHING;
+TRUNCATE "public"."users", "public"."events" RESTART IDENTITY CASCADE;
 
--- Generate 10,000 events for football matches with random data
-INSERT INTO "public"."events" ("created_at", "user_id", "data")
-SELECT
-    now() - INTERVAL '2 years' + (floor(random() * 730) || ' days')::interval,
-    floor(random() * 10) + 1,
-    jsonb_build_object(
-        'goals', floor(random() * 5) + 1,
-        'corners', floor(random() * 10) + 1,
-        'fouls', floor(random() * 20) + 1
-    )
-FROM generate_series(1, 10000)
-ON CONFLICT DO NOTHING;
+SELECT setval(pg_get_serial_sequence('"public"."users"', 'id'), 1, false);
+SELECT setval(pg_get_serial_sequence('"public"."events"', 'id'), 1, false);
 
--- Generate 10,000 personal journal annotations with random data
-INSERT INTO "public"."events" ("created_at", "user_id", "data")
-SELECT
-    now() - INTERVAL '2 years' + (floor(random() * 730) || ' days')::interval,
-    floor(random() * 10) + 1,
-    jsonb_build_object(
-        'entry', 'Annotation ' || generate_series,
-        'mood', floor(random() * 10) + 1,
-        'note', 'Some random note for Annotation ' || generate_series
-    )
-FROM generate_series(1, 10000)
-ON CONFLICT DO NOTHING;
+INSERT INTO "public"."users" ("username")
+VALUES 
+('HappyGoalie'),
+('ScoringStriker'),
+('DefensiveDribbler'),
+('JollyKeeper'),
+('DashingDefender');
 
--- Generate 10,000 bank transactions with random data
-INSERT INTO "public"."events" ("created_at", "user_id", "data")
-SELECT
-    now() - INTERVAL '2 years' + (floor(random() * 730) || ' days')::interval,
-    floor(random() * 10) + 1,
-    jsonb_build_object(
-        'type', 'Transaction',
-        'amount', floor(random() * 1000) + 1,
-        'description', 'Random transaction ' || generate_series
-    )
-FROM generate_series(1, 10000)
-ON CONFLICT DO NOTHING;
+-- Football events
+INSERT INTO "public"."events" ("user_id", "type", "data", "happened_at")
+SELECT 
+    (random() * 4 + 1)::int, -- Random user_id between 1 and 5
+    'Football',
+    jsonb_build_object('score', (random() * 10)::int, 'stadium', 'Stadium ' || (random() * 10 + 1)::int),
+    NOW() - (random() * interval '2 years')
+FROM generate_series(1,10000);
+
+-- Baseball events
+INSERT INTO "public"."events" ("user_id", "type", "data", "happened_at")
+SELECT 
+    (random() * 4 + 1)::int, -- Random user_id between 1 and 5
+    'Baseball',
+    jsonb_build_object('runs', (random() * 10)::int, 'stadium', 'Stadium ' || (random() * 10 + 1)::int),
+    NOW() - (random() * interval '2 years')
+FROM generate_series(1,10000);
+
+-- Golf events
+INSERT INTO "public"."events" ("user_id", "type", "data", "happened_at")
+SELECT 
+    (random() * 4 + 1)::int, -- Random user_id between 1 and 5
+    'Golf',
+    jsonb_build_object('strokes', (random() * 72)::int, 'course', 'Course ' || (random() * 10 + 1)::int),
+    NOW() - (random() * interval '2 years')
+FROM generate_series(1,10000);

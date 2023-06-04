@@ -1,11 +1,17 @@
-CREATE TABLE "public"."users" (
-    "id" serial PRIMARY KEY,
-    "name" varchar(255) NOT NULL
+CREATE TABLE "public"."users"
+(
+    "id" SERIAL PRIMARY KEY,
+    "username" VARCHAR(255) NOT NULL
+    -- Any additional fields...
 );
 
-CREATE TABLE "public"."events" (
-    "created_at" timestamp with time zone DEFAULT now() NOT NULL,
-    "user_id" integer not null REFERENCES "public"."users" ("id") ON DELETE RESTRICT,
+CREATE TABLE "public"."events"
+(
+    "id" SERIAL PRIMARY KEY,
+    "user_id" INT NOT NULL,
+    "type" VARCHAR(255) NOT NULL,
     "data" JSONB NOT NULL,
-    PRIMARY KEY ("created_at")
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "happened_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id") ON DELETE CASCADE
 );

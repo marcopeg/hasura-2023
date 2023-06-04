@@ -26,6 +26,5 @@ make migrate-create name=foobar
 project=foobar
 
 # Select Hasura connection to use
-# (will be renamed to "connection")
-db=foobar
+conn=foobar
 ```
