@@ -33,8 +33,6 @@ ports:
 vscode:
  extensions:
    - ms-azuretools.vscode-docker
-   - mtxr.sqltools
-   - mtxr.sqltools-driver-pg
    - ckolkman.vscode-postgres
    - esbenp.prettier-vscode
    - darkriszty.markdown-table-prettify
