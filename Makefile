@@ -431,7 +431,7 @@ py:
 		-e $(env) \
 		-e HASURA_GRAPHQL_ENDPOINT=http://hasura-engine:8080/v1/graphql \
 		-e HASURA_GRAPHQL_ADMIN_SECRET=$(passwd) \
-		-v $(CURDIR)/$(project)/scripts/$(db):/scripts \
+		-v $(CURDIR)/$(project)/scripts:/scripts \
 		--network=hasura_2023 \
 		hasura-2023-py \
 		sh -c "python /scripts/$(from).py"

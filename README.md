@@ -637,3 +637,6 @@ make clean && make boot project=hasura-todos
 ## Work In Progress
 
 - Create a full dump SQL + metadata into a single file to facilitate the copy/paste into ChatGPT
+- Rename Makefile parameter "db" to "conn"
+- Rename Mekadile parameter "dbName" to "db"
+- `make py env=xxx` should be renamed into `make py flags="-e FOO=123 -v $(CURRDIR):/foo"` to so pass multiple arguments to a script
