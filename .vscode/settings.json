@@ -12,7 +12,7 @@
         }
     ],
     "workbench.editorAssociations": {
-        "_.md": "vscode.markdown.preview.editor"
+        "*.md": "vscode.markdown.preview.editor"
     },
     "workbench.startupEditor": "none"
 }
