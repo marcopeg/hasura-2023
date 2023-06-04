@@ -1,11 +1,102 @@
--- Enable the pgcrypto extension
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+-- Genereted my mockaroo.com
 
--- Generate random data and insert into the cities table
-INSERT INTO public.cities (name, country, population, area)
-SELECT
-  substr(gen_random_uuid()::text, 1, 10) AS name,
-  substr(gen_random_uuid()::text, 1, 10) AS country,
-  FLOOR(RANDOM() * 1000000) AS population,
-  FLOOR(RANDOM() * 1000) AS area
-FROM generate_series(1, 1000);
+insert into cities (name, country, population, area) values ('As Sukhnah', 'Syria', 89216, 8889683);
+insert into cities (name, country, population, area) values ('Mataraben', 'Indonesia', 345668, 6697090);
+insert into cities (name, country, population, area) values ('Lodan Wetan', 'Indonesia', 115859, 5811278);
+insert into cities (name, country, population, area) values ('Mizhhir’ya', 'Ukraine', 557573, 9311910);
+insert into cities (name, country, population, area) values ('Yangxiang', 'China', 727677, 1078464);
+insert into cities (name, country, population, area) values ('Turan', 'Russia', 202020, 8486142);
+insert into cities (name, country, population, area) values ('Jastrowie', 'Poland', 187759, 1700227);
+insert into cities (name, country, population, area) values ('Thākurgaon', 'Bangladesh', 722623, 3109333);
+insert into cities (name, country, population, area) values ('Castelo', 'Portugal', 498261, 5797558);
+insert into cities (name, country, population, area) values ('San Francisco', 'Mexico', 24494, 4864155);
+insert into cities (name, country, population, area) values ('Seto', 'Japan', 781904, 625717);
+insert into cities (name, country, population, area) values ('Yashkul’', 'Russia', 501176, 4529670);
+insert into cities (name, country, population, area) values ('Perpignan', 'France', 749435, 4700010);
+insert into cities (name, country, population, area) values ('Stockholm', 'Sweden', 722054, 2993897);
+insert into cities (name, country, population, area) values ('Kulevcha', 'Ukraine', 681634, 8708700);
+insert into cities (name, country, population, area) values ('Turanj', 'Croatia', 149178, 8633764);
+insert into cities (name, country, population, area) values ('Taltal', 'Chile', 784118, 472404);
+insert into cities (name, country, population, area) values ('Colón', 'Panama', 301115, 5173433);
+insert into cities (name, country, population, area) values ('Kambaxoi', 'China', 664737, 2982400);
+insert into cities (name, country, population, area) values ('Singosari', 'Indonesia', 922482, 7595151);
+insert into cities (name, country, population, area) values ('Riangbao', 'Indonesia', 806557, 982759);
+insert into cities (name, country, population, area) values ('La Libertad', 'Philippines', 531736, 892451);
+insert into cities (name, country, population, area) values ('Santa Cruz de Yojoa', 'Honduras', 48908, 7644895);
+insert into cities (name, country, population, area) values ('Lupane', 'Zimbabwe', 983762, 8016883);
+insert into cities (name, country, population, area) values ('Wuli', 'China', 480859, 8419697);
+insert into cities (name, country, population, area) values ('Douz', 'Tunisia', 650084, 1451860);
+insert into cities (name, country, population, area) values ('Bidyā', 'Palestinian Territory', 967109, 7222216);
+insert into cities (name, country, population, area) values ('Comrat', 'Moldova', 325206, 1274445);
+insert into cities (name, country, population, area) values ('Xinchang', 'China', 861275, 237544);
+insert into cities (name, country, population, area) values ('Ubud', 'Indonesia', 54677, 2109426);
+insert into cities (name, country, population, area) values ('Singasari', 'Indonesia', 226995, 3530566);
+insert into cities (name, country, population, area) values ('Manggissari', 'Indonesia', 225982, 597370);
+insert into cities (name, country, population, area) values ('Hobonio', 'Indonesia', 24468, 5026531);
+insert into cities (name, country, population, area) values ('Guruyan', 'Philippines', 146843, 5148822);
+insert into cities (name, country, population, area) values ('Yingcheng', 'China', 821913, 2825010);
+insert into cities (name, country, population, area) values ('Itumbiara', 'Brazil', 247491, 3249289);
+insert into cities (name, country, population, area) values ('Shuitou', 'China', 619310, 987314);
+insert into cities (name, country, population, area) values ('Kota Kinabalu', 'Malaysia', 805367, 9385639);
+insert into cities (name, country, population, area) values ('Undurkhaan', 'Mongolia', 943666, 4879503);
+insert into cities (name, country, population, area) values ('Cruz das Almas', 'Brazil', 691260, 5962215);
+insert into cities (name, country, population, area) values ('Iperó', 'Brazil', 727981, 317439);
+insert into cities (name, country, population, area) values ('Chapimarca', 'Peru', 895020, 7761544);
+insert into cities (name, country, population, area) values ('Nizao', 'Dominican Republic', 551921, 3115792);
+insert into cities (name, country, population, area) values ('Vancouver', 'United States', 836654, 9879325);
+insert into cities (name, country, population, area) values ('Non Sung', 'Thailand', 870147, 389560);
+insert into cities (name, country, population, area) values ('Hörby', 'Sweden', 758221, 4922148);
+insert into cities (name, country, population, area) values ('Long Hồ', 'Vietnam', 923130, 2579321);
+insert into cities (name, country, population, area) values ('Nangang', 'China', 91505, 505742);
+insert into cities (name, country, population, area) values ('Temblador', 'Venezuela', 942373, 9881461);
+insert into cities (name, country, population, area) values ('Caja', 'Peru', 664597, 7437365);
+insert into cities (name, country, population, area) values ('Mocajuba', 'Brazil', 143648, 8265630);
+insert into cities (name, country, population, area) values ('Limbaži', 'Latvia', 147663, 2848275);
+insert into cities (name, country, population, area) values ('Batobato', 'Philippines', 781822, 103733);
+insert into cities (name, country, population, area) values ('Hägersten', 'Sweden', 696956, 9729368);
+insert into cities (name, country, population, area) values ('Fonadhoo', 'Maldives', 532088, 3863110);
+insert into cities (name, country, population, area) values ('Kisai', 'Japan', 63129, 4180180);
+insert into cities (name, country, population, area) values ('Shicong', 'China', 508241, 4914848);
+insert into cities (name, country, population, area) values ('Wang Nam Yen', 'Thailand', 730902, 2616323);
+insert into cities (name, country, population, area) values ('Palamadu', 'Indonesia', 528685, 273878);
+insert into cities (name, country, population, area) values ('Cajamarca', 'Colombia', 383077, 1971844);
+insert into cities (name, country, population, area) values ('Nagrog Wetan', 'Indonesia', 570803, 4923181);
+insert into cities (name, country, population, area) values ('Maoqitun', 'China', 84720, 6368835);
+insert into cities (name, country, population, area) values ('Taozixi', 'China', 512639, 8010410);
+insert into cities (name, country, population, area) values ('Lefkoniko', 'Cyprus', 732088, 7224334);
+insert into cities (name, country, population, area) values ('Lingbeizhou', 'China', 259758, 4975352);
+insert into cities (name, country, population, area) values ('Shengli', 'China', 87736, 4225754);
+insert into cities (name, country, population, area) values ('Estrada', 'Portugal', 212897, 1649694);
+insert into cities (name, country, population, area) values ('Dongchen', 'China', 525735, 4604652);
+insert into cities (name, country, population, area) values ('Caihua', 'China', 918525, 5426670);
+insert into cities (name, country, population, area) values ('Gusau', 'Nigeria', 119682, 3256998);
+insert into cities (name, country, population, area) values ('Nankou', 'China', 457391, 8477318);
+insert into cities (name, country, population, area) values ('Skolkovo', 'Russia', 259773, 9847669);
+insert into cities (name, country, population, area) values ('Ziyuan', 'China', 318060, 9226024);
+insert into cities (name, country, population, area) values ('Shifan', 'China', 870043, 5044028);
+insert into cities (name, country, population, area) values ('Stockholm', 'Sweden', 247352, 4619828);
+insert into cities (name, country, population, area) values ('Gromnik', 'Poland', 221823, 4526045);
+insert into cities (name, country, population, area) values ('Balung', 'Indonesia', 10041, 8473959);
+insert into cities (name, country, population, area) values ('Bell Ville', 'Argentina', 759283, 1553159);
+insert into cities (name, country, population, area) values ('Elekmonar', 'Russia', 616862, 5916599);
+insert into cities (name, country, population, area) values ('Millau', 'France', 730680, 2442702);
+insert into cities (name, country, population, area) values ('Kitahama', 'Japan', 425841, 5772811);
+insert into cities (name, country, population, area) values ('Torbat-e Jām', 'Iran', 822368, 2053140);
+insert into cities (name, country, population, area) values ('Botshabelo', 'South Africa', 713962, 7344750);
+insert into cities (name, country, population, area) values ('Xiahan', 'China', 477282, 6262063);
+insert into cities (name, country, population, area) values ('Inriville', 'Argentina', 589948, 9720337);
+insert into cities (name, country, population, area) values ('San Isidro', 'Philippines', 574328, 3829216);
+insert into cities (name, country, population, area) values ('Paço', 'Portugal', 79651, 1139248);
+insert into cities (name, country, population, area) values ('Sindangsari', 'Indonesia', 888477, 5867538);
+insert into cities (name, country, population, area) values ('Jingxi', 'China', 531106, 6344443);
+insert into cities (name, country, population, area) values ('Łubowo', 'Poland', 461051, 3956552);
+insert into cities (name, country, population, area) values ('Mallow', 'Ireland', 355944, 6819142);
+insert into cities (name, country, population, area) values ('Buritis', 'Brazil', 807255, 5384610);
+insert into cities (name, country, population, area) values ('Monino', 'Russia', 270983, 491055);
+insert into cities (name, country, population, area) values ('Paso de Indios', 'Argentina', 797544, 1691949);
+insert into cities (name, country, population, area) values ('Maragogipe', 'Brazil', 419346, 1520922);
+insert into cities (name, country, population, area) values ('Shimoda', 'Japan', 211608, 5268011);
+insert into cities (name, country, population, area) values ('San Jose', 'Mexico', 436975, 5195478);
+insert into cities (name, country, population, area) values ('Sipirok', 'Indonesia', 844467, 1318064);
+insert into cities (name, country, population, area) values ('Alvand', 'Iran', 339855, 9851251);
+insert into cities (name, country, population, area) values ('San Juan Sacatepéquez', 'Guatemala', 111448, 1763304);
