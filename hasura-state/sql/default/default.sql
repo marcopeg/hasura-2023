@@ -4,9 +4,9 @@ SELECT COUNT(*) FROM "public"."demo_events";
 -- Transactions are wonderful to play around
 -- without actually modifying the state of the db!
 BEGIN;
-TRUNCATE "public"."demo_events";
-SELECT COUNT(*) FROM "public"."demo_events";
+TRUNCATE "public"."fake_demo_events";
+SELECT COUNT(*) FROM "public"."fake_demo_events";
 ROLLBACK;
 
 -- Double check that no data was delete
-SELECT COUNT(*) FROM "public"."demo_events";
+SELECT COUNT(*) FROM "public"."fake_demo_events";
