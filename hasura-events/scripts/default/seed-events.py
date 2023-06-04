@@ -1,8 +1,8 @@
-# Reads the "demo_events" table with default LIMIT=25
-
 import os
 import requests
 import json
+from random import randint
+from datetime import datetime, timedelta
 
 # Get the values from environment variables
 HASURA_GRAPHQL_ENDPOINT = os.getenv("HASURA_GRAPHQL_ENDPOINT")
@@ -14,15 +14,20 @@ if not HASURA_GRAPHQL_ENDPOINT or not HASURA_GRAPHQL_ADMIN_SECRET:
     print("Error: Missing environment variables.")
     exit(1)
 
-# Define the GraphQL query to fetch information with sorting and limit
-GRAPHQL_QUERY = '''
-{
-  demo_events(order_by: {created_at: desc}, limit: %d) {
-    created_at
-    data
-  }
-}
-''' % LIMIT
+# Generate random football game statistics with event time within the last week
+def generate_event():
+    event_time = datetime.now() - timedelta(days=randint(1, 7))
+    return {
+        "created_at": event_time.isoformat(),
+        "data": {
+            "goals": randint(0, 5),
+            "corners": randint(0, 10),
+            "fouls": randint(0, 20)
+        }
+    }
+
+# Generate the specified number of events
+events = [generate_event() for _ in range(LIMIT)]
 
 # Prepare the request headers and payload
 headers = {
@@ -30,7 +35,20 @@ headers = {
     "x-hasura-admin-secret": HASURA_GRAPHQL_ADMIN_SECRET
 }
 payload = {
-    "query": GRAPHQL_QUERY
+    "query": '''
+    mutation insertEvents($objects: [events_insert_input!]!) {
+      insert_events(objects: $objects) {
+        affected_rows
+        returning {
+          created_at
+          data
+        }
+      }
+    }
+    ''',
+    "variables": {
+        "objects": events
+    }
 }
 
 # Send the request to Hasura API

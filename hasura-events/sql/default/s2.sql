@@ -1,4 +1,4 @@
 -- Test query to run via PgBench
 -- make pgbench from=s2
 
-SELECT "created_at" FROM "public"."demo_events";
+SELECT "created_at" FROM "public"."events";

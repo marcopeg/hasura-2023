@@ -5,6 +5,7 @@
 endpoint?=http://localhost:8080
 passwd?=hasura
 project?=hasura-state
+# this should be renamed to "connection"
 db?=default
 dbName=postgres
 schema?=public
