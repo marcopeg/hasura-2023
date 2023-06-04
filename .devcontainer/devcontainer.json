@@ -10,6 +10,7 @@
 				"ms-azuretools.vscode-docker",
 				"mtxr.sqltools",
 				"mtxr.sqltools-driver-pg",
+                "ckolkman.vscode-postgres",
 				"ms-vscode.makefile-tools"
 			]
         }
