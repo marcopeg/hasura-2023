@@ -31,57 +31,66 @@ endif
 # Default Action
 #
 
-help:
+_help:
 	@clear
 	@echo ""
 	@echo "---------------------"
 	@echo "Hasura 2023 Make APIs"
 	@echo "---------------------"
 	@echo ""
-	@echo " 1) make boot ................. Starts the services and seeds the state from a Project"
-	@echo " 2) make reboot ............... Destroys the state, then boot again"
-	@echo " 3) make start ................ Starts the services without applying the state"
-	@echo " 4) make stop ................. Stop the services"
-	@echo " 5) make clean ................ Stop the services and destroys the App state"
-	@echo " 6) make logs ................. Connects to the Docker Compose logs"
+	@echo " 1) make info ................. Prints information about the current Project configuration"
+	@echo " 2) make boot ................. Starts the services and seeds the state from a Project"
+	@echo " 3) make reboot ............... Destroys the state, then boot again"
+	@echo " 4) make start ................ Starts the services without applying the state"
+	@echo " 5) make stop ................. Stop the services"
+	@echo " 6) make clean ................ Stop the services and destroys the App state"
+	@echo " 7) make logs ................. Connects to the Docker Compose logs"
 	@echo ""
-	@echo " 7) make init ................. Initializes the App state from a Project"
-	@echo " 8) make exports .............. Exports the current App state into a Project"
+	@echo "    Import / Export Utilities"
+	@echo "-----------------------------"
+	@echo "10) make init ................. Initializes the App state from a Project"
+	@echo "11) make migrate .............. Runs the Hasura migrations"
+	@echo "12) make apply ................ Applies the Hasura metadata"
+	@echo "13) make exports .............. Exports the current App state"
+	@echo "14) make export-schema ........ Dumps the database to a migration"
+	@echo "15) make export-meta .......... Exports the Hasura metadata"
 	@echo ""
-	@echo "20) make migrate"
-	@echo "21) make migrate-status"
-	@echo "22) make migrate-up"
-	@echo "23) make migrate-down"
-	@echo "24) make migrate-redo"
-	@echo "25) make migrate-rebuild"
-	@echo "26) make migrate-destroy"
-	@echo "27) make migrate-create"
-	@echo "28) make migrate-export"
+	@echo "    SQL Migration Utilities"
+	@echo "-----------------------------"
+	@echo "20) make migrate-status ....... Checks the status of the migrations"
+	@echo "21) make migrate-up ........... Applies the specified number of migrations up"
+	@echo "22) make migrate-down ......... Applies the specified number of migrations down"
+	@echo "23) make migrate-redo ......... Replays the last specified number of migrations"
+	@echo "24) make migrate-rebuild ...... Rebuilds all the migrations"
+	@echo "25) make migrate-destroy ...... Destroys all the migrations"
+	@echo "26) make migrate-create ....... Creates a new migration"
+	@echo "27) make seed ................. Applies the database seed"
 	@echo ""
-	@echo "30) make seed"
+	@echo "    SQL Utilities"
+	@echo "-----------------------------"
+	@echo "30) make psql ................. Attaches an SQL client to the running database"
+	@echo "31) make query ................ Runs a SQL script from the \"sql\" folder"
+	@echo "32) make pgbench .............. Runs PgBench on the specified database"
+	@echo "33) make pgtap ................ Runs SQL unit tests using PgTAP"
+	@echo "34) make pgtap-run ............ Runs specific SQL unit tests using PgTAP"
+	@echo "35) make pgtap-schema ......... Applies the schema for SQL unit tests using PgTAP"
+	@echo "36) make pgtap-build .......... Builds the PgTAP Docker image"
 	@echo ""
-	@echo "40) make apply"
-	@echo "41) make metadata-export"
+	@echo "    Pagila Demo DB Utilities"
+	@echo "-----------------------------"
+	@echo "70) make pagila-init .......... Initializes the Pagila Demo DB"
+	@echo "71) make pagila-destroy ....... Destroys the Pagila Demo DB"
+	@echo "72) make pagila-reset ......... Resets the Pagila Demo DB"
 	@echo ""
-	@echo "60) make psql"
-	@echo "61) make psql-exec"
-	@echo "62) make pgbench"
+	@echo "    General Utilities"
+	@echo "-----------------------------"
+	@echo "90) make hasura-install ....... Installs HasuraCLI"
+	@echo "91) make hasura-console ....... Runs HasuraCLI Web Console"
+	@echo "92) make py ................... Runs a Python script from the project's \"scripts\" folder"
+	@echo "99) make reset ................ Cleans & reboots the Project"
 	@echo ""
-	@echo "70) make pagila-init"
-	@echo "71) make pagila-destroy"
-	@echo "72) make pagila-reset"
-	@echo ""
-	@echo "80) make pgtap"
-	@echo "81) make pgtap-run"
-	@echo "82) make pgtap-schema"
-	@echo "83) make pgtap-build"
-	@echo ""
-	@echo "90) make hasura-install"
-	@echo "91) make hasura-console"
-	@echo "91) make py"
-	@echo ""
-	@echo "99) make reset"
-	@echo ""
+help:
+	@$(MAKE) -s -f Makefile _help | more
 
 info:
 	@clear
@@ -142,7 +151,7 @@ exports:
 	@clear
 	@echo "\n# Exporting Hasura State to:\n> project=$(project); conn=$(conn) schema=$(schema)\n"
 	@$(MAKE) -f Makefile _migrate-export
-	@$(MAKE) -f Makefile _metadata-export
+	@$(MAKE) -f Makefile _export-meta
 
 
 
@@ -238,20 +247,20 @@ migrate-create:
 		--project $(project) \
 		--database-name $(conn)
 
-_migrate-export:
+_export-schema:
 	@hasura migrate create \
 		"__full-export___" \
 		--endpoint $(endpoint) \
-  	--admin-secret $(passwd) \
+  		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(conn) \
-  	--schema $(schema) \
-  	--from-server \
+  		--schema $(schema) \
+  		--from-server \
 		--down-sql "SELECT NOW();"
-migrate-export:
+export-schema:
 	@clear
 	@echo "\n# Dumping database to a migration:\n> project=$(project); conn=$(conn); schema=$(schema)\n"
-	@$(MAKE) -f Makefile _migrate-export
+	@$(MAKE) -f Makefile _export-schema
 
 
 
@@ -290,15 +299,15 @@ apply:
 	@echo "\n# Apply Hasura Metadata on:\n> project=$(project)\n"
 	@$(MAKE) -f Makefile _apply
 
-_metadata-export:
+_export-meta:
 	@hasura metadata export \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project)
-metadata-export:
+export-meta:
 	@clear
 	@echo "\n# Exporting Hasura metadata to:\n> project=$(project)\n"
-	@$(MAKE) -f Makefile _metadata-export
+	@$(MAKE) -f Makefile _export-meta
 
 
 
@@ -422,11 +431,11 @@ dump:
 	@hasura migrate create \
 		"__full-export___" \
 		--endpoint $(endpoint) \
-  	--admin-secret $(passwd) \
+  		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(conn) \
-  	--schema $(schema) \
-  	--from-server
+  		--schema $(schema) \
+  		--from-server
 	@latest_folder=$$(ls -dt $(CURDIR)/$(project)/migrations/$(conn)/*/ | head -1); \
 		latest_folder=$${latest_folder%/}; \
 		latest_folder=$${latest_folder##*/}; \
@@ -495,36 +504,42 @@ pgtap: pgtap-reset pgtap-schema pgtap-run
 # Numeric API
 #
 
-1: boot
-2: reboot
-3: start
-4: stop
-5: clean
-6: logs
-7: init
-8: exports
-20: migrate
-21: migrate-status
-22: migrate-up
-23: migrate-down
-24: migrate-redo
-25: migrate-rebuild
-26: migrate-destroy
-27: migrate-create
-28: migrate-export
-30: seed
-40: metadata
-41: metadata-export
-60: psql
-61: psql-exec
-62: pgbench
+1: info
+2: boot
+3: reboot
+4: start
+5: stop
+6: clean
+7: logs
+
+10: init
+11: migrate
+12: apply
+13: exports
+14: export-schema
+15: export-meta
+
+20: migrate-status
+21: migrate-up
+22: migrate-down
+23: migrate-redo
+24: migrate-rebuild
+25: migrate-destroy
+26: migrate-create
+27: seed
+
+30: psql
+31: query
+32: pgbench
+33: pgtap
+34: pgtap-run
+35: pgtap-schema
+36: pgtap-build
+
 70: pagila-init
 71: pagila-destroy
 72: pagila-reset
-80: pgtap
-81: pgtap-run
-82: pgtap-schema
-83: pgtap-build
+
 90: hasura-install
 91: hasura-console
 92: py

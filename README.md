@@ -85,9 +85,11 @@ make pagila-init
 
 The following services will soon be available:
 
-- Postgres on port `5432`
-- [Adminer on port `8081`](http://localhost:8081)
-- [Hasura Console on port `8080`](http://localhost:8080)
+- Postgres on port `5432` (For TCP connection)
+- [Adminer - DatabaseWeb Client on port `8081`](http://localhost:8081)
+- [Hasura Web Console on port `8080`](http://localhost:8080)
+
+**NOTE:** If you are running this project into Codespaces or GitPod, locate the "ports" panel and **use port `9695`** which will give you access to the **HasuraCLI Web Client** that will automatically track your Hasura changes into your source code.
 
 ## Create Docker Compose Project
 
