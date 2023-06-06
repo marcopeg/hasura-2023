@@ -45,6 +45,7 @@ _help:
 	@echo " 5) make stop ................. Stop the services"
 	@echo " 6) make clean ................ Stop the services and destroys the App state"
 	@echo " 7) make logs ................. Connects to the Docker Compose logs"
+	@echo " 7) make project .............. Sets the current project in .env file"
 	@echo ""
 	@echo "    Import / Export Utilities"
 	@echo "-----------------------------"
@@ -499,6 +500,13 @@ pgtap-run:
 pgtap: pgtap-reset pgtap-schema pgtap-run
 
 
+_project:
+	@[ ! -f Makefile.env ] && echo "project=$(project)" > Makefile.env || echo ""
+	@sed 's/$(project)/$(from)/g' Makefile.env > Makefile.env.tmp
+	@rm -f Makefile.env && mv Makefile.env.tmp Makefile.env
+project:
+	@echo "Setting project from: $(project) to $(from)"
+	@$(MAKE) -s -f Makefile _project
 
 #
 # Numeric API
@@ -511,6 +519,7 @@ pgtap: pgtap-reset pgtap-schema pgtap-run
 5: stop
 6: clean
 7: logs
+8: project
 
 10: init
 11: migrate

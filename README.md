@@ -66,7 +66,7 @@ The project's API are based on a [Makefile](https://www.gnu.org/software/make/ma
 You can run the following commands in a terminal:
 
 ```bash
-# Show the help menu
+# Show the Help Menu
 # (there are plenty of interesting commands)
 make
 
