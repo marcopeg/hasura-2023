@@ -110,17 +110,17 @@ info:
 _boot:
 	@docker compose $(DOCKER_COMPOSE_CHAIN) up -d
 	@sleep 5
-	@$(MAKE) -f Makefile _init
+	@$(MAKE) -s -f Makefile _init
 	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
 boot:
 	@clear
 	@echo "\n# Booting Docker Project with Hasura State from:\n> $(DOCKER_COMPOSE_CHAIN)\n> project=$(project); conn=$(conn) seed=$(from).sql\n"
-	@$(MAKE) -f Makefile _boot
+	@$(MAKE) -s -f Makefile _boot
 reboot:
 	@clear
 	@echo "\n# Rebooting Docker Project with Hasura State from:\n> $(DOCKER_COMPOSE_CHAIN)\n> project=$(project); conn=$(conn) seed=$(from).sql\n"
-	@$(MAKE) -f Makefile _clean
-	@$(MAKE) -f Makefile _boot
+	@$(MAKE) -s -f Makefile _clean
+	@$(MAKE) -s -f Makefile _boot
 
 start:
 	@clear
@@ -139,19 +139,19 @@ logs:
 	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
 
 _init:
-	@$(MAKE) -f Makefile _migrate
-	@$(MAKE) -f Makefile _apply
-	@$(MAKE) -f Makefile _seed
+	@$(MAKE) -s -f Makefile _migrate
+	@$(MAKE) -s -f Makefile _apply
+	@$(MAKE) -s -f Makefile _seed
 init:
 	@clear
 	@echo "\n# Initializing Hasura State from:\n> project=$(project); conn=$(conn) seed=$(from).sql\n"
-	@$(MAKE) -f Makefile _init
+	@$(MAKE) -s -f Makefile _init
 
 exports: 
 	@clear
 	@echo "\n# Exporting Hasura State to:\n> project=$(project); conn=$(conn) schema=$(schema)\n"
-	@$(MAKE) -f Makefile _migrate-export
-	@$(MAKE) -f Makefile _export-meta
+	@$(MAKE) -s -f Makefile _migrate-export
+	@$(MAKE) -s -f Makefile _export-meta
 
 
 
@@ -170,7 +170,7 @@ _migrate:
 migrate:
 	@clear
 	@echo "\n# Running migrations from:\n> $(project)/migrations/$(conn)/*\n"
-	@$(MAKE) -f Makefile _migrate
+	@$(MAKE) -s -f Makefile _migrate
 
 _migrate-status:
 	@hasura migrate status \
@@ -181,7 +181,7 @@ _migrate-status:
 migrate-status:
 	@clear
 	@echo "\n# Checking migrations status on:\n> project=$(project); conn=$(conn)"
-	@$(MAKE) -f Makefile _migrate-status
+	@$(MAKE) -s -f Makefile _migrate-status
 
 _migrate-up:
 	@hasura migrate apply \
@@ -193,7 +193,7 @@ _migrate-up:
 migrate-up:
 	@clear
 	@echo "\n# Migrate $(steps) UP from:\n> $(project)/migrations/$(conn)/*\n"
-	@$(MAKE) -f Makefile _migrate-up
+	@$(MAKE) -s -f Makefile _migrate-up
 
 _migrate-down:
 	@hasura migrate apply \
@@ -205,7 +205,7 @@ _migrate-down:
 migrate-down:
 	@clear
 	@echo "\n# Migrate $(steps) DOWN from:\n> $(project)/migrations/$(conn)/*\n"
-	@$(MAKE) -f Makefile _migrate-down
+	@$(MAKE) -s -f Makefile _migrate-down
 
 _migrate-destroy:
 	@hasura migrate apply \
@@ -217,19 +217,19 @@ _migrate-destroy:
 migrate-destroy:
 	@clear
 	@echo "\n# Destroy migrations on:\n> project=$(project); conn=$(conn)\n"
-	@$(MAKE) -f Makefile _migrate-destroy
+	@$(MAKE) -s -f Makefile _migrate-destroy
 
 migrate-redo: 
 	@clear
 	@echo "\n# Replaying last $(steps) migrations on:\n> project=$(project); conn=$(conn)\n"
-	@$(MAKE) -f Makefile _migrate-down
-	@$(MAKE) -f Makefile _migrate-up
+	@$(MAKE) -s -f Makefile _migrate-down
+	@$(MAKE) -s -f Makefile _migrate-up
 
 migrate-rebuild: 
 	@clear
 	@echo "\n# Rebuilding migrations on:\n> project=$(project); conn=$(conn)\n"
-	@$(MAKE) -f Makefile _migrate-destroy
-	@$(MAKE) -f Makefile _migrate
+	@$(MAKE) -s -f Makefile _migrate-destroy
+	@$(MAKE) -s -f Makefile _migrate
 
 migrate-create:
 	@clear
@@ -260,7 +260,7 @@ _export-schema:
 export-schema:
 	@clear
 	@echo "\n# Dumping database to a migration:\n> project=$(project); conn=$(conn); schema=$(schema)\n"
-	@$(MAKE) -f Makefile _export-schema
+	@$(MAKE) -s -f Makefile _export-schema
 
 
 
@@ -279,7 +279,7 @@ _seed:
 seed:
 	@clear
 	@echo "\n# Seeding on:\n> project=$(project); conn=$(conn)\n"
-	@$(MAKE) -f Makefile _seed
+	@$(MAKE) -s -f Makefile _seed
 
 
 
@@ -297,7 +297,7 @@ _apply:
 apply:
 	@clear
 	@echo "\n# Apply Hasura Metadata on:\n> project=$(project)\n"
-	@$(MAKE) -f Makefile _apply
+	@$(MAKE) -s -f Makefile _apply
 
 _export-meta:
 	@hasura metadata export \
@@ -307,7 +307,7 @@ _export-meta:
 export-meta:
 	@clear
 	@echo "\n# Exporting Hasura metadata to:\n> project=$(project)\n"
-	@$(MAKE) -f Makefile _export-meta
+	@$(MAKE) -s -f Makefile _export-meta
 
 
 
@@ -361,23 +361,23 @@ _pagila-init:
 pagila-init:
 	@clear
 	@echo "\n# Initializing Pagila Demo DB to \"$(db)\"\n"
-	@$(MAKE) -f Makefile _pagila-init
+	@$(MAKE) -s -f Makefile _pagila-init
 
 _pagila-destroy:
-	@$(MAKE) -f Makefile _migrate-destroy
+	@$(MAKE) -s -f Makefile _migrate-destroy
 	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres $(db) -c 'drop schema public cascade;'
 	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres $(db) -c 'create schema public;'
-	@$(MAKE) -f Makefile _migrate
+	@$(MAKE) -s -f Makefile _migrate
 pagila-destroy:
 	@clear
 	@echo "\n# Destroying Pagila Demo DB to \"$(db)\"\n"
-	@$(MAKE) -f Makefile _pagila-destroy
+	@$(MAKE) -s -f Makefile _pagila-destroy
 
 pagila-reset:
 	@clear
 	@echo "\n# Resetting Pagila Demo DB to \"$(db)\"\n"
-	@$(MAKE) -f Makefile _pagila-destroy
-	@$(MAKE) -f Makefile _pagila-init
+	@$(MAKE) -s -f Makefile _pagila-destroy
+	@$(MAKE) -s -f Makefile _pagila-init
 
 
 
@@ -401,7 +401,7 @@ _clean:
 clean:
 	@clear
 	@echo "\n# Tearing down the Docker Compose Project (with volumes)\n> $(DOCKER_COMPOSE_CHAIN)\n"
-	@$(MAKE) -f Makefile _clean
+	@$(MAKE) -s -f Makefile _clean
 
 reset:
 	@clear
@@ -409,7 +409,7 @@ reset:
 	@docker compose $(DOCKER_COMPOSE_CHAIN) down -v
 	@docker compose $(DOCKER_COMPOSE_CHAIN) pull
 	@docker compose $(DOCKER_COMPOSE_CHAIN) build
-	@$(MAKE) -f Makefile _boot
+	@$(MAKE) -s -f Makefile _boot
 
 # Experimental
 # takes a full dump to copy/paste into ChatGPT
