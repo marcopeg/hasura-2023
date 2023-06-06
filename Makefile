@@ -151,7 +151,7 @@ init:
 exports: 
 	@clear
 	@echo "\n# Exporting Hasura State to:\n> project=$(project); conn=$(conn) schema=$(schema)\n"
-	@$(MAKE) -s -f Makefile _migrate-export
+	@$(MAKE) -s -f Makefile _export-schema
 	@$(MAKE) -s -f Makefile _export-meta
 
 
