@@ -45,8 +45,9 @@ INSERT INTO public.candidates (id, name) VALUES
 (3, 'Robert Johnson');
 
 -- Insert data into badges table
-SELECT * from insert_single_badge(1);
-SELECT * from insert_single_badge(2);
+SELECT * from commit_badge(1);
+SELECT * from commit_badge(2);
+SELECT * from commit_badge(3);
 
 
 -- Insert data into proposals table
