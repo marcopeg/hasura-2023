@@ -1,8 +1,8 @@
 type Query {
-  chuck: ChuckOutput
+  randomChuck: ChuckNorrisJoke
 }
 
-type ChuckOutput {
+type ChuckNorrisJoke {
   id: String
   value: String!
   icon_url: String

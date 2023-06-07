@@ -1,5 +1,5 @@
 actions:
-  - name: chuck
+  - name: randomChuck
     definition:
       kind: ""
       handler: https://api.chucknorris.io/jokes/random
@@ -12,10 +12,10 @@ actions:
             - content-type
         template_engine: Kriti
         version: 2
-    comment: Chuck Norris Jokes
+    comment: Get a Chuck Norris random joke
 custom_types:
   enums: []
   input_objects: []
   objects:
-    - name: ChuckOutput
+    - name: ChuckNorrisJoke
   scalars: []
