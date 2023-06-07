@@ -10,33 +10,19 @@ CREATE TABLE public.audit_trail (
 CREATE OR REPLACE FUNCTION public.track_table_changes() 
 RETURNS TRIGGER AS $$
 BEGIN
-  IF (TG_OP = 'UPDATE') THEN
-    INSERT INTO public.audit_trail (pg_user, data)
-    VALUES (
-      current_user,
-      jsonb_build_object(
-        'database', current_database(),
-        'schema', current_schema(),
-        'table', TG_TABLE_NAME,
-        'action', TG_OP,
-        'diff', row_to_json(NEW)::jsonb - row_to_json(OLD)::jsonb
-      )
-    );
-    RETURN NEW;
-  ELSE
-    INSERT INTO public.audit_trail (pg_user, data)
-    VALUES (
-      current_user,
-      jsonb_build_object(
-        'database', current_database(),
-        'schema', current_schema(),
-        'table', TG_TABLE_NAME,
-        'action', TG_OP,
-        'data', CASE WHEN TG_OP = 'DELETE' THEN row_to_json(OLD) ELSE row_to_json(NEW) END
-      )
-    );
-    RETURN NEW;
-  END IF;
+  INSERT INTO public.logs (pg_user, data)
+  VALUES (
+    current_user,
+    jsonb_build_object(
+      'database', current_database(),
+      'schema', current_schema(),
+      'table', TG_TABLE_NAME,
+      'action', TG_OP,
+      'old_data', row_to_json(OLD),
+      'new_data', row_to_json(NEW)
+    )
+  );
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
