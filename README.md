@@ -25,6 +25,19 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
 
 💡 For simplicity sake I'm also testing this tutorial on [GitPod.io](https://gitpod.io) and [GitHub Codespaces](https://github.com/features/codespaces), and you can easily run this project by clicking the buttons below:
 
+<a href="javascript:(function() { window.open('https://gitpod.io/#' + encodeURIComponent(window.location.href), '_blank'); })();" target="_blank">
+  <img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod">
+</a>
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](javascript:(function() { window.open('https://gitpod.io/#' + encodeURIComponent(window.location.href), '_blank'); })();)
+
+
+<a href="javascript:(function() { window.open('https://gitpod.io/#' + encodeURIComponent(window.location.href), '_blank'); })();">Create New Gitpod Workspace</a>
+
+[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](javascript:(function() { window.open('https://gitpod.io/#' + encodeURIComponent(window.location.href), '_blank'); })();)
+
+----
+
 [![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2023)
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
