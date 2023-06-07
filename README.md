@@ -30,7 +30,7 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
 </a>
 
 
-[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)]([https://gitpod.io#https://github.com/marcopeg/hasura-2023](https://gitpod.io/from-referrer/))
+[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 ----
 
 [![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2023)
