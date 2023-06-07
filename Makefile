@@ -109,7 +109,7 @@ info:
 #
 
 _boot:
-	@docker compose $(DOCKER_COMPOSE_CHAIN) up -d
+	@HASURA_PROJECT=$(project) docker compose $(DOCKER_COMPOSE_CHAIN) up -d
 	@sleep 5
 	@$(MAKE) -s -f Makefile _init
 	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
@@ -126,8 +126,7 @@ reboot:
 start:
 	@clear
 	@echo "\n# Starting Docker Project:\n> $(DOCKER_COMPOSE_CHAIN)\n"
-	@export HASURA_PROJECT=$(project)
-	@docker compose $(DOCKER_COMPOSE_CHAIN) up -d
+	@HASURA_PROJECT=$(project) docker compose $(DOCKER_COMPOSE_CHAIN) up -d
 	@docker compose $(DOCKER_COMPOSE_CHAIN) logs -f
 
 stop:
