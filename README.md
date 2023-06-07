@@ -29,13 +29,8 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
   <img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod">
 </a>
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](javascript:(function() { window.open('https://gitpod.io/#' + encodeURIComponent(window.location.href), '_blank'); })();)
 
-
-<a href="javascript:(function() { window.open('https://gitpod.io/#' + encodeURIComponent(window.location.href), '_blank'); })();">Create New Gitpod Workspace</a>
-
-[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](javascript:(function() { window.open('https://gitpod.io/#' + encodeURIComponent(window.location.href), '_blank'); })();)
-
+[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)]([https://gitpod.io#https://github.com/marcopeg/hasura-2023](https://gitpod.io/from-referrer/))
 ----
 
 [![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2023)
