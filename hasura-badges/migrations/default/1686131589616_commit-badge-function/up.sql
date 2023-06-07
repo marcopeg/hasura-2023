@@ -1,4 +1,7 @@
-CREATE OR REPLACE FUNCTION commit_badge(badge_id INTEGER)
+CREATE OR REPLACE FUNCTION commit_badge(
+    "hasura_session" JSON,
+    "badge_id" INTEGER
+)
 RETURNS SETOF badges AS $$
 BEGIN
     RETURN QUERY

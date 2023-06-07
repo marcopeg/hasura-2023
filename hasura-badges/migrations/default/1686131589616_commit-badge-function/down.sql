@@ -1,1 +1,1 @@
-DROP FUNCTION IF EXISTS insert_single_badge(integer);
+DROP FUNCTION IF EXISTS commit_badge(json, integer);
