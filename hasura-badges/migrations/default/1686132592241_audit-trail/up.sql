@@ -10,7 +10,7 @@ CREATE TABLE public.audit_trail (
 CREATE OR REPLACE FUNCTION public.track_table_changes() 
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.logs (pg_user, data)
+  INSERT INTO public.audit_trail (pg_user, data)
   VALUES (
     current_user,
     jsonb_build_object(

@@ -6,7 +6,7 @@ services:
     ports:
       - 9695:9695
     volumes:
-      - ./hasura-state:/project
+      - ./${HASURA_PROJECT:-hasura-state}:/project
     command: > 
       hasura console 
         --log-level DEBUG 
@@ -28,7 +28,7 @@ services:
     ports:
       - 9693:9693
     volumes:
-      - ./hasura-state:/project
+      - ./${HASURA_PROJECT:-hasura-state}:/project
     command: >
       hasura console
         --log-level DEBUG
