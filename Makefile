@@ -44,8 +44,9 @@ _help:
 	@echo " 4) make start ................ Starts the services without applying the state"
 	@echo " 5) make stop ................. Stop the services"
 	@echo " 6) make clean ................ Stop the services and destroys the App state"
-	@echo " 7) make logs ................. Connects to the Docker Compose logs"
-	@echo " 7) make project .............. Sets the current project in .env file"
+	@echo " 7) make wipe ................. Removes ANY Container & Volume"
+	@echo " 8) make logs ................. Connects to the Docker Compose logs"
+	@echo " 8) make project .............. Sets the current project in .env file"
 	@echo ""
 	@echo "    Import / Export Utilities"
 	@echo "-----------------------------"
@@ -404,6 +405,15 @@ clean:
 	@echo "\n# Tearing down the Docker Compose Project (with volumes)\n> $(DOCKER_COMPOSE_CHAIN)\n"
 	@$(MAKE) -s -f Makefile _clean
 
+_wipe:
+	@docker ps -q | xargs --no-run-if-empty docker stop
+	@docker ps -aq | xargs --no-run-if-empty docker rm
+	@docker volume ls -q | xargs --no-run-if-empty docker volume rm
+wipe:
+	@clear
+	@echo "\n# Tearing down ANY Docker Containers and Volumes\n"
+	@$(MAKE) -s -f Makefile _wipe
+
 reset:
 	@clear
 	@echo "\n# Resetting the Docker Compose Project\n> $(DOCKER_COMPOSE_CHAIN)\n> project=$(project); conn=$(conn) seed=$(from).sql\n"
@@ -518,8 +528,9 @@ project:
 4: start
 5: stop
 6: clean
-7: logs
-8: project
+7: wipe
+8: logs
+9: project
 
 10: init
 11: migrate
