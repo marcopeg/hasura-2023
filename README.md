@@ -29,6 +29,10 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
 
+> **IF YOU FORKED THIS REPO** the buttons above still link to the original one.  
+> You must edit your README.md and ajust the url setting your `username/repo` correctly.
+>
+> When it comes to GitPod.io, the best way is to [install their extension](https://github.com/gitpod-io/browser-extension).
 
 ## Table of Contents
 
