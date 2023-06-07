@@ -1,0 +1,11 @@
+type Query {
+  chuck: ChuckOutput
+}
+
+type ChuckOutput {
+  id: String
+  value: String!
+  icon_url: String
+  url: String
+}
+

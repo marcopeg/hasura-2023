@@ -1,0 +1,21 @@
+actions:
+  - name: chuck
+    definition:
+      kind: ""
+      handler: https://api.chucknorris.io/jokes/random
+      request_transform:
+        method: GET
+        query_params: {}
+        request_headers:
+          add_headers: {}
+          remove_headers:
+            - content-type
+        template_engine: Kriti
+        version: 2
+    comment: Chuck Norris Jokes
+custom_types:
+  enums: []
+  input_objects: []
+  objects:
+    - name: ChuckOutput
+  scalars: []
