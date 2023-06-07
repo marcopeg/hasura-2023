@@ -13,7 +13,7 @@ CREATE TABLE public.badge_reqs (
 CREATE TABLE public.badges (
     id serial PRIMARY KEY,
     badge_defs_id integer,
-    version timestamp without time zone,
+    version timestamp without time zone default now(),
     data text,
     FOREIGN KEY (badge_defs_id) REFERENCES public.badge_defs(id)
 );
