@@ -43,9 +43,10 @@ INSERT INTO public.candidates (id, name) VALUES
 
 -- Insert data into badges table
 INSERT INTO public.badges (id, badge_defs_id, version, data) VALUES
-(1, 1, NOW(), 'Data for Software Engineering Badge'),
-(2, 2, NOW(), 'Data for Data Science Badge'),
-(3, 3, NOW(), 'Data for Cybersecurity Badge');
+(1, 1, NOW(), '{"message": "Data for Software Engineering Badge"}'),
+(2, 2, NOW(), '{"message": "Data for Data Science Badge"}'),
+(3, 3, NOW(), '{"message": "Data for Cybersecurity Badge"}');
+
 
 -- Insert data into proposals table
 INSERT INTO public.proposals (id, created_at, notes, badge_id, candidate_id) VALUES
