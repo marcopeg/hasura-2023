@@ -25,11 +25,7 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
 
 💡 For simplicity sake I'm also testing this tutorial on [GitPod.io](https://gitpod.io) and [GitHub Codespaces](https://github.com/features/codespaces), and you can easily run this project by clicking the buttons below:
 
-
 [![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
-----
-
-[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2023)
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
 
@@ -385,7 +381,7 @@ ports:
 >
 > It shows the project's ports and you can easily `Ctrl + Click` to open one in your browser.
 
-[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/marcopeg/hasura-2023)
+[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
 ## Working With GitHub Codespaces
 
