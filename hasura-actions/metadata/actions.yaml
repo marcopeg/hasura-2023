@@ -1,18 +1,4 @@
 actions:
-  - name: chuckCategories
-    definition:
-      kind: ""
-      handler: https://api.chucknorris.io/jokes/categories
-      request_transform:
-        method: GET
-        query_params: {}
-        request_headers:
-          add_headers: {}
-          remove_headers:
-            - content-type
-        template_engine: Kriti
-        version: 2
-    comment: Get the list of Chuck Norris Jokes available categories
   - name: chuck
     definition:
       kind: ""
@@ -26,4 +12,28 @@ actions:
             - content-type
         template_engine: Kriti
         version: 2
+    permissions:
+      - role: anonymous
     comment: Get a Chuck Norris random joke
+  - name: chuckCategories
+    definition:
+      kind: ""
+      handler: https://api.chucknorris.io/jokes/categories
+      request_transform:
+        method: GET
+        query_params: {}
+        request_headers:
+          add_headers: {}
+          remove_headers:
+            - content-type
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: anonymous
+    comment: Get the list of Chuck Norris Jokes available categories
+custom_types:
+  enums: []
+  input_objects: []
+  objects:
+    - name: ChuckNorrisJoke
+  scalars: []

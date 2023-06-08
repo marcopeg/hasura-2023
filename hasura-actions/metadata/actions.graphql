@@ -1,11 +1,10 @@
 type Query {
-  chuckCategories: [String!]!
-}
-
-type Query {
   chuck: ChuckNorrisJoke
 }
 
+type Query {
+  chuckCategories: [String!]!
+}
 
 type ChuckNorrisJoke {
   id: String

@@ -1,1 +1,9 @@
-[]
+- comment: Returns a Chuck Norris random joke from the famous Chuck Norris APIs.
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: getChuckNorrisJoke
+  methods:
+    - GET
+  name: getChuckNorrisJoke
+  url: chuck
