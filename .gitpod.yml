@@ -36,5 +36,5 @@ vscode:
    - ckolkman.vscode-postgres
    - esbenp.prettier-vscode
    - darkriszty.markdown-table-prettify
-   - Codeium.codeium
-   - eamodio.gitlens
+#   - Codeium.codeium
+#   - eamodio.gitlens
