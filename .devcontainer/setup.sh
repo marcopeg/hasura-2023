@@ -8,4 +8,4 @@ gh codespace ports visibility 9695:public -c ${CODESPACE_NAME}
 
 # Runs the project:
 make hasura-install
-make boot
+make start
