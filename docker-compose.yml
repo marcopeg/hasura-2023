@@ -40,10 +40,10 @@ services:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres
       # Hasura Console has authentication issues if we provide this setting.
       # (ask Hasura!)
-      #HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET:-hasura}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET:-hasura}
       # Can not run this without the Admin Secret
       # (ask Hasura!)
-      #HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
       # Apply the migrations at boot
       # (we achieve this via HasuraCLI commands running `make boot`)
       # HASURA_GRAPHQL_METADATA_DIR: "/project/metadata"

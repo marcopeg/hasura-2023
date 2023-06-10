@@ -15,6 +15,7 @@ services:
         --api-host https://${CODESPACE_NAME}-9693.preview.app.github.dev
         --api-port 443
         --endpoint https://${CODESPACE_NAME}-8080.preview.app.github.dev
+        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
     working_dir: /project
     restart: unless-stopped
     depends_on:
@@ -33,9 +34,9 @@ services:
       hasura console
         --log-level DEBUG
         --address "hasura-cli-api"
-        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
         --no-browser
         --endpoint http://hasura-engine:8080
+        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
     working_dir: /project
     restart: unless-stopped
     depends_on:

@@ -15,6 +15,7 @@ services:
         --api-host https://9693-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST} 
         --api-port 443
         --endpoint https://8080-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}
+        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
     working_dir: /project
     restart: unless-stopped
     depends_on:
@@ -33,9 +34,9 @@ services:
       hasura console
         --log-level DEBUG
         --address "hasura-cli-api"
-        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
         --no-browser
         --endpoint http://hasura-engine:8080
+        --admin-secret ${HASURA_ADMIN_SECRET:-hasura}
     working_dir: /project
     restart: unless-stopped
     depends_on:
