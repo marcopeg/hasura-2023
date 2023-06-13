@@ -1,8 +1,9 @@
 FROM gitpod/workspace-full
 
 # Install PlantUML
-RUN apt update
-RUN apt install -y graphviz
+# Install Graphviz
+RUN sudo apt-get update
+RUN sudo apt-get -y install graphviz
 
 # Install Hasura
 RUN make hasura-install
