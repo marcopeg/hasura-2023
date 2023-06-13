@@ -9,7 +9,7 @@ gh codespace ports visibility 9695:public -c ${CODESPACE_NAME}
 # Install Worspace Dependencies
 # PlantUML
 sudo apt update
-sudo apt install graphviz
+sudo apt install -y graphviz
 # HasuraCLI
 make hasura-install
 
