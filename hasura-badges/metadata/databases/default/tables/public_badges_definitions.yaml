@@ -1,3 +1,17 @@
 table:
   name: badges_definitions
   schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - created_at
+        - description
+        - id
+        - modified_at
+        - title
+      filter: {}
+      query_root_fields:
+        - select
+        - select_by_pk
+      subscription_root_fields: []
