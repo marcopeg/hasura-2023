@@ -1,8 +1,11 @@
+image:
+  file: .gitpod.Dockerfile
+
 tasks:
   - name: Boot
-    before: make hasura-install && echo 'export DOCKER_COMPOSE_TARGET=gitpod' >> ~/.bashrc && export DOCKER_COMPOSE_TARGET=gitpod
     command: open README.md && make start
 
+#    before: make hasura-install && echo 'export DOCKER_COMPOSE_TARGET=gitpod' >> ~/.bashrc && export DOCKER_COMPOSE_TARGET=gitpod
 
 # Exposed services:
 ports:
@@ -36,5 +39,6 @@ vscode:
    - ckolkman.vscode-postgres
    - esbenp.prettier-vscode
    - darkriszty.markdown-table-prettify
+   - jebbs.plantuml
 #   - Codeium.codeium
 #   - eamodio.gitlens
