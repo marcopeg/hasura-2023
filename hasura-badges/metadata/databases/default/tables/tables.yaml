@@ -1,1 +1,3 @@
-[]
+- "!include public_backoffice_users.yaml"
+- "!include public_badges_definitions.yaml"
+- "!include public_requirements_definitions.yaml"
