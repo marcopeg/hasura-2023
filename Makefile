@@ -518,7 +518,7 @@ pgtap: pgtap-reset pgtap-schema pgtap-run
 
 # Sets an environmental file to apply a different project.
 _project:
-	@[ ! -f Makefile.env ] && echo "project=hasura-$(project)" > Makefile.env || echo ""
+	@[ ! -f Makefile.env ] && echo "project=$(project)" > Makefile.env || echo ""
 	@sed 's/$(project)/hasura-$(from)/g' Makefile.env > Makefile.env.tmp
 	@rm -f Makefile.env && mv Makefile.env.tmp Makefile.env
 project:
