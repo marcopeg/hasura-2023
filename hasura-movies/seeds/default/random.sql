@@ -42,3 +42,15 @@ SELECT
         )
     )
 FROM generate_series(1, 10000) AS s(num);
+
+
+TRUNCATE TABLE bananas RESTART IDENTITY;
+INSERT INTO bananas (type, origin, harvest_date, quantity, price)
+SELECT 
+    md5(random()::text) as type,
+    md5(random()::text) as origin,
+    CURRENT_DATE - INTERVAL '1 year' * random() as harvest_date,
+    (random() * 1000)::int as quantity,
+    (random() * 10)::numeric(5,2) as price
+FROM 
+    generate_series(1, 10000);

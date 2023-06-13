@@ -1446,3 +1446,13 @@ VALUES
             "cast": ["Tom Hanks", "Tim Allen", "Don Rickles"]
         }
     }');
+
+
+
+TRUNCATE TABLE bananas;
+SELECT setval('bananas_id_seq', 1, false);
+INSERT INTO bananas (type, origin, harvest_date, quantity, price) 
+VALUES 
+('Cavendish', 'Ecuador', '2023-01-01', 1000, 0.50),
+('Lady Finger', 'India', '2023-02-01', 800, 0.75),
+('Red', 'Costa Rica', '2023-03-01', 600, 1.00);
