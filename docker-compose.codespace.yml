@@ -2,7 +2,7 @@ version: '3.6'
 services:
 
   hasura-cli-console:
-    build: ./docker-images/hasura-cli
+    build: ./.docker-images/hasura-cli
     ports:
       - 9695:9695
     volumes:
@@ -25,7 +25,7 @@ services:
       - hasura
 
   hasura-cli-api:
-    build: ./docker-images/hasura-cli
+    build: ./.docker-images/hasura-cli
     ports:
       - 9693:9693
     volumes:

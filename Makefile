@@ -31,6 +31,8 @@ endif
 # Default Action
 #
 
+help:
+	@$(MAKE) -s -f Makefile _help | more
 _help:
 	@clear
 	@echo ""
@@ -46,7 +48,8 @@ _help:
 	@echo " 6) make clean ................ Stop the services and destroys the App state"
 	@echo " 7) make wipe ................. Removes ANY Container & Volume"
 	@echo " 8) make logs ................. Connects to the Docker Compose logs"
-	@echo " 8) make project .............. Sets the current project in .env file"
+	@echo " 8) make project .............. Sets the current project in Makefile.env file"
+	@echo "                                > make project from=foo"
 	@echo ""
 	@echo "    Import / Export Utilities"
 	@echo "-----------------------------"
@@ -54,18 +57,23 @@ _help:
 	@echo "11) make migrate .............. Runs the Hasura migrations"
 	@echo "12) make apply ................ Applies the Hasura metadata"
 	@echo "13) make exports .............. Exports the current App state"
-	@echo "14) make export-schema ........ Dumps the database to a migration"
+	@echo "14) make export-sql ........... Dumps the database default schema into a migration"
+	@echo "                                > make export-sql schema=public"
 	@echo "15) make export-meta .......... Exports the Hasura metadata"
 	@echo ""
 	@echo "    SQL Migration Utilities"
 	@echo "-----------------------------"
 	@echo "20) make migrate-status ....... Checks the status of the migrations"
 	@echo "21) make migrate-up ........... Applies the specified number of migrations up"
+	@echo "                                > make migrate-up steps=1"
 	@echo "22) make migrate-down ......... Applies the specified number of migrations down"
+	@echo "                                > make migrate-down steps=1"
 	@echo "23) make migrate-redo ......... Replays the last specified number of migrations"
+	@echo "                                > make migrate-redo steps=1"
 	@echo "24) make migrate-rebuild ...... Rebuilds all the migrations"
 	@echo "25) make migrate-destroy ...... Destroys all the migrations"
 	@echo "26) make migrate-create ....... Creates a new migration"
+	@echo "                                > make migrate-create name=foobar"
 	@echo "27) make seed ................. Applies the database seed"
 	@echo ""
 	@echo "    SQL Utilities"
@@ -91,8 +99,6 @@ _help:
 	@echo "92) make py ................... Runs a Python script from the project's \"scripts\" folder"
 	@echo "99) make reset ................ Cleans & reboots the Project"
 	@echo ""
-help:
-	@$(MAKE) -s -f Makefile _help | more
 
 info:
 	@clear
@@ -152,7 +158,7 @@ init:
 exports: 
 	@clear
 	@echo "\n# Exporting Hasura State to:\n> project=$(project); conn=$(conn) schema=$(schema)\n"
-	@$(MAKE) -s -f Makefile _export-schema
+	@$(MAKE) -s -f Makefile _export-sql
 	@$(MAKE) -s -f Makefile _export-meta
 
 
@@ -249,7 +255,7 @@ migrate-create:
 		--project $(project) \
 		--database-name $(conn)
 
-_export-schema:
+_export-sql:
 	@hasura migrate create \
 		"__full-export___" \
 		--endpoint $(endpoint) \
@@ -259,10 +265,10 @@ _export-schema:
   		--schema $(schema) \
   		--from-server \
 		--down-sql "SELECT NOW();"
-export-schema:
+export-sql:
 	@clear
 	@echo "\n# Dumping database to a migration:\n> project=$(project); conn=$(conn); schema=$(schema)\n"
-	@$(MAKE) -s -f Makefile _export-schema
+	@$(MAKE) -s -f Makefile _export-sql
 
 
 
@@ -463,7 +469,7 @@ dump:
 # Run a script from the project's scripts folder
 env?="F=F"
 py:
-	@docker images -q hasura-2023-py | grep -q . || docker build -t hasura-2023-py ./docker-images/python
+	@docker images -q hasura-2023-py | grep -q . || docker build -t hasura-2023-py ./.docker-images/python
 	@docker run --rm \
 		-e $(env) \
 		-e HASURA_GRAPHQL_ENDPOINT=http://hasura-engine:8080/v1/graphql \
@@ -474,7 +480,7 @@ py:
 		sh -c "python /scripts/$(from).py"
 
 py-build:
-	docker build --no-cache -t hasura-2023-py ./docker-images/python
+	docker build --no-cache -t hasura-2023-py ./.docker-images/python
 
 
 
@@ -493,10 +499,10 @@ pgtap-schema: $(CURDIR)/$(project)/migrations/$(conn)/*
 	done
 
 pgtap-build:
-	docker build --no-cache -t hasura-2023-pgtap ./docker-images/pg-tap
+	docker build --no-cache -t hasura-2023-pgtap ./.docker-images/pg-tap
 
 pgtap-run:
-	@docker images -q hasura-2023-pgtap | grep -q . || docker build -t hasura-2023-pgtap ./docker-images/pg-tap
+	@docker images -q hasura-2023-pgtap | grep -q . || docker build -t hasura-2023-pgtap ./.docker-images/pg-tap
 	clear
 	@echo "Running Unit Tests ..."
 	@docker run --rm \
@@ -510,9 +516,10 @@ pgtap-run:
 pgtap: pgtap-reset pgtap-schema pgtap-run
 
 
+# Sets an environmental file to apply a different project.
 _project:
-	@[ ! -f Makefile.env ] && echo "project=$(project)" > Makefile.env || echo ""
-	@sed 's/$(project)/$(from)/g' Makefile.env > Makefile.env.tmp
+	@[ ! -f Makefile.env ] && echo "project=hasura-$(project)" > Makefile.env || echo ""
+	@sed 's/$(project)/hasura-$(from)/g' Makefile.env > Makefile.env.tmp
 	@rm -f Makefile.env && mv Makefile.env.tmp Makefile.env
 project:
 	@echo "Setting project from: $(project) to $(from)"
@@ -536,7 +543,7 @@ project:
 11: migrate
 12: apply
 13: exports
-14: export-schema
+14: export-sql
 15: export-meta
 
 20: migrate-status
