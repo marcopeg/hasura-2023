@@ -1,6 +1,14 @@
 table:
   name: badges_definitions
   schema: public
+array_relationships:
+  - name: badges_definitions_requirements_definitions
+    using:
+      foreign_key_constraint_on:
+        column: badge_id
+        table:
+          name: requirements_definitions
+          schema: public
 select_permissions:
   - role: anonymous
     permission:

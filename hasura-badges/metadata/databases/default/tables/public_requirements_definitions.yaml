@@ -1,3 +1,16 @@
 table:
   name: requirements_definitions
   schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - created_at
+        - description
+        - id
+        - modified_at
+        - title
+      filter: {}
+      query_root_fields:
+        - select
+      subscription_root_fields: []
