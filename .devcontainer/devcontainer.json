@@ -9,7 +9,8 @@
             "extensions": [
 				"ms-azuretools.vscode-docker",
                 "ckolkman.vscode-postgres",
-				"ms-vscode.makefile-tools"
+				"ms-vscode.makefile-tools",
+                "jebbs.plantuml"
 			]
         }
     },

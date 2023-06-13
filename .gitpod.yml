@@ -5,8 +5,6 @@ tasks:
   - name: Boot
     command: open README.md && make start
 
-#    before: make hasura-install && echo 'export DOCKER_COMPOSE_TARGET=gitpod' >> ~/.bashrc && export DOCKER_COMPOSE_TARGET=gitpod
-
 # Exposed services:
 ports:
  - name: Hasura GraphQL APIs
