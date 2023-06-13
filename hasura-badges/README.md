@@ -1,7 +1,7 @@
 # Badges Project
 
 This project is going to support a multi-tenant application to manage competence growth in our company.
-Each Engineer will pursue one or more experience-driven goals named “Badges”
+Each Engineer will pursue one or more experience-driven goals named “Badges”.
 
 A Badge represents a mix of knowledge and experience that an Engineer has achieved.
 Badges are proposed by a stakeholder of the Engineer’s growth. It could be the Engineering Manager or other mentor actors.
@@ -19,7 +19,7 @@ Badge Design App (Backoffice)
 - [ ] It should CRUD on Requirements
 - [ ] It should COMMIT a new Badge with its own Requirements
 - [ ] It should CRUD on Managers
-- [ ] It should CRUD  on Engineers
+- [ ] It should CRUD on Engineers
 - [ ] It should CRUD on Manger<>Engineer relation
 
 Managers App
