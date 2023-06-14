@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react-swc";
 const env = envalid.cleanEnv(process.env, {
   PROXY_TARGET: envalid.url({
     desc: "Proxy Sidecar base url",
-    default: "http://hasura-engine:8080"
+    default: "http://localhost:8080"
   }),
   BASE_URL: envalid.str({
     desc: "Base url or prefix to routes that targets the Proxy Sidecar",
