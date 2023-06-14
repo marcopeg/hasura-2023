@@ -5,6 +5,7 @@ gh codespace ports visibility 8080:public -c ${CODESPACE_NAME}
 gh codespace ports visibility 8081:public -c ${CODESPACE_NAME}
 gh codespace ports visibility 9693:public -c ${CODESPACE_NAME}
 gh codespace ports visibility 9695:public -c ${CODESPACE_NAME}
+gh codespace ports visibility 5173:public -c ${CODESPACE_NAME}
 
 # Install Worspace Dependencies
 # PlantUML

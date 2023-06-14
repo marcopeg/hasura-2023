@@ -15,7 +15,7 @@
 			]
         }
     },
-    "forwardPorts": [8080, 8081, 9695, 9693],
+    "forwardPorts": [8080, 8081, 9695, 9693, 5173],
     "portsAttributes": {
         "8081": {
             "label": "Adminer Web Client",
@@ -23,14 +23,18 @@
         },
         "8080": {
             "label": "Hasura Engine API",
-            "onAutoForward": "ignore"
+            "onAutoForward": "openPreview"
         },
         "9695": {
             "label": "Hasura CLI Console",
-            "onAutoForward": "openPreview"
+            "onAutoForward": "ignore"
         },
         "9693": {
             "label": "Hasura CLI API",
+            "onAutoForward": "ignore"
+        },
+        "5173": {
+            "label": "React App",
             "onAutoForward": "ignore"
         },
         "5432": {
