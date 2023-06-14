@@ -1,12 +1,11 @@
--- Insert data into backoffice_users
+-- Insert data into users
 
-TRUNCATE backoffice_users RESTART IDENTITY CASCADE;
-ALTER SEQUENCE backoffice_users_id_seq RESTART WITH 3;
-INSERT INTO backoffice_users (id, name)
-VALUES 
-(1, 'Luke'), 
-(2, 'Darth');
-
+TRUNCATE users RESTART IDENTITY CASCADE;
+ALTER SEQUENCE users_id_seq RESTART WITH 4;
+INSERT INTO "users" ("id", "name", "roles", "created_at", "modified_at") VALUES
+(1, 'Luke Skywalker', ARRAY['engineer', 'backoffice'], NOW(), NOW()),
+(2, 'Ian', ARRAY['engineer', 'manager'], NOW(), NOW()),
+(3, 'Darth Vader', ARRAY['backoffice'], NOW(), NOW());
 
 
 -- Insert data into badges_definitions
@@ -15,7 +14,7 @@ ALTER SEQUENCE badges_definitions_id_seq RESTART WITH 3;
 INSERT INTO badges_definitions (id, title, description, created_by, modified_by)
 VALUES 
 (1, 'Laser Swordmanship', 'You can light a saber on and off real fast.', 1, 1), 
-(2, 'Gunmanship', 'Unlike stormtroopers, you can hit your target', 2, 2);
+(2, 'Gunmanship', 'Unlike stormtroopers, you can hit your target', 3, 3);
 
 -- Insert data into requirements_definitions
 TRUNCATE requirements_definitions RESTART IDENTITY CASCADE;
