@@ -1,5 +1,8 @@
 # Hasura Project Setup - March 2023
 
+[![Open in GitPod](https://img.shields.io/badge/Open%20in-GitPod.io-orange)](https://gitpod.io/from-referrer/)
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
+
 This is a step by step guide to running an [Hasura-based project](https://hasura.io) on your development machine. Keep on reading and you will learn how to build a **fully automated environment** that lets you:
 
 - Run [Postgres](https://hub.docker.com/_/postgres) and [Adminer Web Client](https://hub.docker.com/_/adminer)
@@ -27,7 +30,7 @@ Working with Windows, WSL, and Docker can be a bit of a pain, even if there are 
 
 💡 For simplicity sake I'm also testing this tutorial on [GitPod.io](https://gitpod.io) and [GitHub Codespaces](https://github.com/features/codespaces), and you can easily run this project by clicking the buttons below:
 
-[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
+[![Open in GitPod](https://img.shields.io/badge/Open%20in-GitPod.io-orange)](https://gitpod.io/from-referrer/)
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
 
@@ -352,7 +355,7 @@ This project is configured as so to automatically run the _Hasura Console_ with 
 👉 Open your workspace public url on port `9695` 👈
 
 > 🚧 The HasuraCLI containers runs with user `root:root` and creates files accordingly. You need to claim those files to your host user after running a bunch of changes:
-> 
+>
 > ```bash
 > sudo chown -R $(id -u):$(id -g) ./hasura-state
 > ```
@@ -387,7 +390,7 @@ ports:
 >
 > It shows the project's ports and you can easily `Ctrl + Click` to open one in your browser.
 
-[![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
+[![Open in GitPod](https://img.shields.io/badge/Open%20in-GitPod.io-orange)](https://gitpod.io/from-referrer/)
 
 ## Working With GitHub Codespaces
 
@@ -399,10 +402,9 @@ Of course, the configuration is a bit different and it is mostly based on the `.
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-GitHub_Codespaces-blue?logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=647616168)
 
-
 ## The Makefile Interface
 
-From now on, we are going to issue HasuraCLI commands that need some configuration. It may become quite a pain to remember everything. 
+From now on, we are going to issue HasuraCLI commands that need some configuration. It may become quite a pain to remember everything.
 
 A simple solution is to create a `Makefile` and document our **Project's APIs** in there:
 
@@ -484,9 +486,9 @@ make migrate-create name=foobar
 make migrate-export schema=foo
 ```
 
-## Seeding Your Data 
+## Seeding Your Data
 
-[[ TODO ]]
+[[TODO]]
 
 ```bash
 # Apply a specific seed
@@ -548,9 +550,9 @@ I use [ChatGPT](https://chat.openai.com/) a lot these days.
 I give **requirements** like:
 
 ```
-Given the following table, generate the query to insert 20 new 
-records with a randomic date within last week and a JSON payload 
-that represents a football game metrics. 
+Given the following table, generate the query to insert 20 new
+records with a randomic date within last week and a JSON payload
+that represents a football game metrics.
 
 CREATE TABLE "public"."demo_events" (
     "created_at" timestamp with time zone DEFAULT now() NOT NULL,
@@ -594,7 +596,7 @@ make boot
 make dump
 ```
 
-A new file named `dump-{project}-{db}.txt` should appear in your root folder. Open it and copy/paste the results into ChatGPT. 
+A new file named `dump-{project}-{db}.txt` should appear in your root folder. Open it and copy/paste the results into ChatGPT.
 
 In this particular example I'm asking to generate a SQL function... and it works with incredible accuracy!!!
 
