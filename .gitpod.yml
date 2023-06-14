@@ -11,7 +11,7 @@ ports:
     description: Runs the Hasura Engine APIs
     port: 8080
     visibility: public # Auth issues if private
-    onOpen: ignore
+    onOpen: open-preview
   - name: Adminer
     description: Runs Adminer database Web Client
     port: 8081
@@ -21,11 +21,16 @@ ports:
     description: Runs the Hasura Web Console
     port: 9695
     visibility: public
-    onOpen: open-preview
+    onOpen: ignore
   - name: Hasura CLI APIs
     description: Runs the Hasura CLI APIs
     port: 9693
     visibility: public # Problems reaching the Hasura API if private
+    onOpen: ignore
+  - name: React App
+    description: Runs the React App
+    port: 5173
+    visibility: public
     onOpen: ignore
   - name: Postgres
     port: 5432
