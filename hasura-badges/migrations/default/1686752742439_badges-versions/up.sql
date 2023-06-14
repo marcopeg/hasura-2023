@@ -1,10 +1,11 @@
 CREATE TABLE "badges_versions" (
   "id" INTEGER,
+  "created_at" TIMESTAMP NOT NULL DEFAULT now(),
+  "created_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT,
   "title" VARCHAR(255),
   "description" TEXT,
   "requirements" JSON,
-  "created_at" TIMESTAMP NOT NULL DEFAULT now(),
-  "created_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT
+  PRIMARY KEY ("id", "created_at")
 );
 
 CREATE OR REPLACE FUNCTION "save_badge"(
