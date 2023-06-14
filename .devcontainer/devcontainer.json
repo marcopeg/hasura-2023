@@ -10,7 +10,8 @@
 				"ms-azuretools.vscode-docker",
                 "ckolkman.vscode-postgres",
 				"ms-vscode.makefile-tools",
-                "jebbs.plantuml"
+                "jebbs.plantuml",
+                "esbenp.prettier-vscode"
 			]
         }
     },

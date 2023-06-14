@@ -97,6 +97,8 @@ _help:
 	@echo "90) make hasura-install ....... Installs HasuraCLI"
 	@echo "91) make hasura-console ....... Runs HasuraCLI Web Console"
 	@echo "92) make py ................... Runs a Python script from the project's \"scripts\" folder"
+	@echo "93) make react ................ Runs a React App matching the project's name"
+	@echo "                                > make react from=custom-name"
 	@echo "99) make reset ................ Cleans & reboots the Project"
 	@echo ""
 
@@ -525,6 +527,19 @@ project:
 	@echo "Setting project from: $(project) to $(from)"
 	@$(MAKE) -s -f Makefile _project
 
+
+
+# Runs a ReactApp using the current "project" name or "from" variable
+# > make react
+# > make react from=events
+_react:
+	@(cd $(if $(filter $(from),default),$(subst hasura-,react-,$(project)),react-$(from)) && yarn && yarn start)
+react:
+	@echo "Starting a React App: $(if $(filter $(from),default),$(subst hasura-,react-,$(project)),react-$(from))"
+	@$(MAKE) -s -f Makefile _react
+
+
+
 #
 # Numeric API
 #
@@ -570,4 +585,5 @@ project:
 90: hasura-install
 91: hasura-console
 92: py
+93: react
 99: reset

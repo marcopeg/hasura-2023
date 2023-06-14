@@ -12,6 +12,7 @@ This is a step by step guide to running an [Hasura-based project](https://hasura
 - Easily setup the [Pagila demo db](https://github.com/devrimgunduz/pagila) and learn to work with a complex data structure
 - Learn a lot of tricks around [Make](https://www.gnu.org/software/make/), [Docker](https://www.docker.com/), & [Docker Compose](https://docs.docker.com/compose/)
 - Render [PlantUML](https://plantuml.com/) diagrams with VSCode preview (in GitPod and Codespaces)
+- Runs React Apps based on [ViteJS](https://vitejs.dev/) with a pre-configured proxy towards Hasura
 
 > 👉 I'm working this out on a Mac and will assume that you do the very same. Windows users... 😬🫣🤗
 
