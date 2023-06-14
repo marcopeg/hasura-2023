@@ -32,3 +32,4 @@ VALUES
 TRUNCATE badges_versions RESTART IDENTITY CASCADE;
 SELECT * FROM create_badge_version('{"x-hasura-user-id":"1"}', 1);
 SELECT * FROM create_badge_version('{"x-hasura-user-id":"1"}', 2);
+SELECT * FROM _create_badge_version(1, 1, (SELECT now() AT TIME ZONE 'UTC' + '1ms'::interval));
