@@ -30,5 +30,5 @@ VALUES
 
 -- Produce the first version of the badges
 TRUNCATE badges_versions RESTART IDENTITY CASCADE;
-SELECT * FROM save_badge('{"x-hasura-user-id":"1"}', 1);
-SELECT * FROM save_badge('{"x-hasura-user-id":"1"}', 2);
+SELECT * FROM create_badge_version('{"x-hasura-user-id":"1"}', 1);
+SELECT * FROM create_badge_version('{"x-hasura-user-id":"1"}', 2);

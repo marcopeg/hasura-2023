@@ -8,7 +8,7 @@ CREATE TABLE "badges_versions" (
   PRIMARY KEY ("id", "created_at")
 );
 
-CREATE OR REPLACE FUNCTION "save_badge"(
+CREATE OR REPLACE FUNCTION "create_badge_version"(
   "hasura_session" JSON,
   "badge_def_id" INTEGER
 )
