@@ -65,6 +65,23 @@ services:
     networks:
       - hasura
 
+  
+  app:
+    build:
+      context: ./cra-badges
+      dockerfile: Dockerfile
+    volumes:
+      - ./app/public:/usr/src/app/public:delegated
+      - ./app/src:/usr/src/app/src:delegated
+    environment:
+      REACT_APP_PROXY_TARGET: http://hasura-engine:8080
+      CHOKIDAR_USEPOLLING: "true"
+    stdin_open: true
+    tty: true
+    depends_on:
+      hasura-engine:
+        condition: service_healthy
+
 volumes:
   postgres:
 

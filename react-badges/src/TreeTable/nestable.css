@@ -1,0 +1,39 @@
+/**
+ * Underline on moushover
+ */
+
+.treetable-item {
+  padding: 5px;
+}
+
+/* Visual aid on mobile */
+@media (hover: none) and (pointer: coarse) {
+  .treetable-item {
+    border-bottom: 1px solid rgb(35, 35, 35);
+    padding: 5px;
+  }
+}
+
+/* Hover on desktop */
+.nestable-item-name {
+  border: 1px solid transparent;
+  transition-duration: 300ms;
+  transition-property: border-color, background-color;
+  transition-timing-function: ease-in-out;
+}
+.nestable-item-name:hover {
+  border-color: #333;
+  background-color: #1a1a1a;
+}
+
+.treetable-item-focus {
+  background-color: rgb(50, 50, 50);
+}
+
+/* Improve draggable experience */
+.nestable-item.is-dragging,
+.nestable-item.is-dragging:before {
+  background: rgb(35, 35, 35);
+  border-radius: 0;
+  border: none;
+}

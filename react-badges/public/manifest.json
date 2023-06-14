@@ -1,0 +1,13 @@
+{
+  "name": "Outlist",
+  "short_name": "Outlist",
+  "start_url": "https://liste123.netlify.app",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "outlist.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
