@@ -45,21 +45,24 @@ _help:
 	@echo " 3) make reboot ............... Destroys the state, then boot again"
 	@echo " 4) make start ................ Starts the services without applying the state"
 	@echo " 5) make stop ................. Stop the services"
-	@echo " 6) make clean ................ Stop the services and destroys the App state"
+	@echo " 6) make down ................. Stop the services and destroys the App state"
 	@echo " 7) make wipe ................. Removes ANY Container & Volume"
 	@echo " 8) make logs ................. Connects to the Docker Compose logs"
-	@echo " 8) make project .............. Sets the current project in Makefile.env file"
+	@echo " 9) make project .............. Sets the current project in Makefile.env file"
 	@echo "                                > make project from=foo"
 	@echo ""
 	@echo "    Import / Export Utilities"
 	@echo "-----------------------------"
 	@echo "10) make init ................. Initializes the App state from a Project"
-	@echo "11) make migrate .............. Runs the Hasura migrations"
-	@echo "12) make apply ................ Applies the Hasura metadata"
-	@echo "13) make exports .............. Exports the current App state"
-	@echo "14) make export-sql ........... Dumps the database default schema into a migration"
-	@echo "                                > make export-sql schema=public"
-	@echo "15) make export-meta .......... Exports the Hasura metadata"
+	@echo "11) make clear ................ Removes the App state completely"
+	@echo "12) make rebuild .............. Re-initializes the App state from the Project"
+	@echo "13) make migrate .............. Runs the Hasura migrations"
+	@echo "14) make apply ................ Applies the Hasura metadata"
+	@echo "15) make exports .............. Exports the current App state"
+	@echo "16) make migrate-export ....... Dumps the database default schema into a migration"
+	@echo "                                > make migrate-export schema=public"
+	@echo "17) make meta-export .......... Exports the Hasura metadata"
+	@echo "18) make meta-clear ........... Removes the Hasura metadata"
 	@echo ""
 	@echo "    SQL Migration Utilities"
 	@echo "-----------------------------"
@@ -71,7 +74,7 @@ _help:
 	@echo "23) make migrate-redo ......... Replays the last specified number of migrations"
 	@echo "                                > make migrate-redo steps=1"
 	@echo "24) make migrate-rebuild ...... Rebuilds all the migrations"
-	@echo "25) make migrate-destroy ...... Destroys all the migrations"
+	@echo "25) make migrate-clear ........ Destroys all the migrations"
 	@echo "26) make migrate-create ....... Creates a new migration"
 	@echo "                                > make migrate-create name=foobar"
 	@echo "27) make seed ................. Applies the database seed"
@@ -129,7 +132,7 @@ boot:
 reboot:
 	@clear
 	@echo "\n# Rebooting Docker Project with Hasura State from:\n> $(DOCKER_COMPOSE_CHAIN)\n> project=$(project); conn=$(conn) seed=$(from).sql\n"
-	@$(MAKE) -s -f Makefile _clean
+	@$(MAKE) -s -f Makefile _down
 	@$(MAKE) -s -f Makefile _boot
 
 start:
@@ -157,12 +160,27 @@ init:
 	@echo "\n# Initializing Hasura State from:\n> project=$(project); conn=$(conn) seed=$(from).sql\n"
 	@$(MAKE) -s -f Makefile _init
 
+_clear:
+	@$(MAKE) -s -f Makefile _meta-clear
+	@$(MAKE) -s -f Makefile _migrate-clear
+clear:
+	@clear
+	@echo "\n# Resetting App State from:\n> project=$(project); conn=$(conn) seed=$(from).sql\n"
+	@$(MAKE) -s -f Makefile _clear
+
+_rebuild:
+	@$(MAKE) -s -f Makefile _clear
+	@$(MAKE) -s -f Makefile _init
+rebuild:
+	@clear
+	@echo "\n# Resetting App State from:\n> project=$(project); conn=$(conn) seed=$(from).sql\n"
+	@$(MAKE) -s -f Makefile _rebuild
+
 exports: 
 	@clear
 	@echo "\n# Exporting Hasura State to:\n> project=$(project); conn=$(conn) schema=$(schema)\n"
-	@$(MAKE) -s -f Makefile _export-sql
-	@$(MAKE) -s -f Makefile _export-meta
-
+	@$(MAKE) -s -f Makefile _migrate-export
+	@$(MAKE) -s -f Makefile _meta-export
 
 
 
@@ -217,17 +235,17 @@ migrate-down:
 	@echo "\n# Migrate $(steps) DOWN from:\n> $(project)/migrations/$(conn)/*\n"
 	@$(MAKE) -s -f Makefile _migrate-down
 
-_migrate-destroy:
+_migrate-clear:
 	@hasura migrate apply \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project) \
 		--database-name $(conn) \
 		--down all
-migrate-destroy:
+migrate-clear:
 	@clear
 	@echo "\n# Destroy migrations on:\n> project=$(project); conn=$(conn)\n"
-	@$(MAKE) -s -f Makefile _migrate-destroy
+	@$(MAKE) -s -f Makefile _migrate-clear
 
 migrate-redo: 
 	@clear
@@ -238,7 +256,7 @@ migrate-redo:
 migrate-rebuild: 
 	@clear
 	@echo "\n# Rebuilding migrations on:\n> project=$(project); conn=$(conn)\n"
-	@$(MAKE) -s -f Makefile _migrate-destroy
+	@$(MAKE) -s -f Makefile _migrate-clear
 	@$(MAKE) -s -f Makefile _migrate
 
 migrate-create:
@@ -257,7 +275,7 @@ migrate-create:
 		--project $(project) \
 		--database-name $(conn)
 
-_export-sql:
+_migrate-export:
 	@hasura migrate create \
 		"__full-export___" \
 		--endpoint $(endpoint) \
@@ -267,10 +285,10 @@ _export-sql:
   		--schema $(schema) \
   		--from-server \
 		--down-sql "SELECT NOW();"
-export-sql:
+migrate-export:
 	@clear
 	@echo "\n# Dumping database to a migration:\n> project=$(project); conn=$(conn); schema=$(schema)\n"
-	@$(MAKE) -s -f Makefile _export-sql
+	@$(MAKE) -s -f Makefile _migrate-export
 
 
 
@@ -309,15 +327,25 @@ apply:
 	@echo "\n# Apply Hasura Metadata on:\n> project=$(project)\n"
 	@$(MAKE) -s -f Makefile _apply
 
-_export-meta:
+_meta-export:
 	@hasura metadata export \
 		--endpoint $(endpoint) \
 		--admin-secret $(passwd) \
 		--project $(project)
-export-meta:
+meta-export:
 	@clear
 	@echo "\n# Exporting Hasura metadata to:\n> project=$(project)\n"
-	@$(MAKE) -s -f Makefile _export-meta
+	@$(MAKE) -s -f Makefile _meta-export
+
+_meta-clear:
+	@hasura metadata clear \
+		--endpoint $(endpoint) \
+		--admin-secret $(passwd) \
+		--project $(project)
+meta-clear:
+	@clear
+	@echo "\n# Removing Hasura metadata to:\n> project=$(project)\n"
+	@$(MAKE) -s -f Makefile _meta-clear
 
 
 
@@ -374,7 +402,7 @@ pagila-init:
 	@$(MAKE) -s -f Makefile _pagila-init
 
 _pagila-destroy:
-	@$(MAKE) -s -f Makefile _migrate-destroy
+	@$(MAKE) -s -f Makefile _migrate-clear
 	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres $(db) -c 'drop schema public cascade;'
 	@docker compose $(DOCKER_COMPOSE_CHAIN) exec postgres psql -U postgres $(db) -c 'create schema public;'
 	@$(MAKE) -s -f Makefile _migrate
@@ -406,12 +434,12 @@ hasura-console:
 		--admin-secret $(passwd) \
 		--project $(project) \
 
-_clean:
+_down:
 	@docker compose $(DOCKER_COMPOSE_CHAIN) down -v
-clean:
+down:
 	@clear
 	@echo "\n# Tearing down the Docker Compose Project (with volumes)\n> $(DOCKER_COMPOSE_CHAIN)\n"
-	@$(MAKE) -s -f Makefile _clean
+	@$(MAKE) -s -f Makefile _down
 
 _wipe:
 	@docker ps -q | xargs --no-run-if-empty docker stop
@@ -549,24 +577,27 @@ react:
 3: reboot
 4: start
 5: stop
-6: clean
+6: down
 7: wipe
 8: logs
 9: project
 
 10: init
-11: migrate
-12: apply
-13: exports
-14: export-sql
-15: export-meta
+11: clear
+12: rebuild
+13: migrate
+14: apply
+15: exports
+16: migrate-export
+17: meta-export
+18: meta-clear
 
 20: migrate-status
 21: migrate-up
 22: migrate-down
 23: migrate-redo
 24: migrate-rebuild
-25: migrate-destroy
+25: migrate-clear
 26: migrate-create
 27: seed
 
