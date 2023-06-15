@@ -8,6 +8,12 @@ CREATE TABLE "badges_versions" (
   PRIMARY KEY ("id", "created_at")
 );
 
+CREATE VIEW "badges_versions_last" AS
+SELECT DISTINCT ON ("id") "id", "created_at", "created_by", "title", "description", "requirements"
+FROM "badges_versions"
+ORDER BY "id", "created_at" DESC;
+
+
 -- Private version of the function
 -- (useful for seeding or testing)
 CREATE OR REPLACE FUNCTION "_create_badge_version"(
