@@ -58,8 +58,8 @@ CREATE OR REPLACE FUNCTION "create_badge_version"(
 )
 RETURNS SETOF "badges_versions" AS $$
 DECLARE
-  user_id integer := (hasura_session ->> 'x-hasura-user-id')::integer;
+  tenant_id integer := (hasura_session ->> 'x-hasura-tenant-id')::integer;
 BEGIN
   RETURN QUERY
-  SELECT * FROM _create_badge_version(user_id, badge_def_id, (SELECT now() AT TIME ZONE 'UTC'));
+  SELECT * FROM _create_badge_version(tenant_id, badge_def_id, (SELECT now() AT TIME ZONE 'UTC'));
 END; $$ LANGUAGE plpgsql;
