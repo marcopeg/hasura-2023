@@ -16,6 +16,7 @@ VALUES
 (1, 'Laser Swordmanship', 'You can light a saber on and off real fast.', 1, 1), 
 (2, 'Gunmanship', 'Unlike stormtroopers, you can hit your target', 3, 3);
 
+
 -- Insert data into requirements_definitions
 TRUNCATE requirements_definitions RESTART IDENTITY CASCADE;
 ALTER SEQUENCE requirements_definitions_id_seq RESTART WITH 5;
@@ -27,3 +28,8 @@ VALUES
 (4, 2, 'Make experience', 'You participated and survived at least 3 battles', 1, 1);
 
 
+-- Produce the first version of the badges
+TRUNCATE badges_versions RESTART IDENTITY CASCADE;
+SELECT * FROM create_badge_version('{"x-hasura-user-id":"1"}', 1);
+SELECT * FROM create_badge_version('{"x-hasura-user-id":"1"}', 2);
+SELECT * FROM _create_badge_version(1, 1, (SELECT now() AT TIME ZONE 'UTC' + '1ms'::interval));
