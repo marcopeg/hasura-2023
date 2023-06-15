@@ -5,3 +5,4 @@
 - "!include public_managers.yaml"
 - "!include public_requirements_definitions.yaml"
 - "!include public_users.yaml"
+- "!include public_users_relations.yaml"

@@ -1,24 +1,32 @@
 table:
-  name: managers
+  name: users_relations
   schema: public
-array_relationships:
-  - name: manager_to_engineers
+object_relationships:
+  - name: manager_to_engineer
     using:
       manual_configuration:
         column_mapping:
-          id: manager
+          engineer: id
         insertion_order: null
         remote_table:
-          name: users_relations
+          name: engineers
           schema: public
 select_permissions:
   - role: backoffice
     permission:
       columns:
-        - name
-        - id
+        - created_by
+        - engineer
+        - manager
+        - modified_by
+        - created_at
+        - modified_at
       filter: {}
       limit: 10
       query_root_fields:
         - select
       subscription_root_fields: []
+delete_permissions:
+  - role: backoffice
+    permission:
+      filter: {}
