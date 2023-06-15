@@ -14,15 +14,25 @@ Once enough Evidence is collected, the Engineer can apply for an Issuing Request
 A stakeholder, or a group of stakeholders, act as an Issuer and verify the Issuing Request.
 The request can be approved or failed. If failed, a motivation will be provided by the Issuer.
 
-Badge Design App (Backoffice)
-- [ ] It should CRUD on Badges
-- [ ] It should CRUD on Requirements
-- [ ] It should COMMIT a new Badge with its own Requirements
-- [ ] It should CRUD on Managers
-- [ ] It should CRUD on Engineers
+## Backoffice
+
+### APIs
+
+- ✅ It should CRUD on Badges
+- ✅ It should CRUD on Requirements
+- ✅ It should COMMIT a new Badge with its own Requirements
+- ✅ It should CRUD on Managers
+- ✅ It should CRUD on Engineers
 - [ ] It should CRUD on Manger<>Engineer relation
 
-Managers App
+### WebApp
+
+[[ TODO ]]
+
+## Managers
+
+### APIs
+
 - [ ] It should show the list of Associated Engineers
 - [ ] It should show the list of Committed Badges
 - [ ] It should add a Engineer<>Badge candidature proposal with a description
@@ -33,7 +43,14 @@ Managers App
 - [ ] It should be able to approve an issuing request
 - [ ] It should be able to reject an issuing request with motivation
 
-Engineer App
+### WebApp
+
+[[ TODO ]]
+
+## Engineer
+
+### APIs
+
 - [ ] It should list available badges
 - [ ] It should list candidature proposals from the Mangers
 - [ ] It should accept candidature proposal
@@ -43,3 +60,6 @@ Engineer App
 - [ ] It should submit an issue request
 - [ ] It should see all data associated with a badge proposal
 
+### WebApp
+
+[[ TODO ]]
