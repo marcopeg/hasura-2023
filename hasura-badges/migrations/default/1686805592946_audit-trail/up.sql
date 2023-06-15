@@ -13,7 +13,7 @@ CREATE TABLE "audit_trails" (
   "info" JSONB
 );
 
-CREATE OR REPLACE FUNCTION "append_audit_trail"() 
+CREATE OR REPLACE FUNCTION "trigger_audit_trail"() 
 RETURNS TRIGGER AS $$
 BEGIN
   INSERT INTO "audit_trails"(
@@ -43,12 +43,12 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER "users_audit_trail_trg"
 AFTER INSERT OR UPDATE OR DELETE ON "users"
-FOR EACH ROW EXECUTE PROCEDURE "append_audit_trail"();
+FOR EACH ROW EXECUTE PROCEDURE "trigger_audit_trail"();
 
 CREATE TRIGGER "badges_definitions_audit_trail_trg"
 AFTER INSERT OR UPDATE OR DELETE ON "badges_definitions"
-FOR EACH ROW EXECUTE PROCEDURE "append_audit_trail"();
+FOR EACH ROW EXECUTE PROCEDURE "trigger_audit_trail"();
 
 CREATE TRIGGER "requirements_definitions_audit_trail_trg"
 AFTER INSERT OR UPDATE OR DELETE ON "requirements_definitions"
-FOR EACH ROW EXECUTE PROCEDURE "append_audit_trail"();
+FOR EACH ROW EXECUTE PROCEDURE "trigger_audit_trail"();
