@@ -1,6 +1,7 @@
 - "!include public_badges_definitions.yaml"
 - "!include public_badges_versions.yaml"
 - "!include public_badges_versions_last.yaml"
+- "!include public_engineering_teams.yaml"
 - "!include public_engineers.yaml"
 - "!include public_managers.yaml"
 - "!include public_requirements_definitions.yaml"

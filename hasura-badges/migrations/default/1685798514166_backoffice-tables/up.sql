@@ -27,6 +27,17 @@ CREATE TABLE public.users_relations (
   PRIMARY KEY (manager, engineer)
 );
 
+CREATE VIEW "engineering_teams" AS
+SELECT 
+    u.id AS manager_id, 
+    u.name AS manager_name,
+    json_agg(json_build_object('id', ur.engineer, 'name', e.name, 'created_at', ur.created_at)) AS items
+FROM "users" u
+JOIN "users_relations" ur ON u.id = ur.manager
+JOIN "users" e ON ur.engineer = e.id
+WHERE u.roles @> '["manager"]'::jsonb
+GROUP BY u.id, u.name;
+
 CREATE TABLE "badges_definitions" (
   "id" SERIAL PRIMARY KEY,
   "title" VARCHAR(255) NOT NULL,

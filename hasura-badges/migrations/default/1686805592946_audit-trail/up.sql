@@ -45,6 +45,10 @@ CREATE TRIGGER "users_audit_trail_trg"
 AFTER INSERT OR UPDATE OR DELETE ON "users"
 FOR EACH ROW EXECUTE PROCEDURE "trigger_audit_trail"();
 
+CREATE TRIGGER "users_relations_audit_trail_trg"
+AFTER INSERT OR UPDATE OR DELETE ON "users_relations"
+FOR EACH ROW EXECUTE PROCEDURE "trigger_audit_trail"();
+
 CREATE TRIGGER "badges_definitions_audit_trail_trg"
 AFTER INSERT OR UPDATE OR DELETE ON "badges_definitions"
 FOR EACH ROW EXECUTE PROCEDURE "trigger_audit_trail"();

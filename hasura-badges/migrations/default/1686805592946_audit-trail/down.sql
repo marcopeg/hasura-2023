@@ -1,4 +1,5 @@
 DROP TRIGGER IF EXISTS "users_audit_trail_trg" ON "users";
+DROP TRIGGER IF EXISTS "users_relations_audit_trail_trg" ON "users_relations";
 DROP TRIGGER IF EXISTS "badges_definitions_audit_trail_trg" ON "badges_definitions";
 DROP TRIGGER IF EXISTS "requirements_definitions_audit_trail_trg" ON "requirements_definitions";
 

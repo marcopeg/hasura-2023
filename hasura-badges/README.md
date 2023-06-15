@@ -23,7 +23,7 @@ The request can be approved or failed. If failed, a motivation will be provided 
 - ✅ It should COMMIT a new Badge with its own Requirements
 - ✅ It should CRUD on Managers
 - ✅ It should CRUD on Engineers
-- [ ] It should CRUD on Manger<>Engineer relation
+- ✅ It should CRUD on Manger<>Engineer relation
 
 ### WebApp
 

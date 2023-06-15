@@ -1,0 +1,15 @@
+table:
+  name: engineering_teams
+  schema: public
+select_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - manager_name
+        - manager_id
+        - items
+      filter: {}
+      limit: 10
+      query_root_fields:
+        - select
+      subscription_root_fields: []

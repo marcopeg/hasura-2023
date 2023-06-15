@@ -1,11 +1,41 @@
 -- Insert data into users
 
 TRUNCATE users RESTART IDENTITY CASCADE;
-ALTER SEQUENCE users_id_seq RESTART WITH 4;
+ALTER SEQUENCE users_id_seq RESTART WITH 9;
 INSERT INTO "users" ("id", "name", "roles", "created_at", "modified_at") VALUES
 (1, 'Luke Skywalker', '["engineer", "backoffice"]'::jsonb, NOW(), NOW()),
 (2, 'Ian', '["engineer", "manager"]'::jsonb, NOW(), NOW()),
-(3, 'Darth Vader', '["backoffice"]'::jsonb, NOW(), NOW());
+(3, 'Darth Vader', '["backoffice"]'::jsonb, NOW(), NOW()),
+(4, 'Anakin Skywalker', '["engineer", "manager"]'::jsonb, NOW(), NOW()),
+(5, 'Obi-Wan Kenobi', '["manager", "backoffice"]'::jsonb, NOW(), NOW()),
+(6, 'Leia Organa', '["engineer", "manager", "backoffice"]'::jsonb, NOW(), NOW()),
+(7, 'Yoda', '["engineer"]'::jsonb, NOW(), NOW()),
+(8, 'Chewbacca', '["engineer"]'::jsonb, NOW(), NOW());
+
+-- Modify a User 
+-- (as test for generating an update in the audit trail)
+UPDATE "users" 
+SET "name" = 'Han Solo', "modified_at" = NOW() 
+WHERE "id" = 2;
+
+TRUNCATE "users_relations" ;
+INSERT INTO "users_relations" ("manager", "engineer", "created_by", "modified_by") VALUES
+(2, 1, 1, 1),
+(2, 4, 1, 1),
+(2, 7, 1, 1),
+(2, 8, 1, 1),
+(4, 1, 3, 3),
+(4, 7, 3, 3),
+(4, 8, 3, 3),
+(5, 1, 1, 1),
+(5, 4, 1, 1),
+(5, 7, 1, 1),
+(5, 8, 1, 1),
+(6, 1, 3, 3),
+(6, 4, 3, 3),
+(6, 7, 3, 3),
+(6, 8, 3, 3);
+
 
 
 
@@ -63,9 +93,3 @@ SELECT * FROM create_badge_version('{"x-hasura-tenant-id":"1"}', 1);
 SELECT * FROM create_badge_version('{"x-hasura-tenant-id":"1"}', 2);
 SELECT * FROM _create_badge_version(1, 1, (SELECT now() AT TIME ZONE 'UTC' + '1ms'::interval));
 
-
-
--- Modify a User as test for generating an update in the audit trail
-UPDATE "users" 
-SET "name" = 'Han Solo', "modified_at" = NOW() 
-WHERE "id" = 2;
