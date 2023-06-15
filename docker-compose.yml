@@ -30,6 +30,7 @@ services:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres
       # Setup basic authentication settings:
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET:-hasura}
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "1234567890123456789012345678901234567890"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
       # Apply the migrations at boot
       # (we achieve this via HasuraCLI commands running `make boot`)
