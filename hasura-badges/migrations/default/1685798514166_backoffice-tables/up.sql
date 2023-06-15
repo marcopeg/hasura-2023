@@ -22,8 +22,8 @@ CREATE TABLE public.users_relations (
   engineer integer NOT NULL REFERENCES public.users(id),
   "created_at" TIMESTAMP NOT NULL DEFAULT now(),
   "created_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT,
-  "modified_at" TIMESTAMP NOT NULL DEFAULT now(),
-  "modified_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT,
+  -- "modified_at" TIMESTAMP NOT NULL DEFAULT now(),
+  -- "modified_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT,
   PRIMARY KEY (manager, engineer)
 );
 

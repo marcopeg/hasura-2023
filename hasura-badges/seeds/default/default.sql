@@ -19,22 +19,22 @@ SET "name" = 'Han Solo', "modified_at" = NOW()
 WHERE "id" = 2;
 
 TRUNCATE "users_relations" ;
-INSERT INTO "users_relations" ("manager", "engineer", "created_by", "modified_by") VALUES
-(2, 1, 1, 1),
-(2, 4, 1, 1),
-(2, 7, 1, 1),
-(2, 8, 1, 1),
-(4, 1, 3, 3),
-(4, 7, 3, 3),
-(4, 8, 3, 3),
-(5, 1, 1, 1),
-(5, 4, 1, 1),
-(5, 7, 1, 1),
-(5, 8, 1, 1),
-(6, 1, 3, 3),
-(6, 4, 3, 3),
-(6, 7, 3, 3),
-(6, 8, 3, 3);
+INSERT INTO "users_relations" ("manager", "engineer", "created_by") VALUES
+(2, 1, 1),
+(2, 4, 1),
+(2, 7, 1),
+(2, 8, 1),
+(4, 1, 3),
+(4, 7, 3),
+(4, 8, 3),
+(5, 1, 1),
+(5, 4, 1),
+(5, 7, 1),
+(5, 8, 1),
+(6, 1, 3),
+(6, 4, 3),
+(6, 7, 3),
+(6, 8, 3);
 
 
 

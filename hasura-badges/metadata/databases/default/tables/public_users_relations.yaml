@@ -18,9 +18,7 @@ select_permissions:
         - created_by
         - engineer
         - manager
-        - modified_by
         - created_at
-        - modified_at
       filter: {}
       limit: 10
       query_root_fields:
