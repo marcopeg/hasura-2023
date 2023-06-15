@@ -1,0 +1,18 @@
+table:
+  name: badges_versions
+  schema: public
+select_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - title
+        - created_by
+        - id
+        - requirements
+        - description
+        - created_at
+      filter: {}
+      limit: 10
+      query_root_fields:
+        - select
+      subscription_root_fields: []

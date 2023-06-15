@@ -1,3 +1,4 @@
 - "!include public_badges_definitions.yaml"
+- "!include public_badges_versions.yaml"
 - "!include public_requirements_definitions.yaml"
 - "!include public_users.yaml"

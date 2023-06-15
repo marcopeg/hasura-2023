@@ -1,7 +1,27 @@
 table:
   name: users
   schema: public
+insert_permissions:
+  - role: backoffice
+    permission:
+      check: {}
+      columns:
+        - name
+        - roles
 select_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - roles
+        - name
+        - id
+        - created_at
+        - modified_at
+      filter: {}
+      limit: 10
+      query_root_fields:
+        - select
+      subscription_root_fields: []
   - role: engineer
     permission:
       columns:
@@ -17,3 +37,31 @@ select_permissions:
       query_root_fields:
         - select
       subscription_root_fields: []
+  - role: manager
+    permission:
+      columns:
+        - roles
+        - name
+        - id
+        - created_at
+        - modified_at
+      filter:
+        id:
+          _eq: x-hasura-tenant-id
+      limit: 1
+      query_root_fields:
+        - select
+      subscription_root_fields: []
+update_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - roles
+      filter: {}
+      check: null
+      set:
+        modified_at: ""
+delete_permissions:
+  - role: backoffice
+    permission:
+      filter: {}
