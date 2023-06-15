@@ -4,7 +4,7 @@ CREATE TABLE "badges_versions" (
   "created_by" INTEGER REFERENCES "users"("id") ON DELETE RESTRICT,
   "title" VARCHAR(255),
   "description" TEXT,
-  "requirements" JSON,
+  "requirements" JSONB,
   PRIMARY KEY ("id", "created_at")
 );
 
