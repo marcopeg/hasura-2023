@@ -33,8 +33,8 @@ The request can be approved or failed. If failed, a motivation will be provided 
 
 ### APIs
 
+- ✅ It should list available badges
 - [ ] It should show the list of Associated Engineers
-- [ ] It should show the list of Committed Badges
 - [ ] It should add a Engineer<>Badge candidature proposal with a description
 - [ ] It should list existing candidatures
 - [ ] It should approve a candidature
@@ -51,7 +51,7 @@ The request can be approved or failed. If failed, a motivation will be provided 
 
 ### APIs
 
-- [ ] It should list available badges
+- ✅ It should list available badges
 - [ ] It should list candidature proposals from the Mangers
 - [ ] It should accept candidature proposal
 - [ ] It should decline a candidature proposal with a motivation

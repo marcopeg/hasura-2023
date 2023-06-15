@@ -1,0 +1,14 @@
+table:
+  name: engineers
+  schema: public
+select_permissions:
+  - role: backoffice
+    permission:
+      columns:
+        - name
+        - id
+      filter: {}
+      limit: 10
+      query_root_fields:
+        - select
+      subscription_root_fields: []

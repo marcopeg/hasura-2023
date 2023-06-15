@@ -3,9 +3,10 @@
 TRUNCATE users RESTART IDENTITY CASCADE;
 ALTER SEQUENCE users_id_seq RESTART WITH 4;
 INSERT INTO "users" ("id", "name", "roles", "created_at", "modified_at") VALUES
-(1, 'Luke Skywalker', ARRAY['engineer', 'backoffice'], NOW(), NOW()),
-(2, 'Ian', ARRAY['engineer', 'manager'], NOW(), NOW()),
-(3, 'Darth Vader', ARRAY['backoffice'], NOW(), NOW());
+(1, 'Luke Skywalker', '["engineer", "backoffice"]'::jsonb, NOW(), NOW()),
+(2, 'Ian', '["engineer", "manager"]'::jsonb, NOW(), NOW()),
+(3, 'Darth Vader', '["backoffice"]'::jsonb, NOW(), NOW());
+
 
 
 -- Insert data into badges_definitions
