@@ -6,31 +6,31 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
+import { useAuth } from "./with-authorization";
+
 const httpLink = createHttpLink({
   uri: "/v1/graphql"
 });
 
-const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("hasura-token");
+const withApollo = (Component) => (props) => {
+  const { token } = useAuth();
 
-  return {
+  const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : ""
+      ...(token ? { authorization: `Bearer ${token}` } : {})
     }
-  };
-});
+  }));
 
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
-});
+  const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache()
+  });
 
-const withApollo = (Component) => (props) =>
-  (
+  return (
     <ApolloProvider client={client}>
       <Component {...props} />
     </ApolloProvider>
   );
-
+};
 export default withApollo;

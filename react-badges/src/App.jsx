@@ -1,33 +1,41 @@
-import { gql, useQuery } from "@apollo/client";
+import { useState, createElement } from "react";
+import { useAuth } from "./utils/with-authorization";
 
-const GET_BADGES = gql`
-  query getBadges {
-    badges: badges_definitions {
-      id
-      title
-    }
-  }
-`;
+import BackofficeApp from "./views/BackofficeApp";
+import ManagerApp from "./views/ManagerApp";
 
-import withApollo from "./with-apollo";
+const apps = {
+  backoffice: BackofficeApp,
+  manager: ManagerApp
+};
 
 const App = () => {
-  const { data, loading, error } = useQuery(GET_BADGES);
+  const { needLogin, hasError, roles, error: authError } = useAuth();
+  const [currentApp, setCurrentApp] = useState("backoffice");
 
-  if (loading) return "loading....";
+  if (hasError) {
+    return authError.message;
+  }
 
-  if (error) return `ERROR: ${error.message}`;
+  if (needLogin) {
+    return "login needed";
+  }
+
+  // Render current app
+  if (currentApp) return createElement(apps[currentApp]);
 
   return (
     <div>
-      <h2>Badges:</h2>
+      <h2>Menu: {currentApp}</h2>
       <ul>
-        {data.badges.map((badge) => (
-          <li key={badge.id}>{badge.title}</li>
+        {roles.map((role) => (
+          <li key={role} onClick={() => setCurrentApp(role)}>
+            {role}
+          </li>
         ))}
       </ul>
     </div>
   );
 };
 
-export default withApollo(App);
+export default App;

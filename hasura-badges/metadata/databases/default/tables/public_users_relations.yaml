@@ -11,6 +11,16 @@ object_relationships:
         remote_table:
           name: engineers
           schema: public
+insert_permissions:
+  - role: backoffice
+    permission:
+      check: {}
+      set:
+        created_at: now()
+        created_by: x-hasura-tenant-id
+      columns:
+        - engineer
+        - manager
 select_permissions:
   - role: backoffice
     permission:
@@ -23,7 +33,8 @@ select_permissions:
       limit: 10
       query_root_fields:
         - select
-      subscription_root_fields: []
+      subscription_root_fields:
+        - select
 delete_permissions:
   - role: backoffice
     permission:
