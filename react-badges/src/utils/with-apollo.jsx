@@ -13,12 +13,15 @@ const httpLink = createHttpLink({
 });
 
 const withApollo = (Component) => (props) => {
-  const { token } = useAuth();
+  // Gets the authentication token from the Authorization provider
+  // and avoid
+  const auth = useAuth();
+  // if (auth.loading) return null;
 
   const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
-      ...(token ? { authorization: `Bearer ${token}` } : {})
+      ...(auth.token ? { authorization: `Bearer ${auth.token}` } : {})
     }
   }));
 
@@ -26,6 +29,8 @@ const withApollo = (Component) => (props) => {
     link: authLink.concat(httpLink),
     cache: new InMemoryCache()
   });
+
+  console.log("@reload Apollo");
 
   return (
     <ApolloProvider client={client}>

@@ -2,37 +2,44 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
+const jwtDecode = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch {
+    throw new Error("JWT seems malformed");
+  }
+};
+
 const withAuthorization = (Component) => (props) => {
+  const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
   const [error, setError] = useState(null);
-  const [roles, setRoles] = useState([]);
+  const [hasura, setHasura] = useState([]);
 
   useEffect(() => {
-    try {
-      const _token = localStorage.getItem("hasura-token");
-      if (!_token) return;
+    setTimeout(() => {
+      try {
+        // Fetch the token:
+        const _token = localStorage.getItem("hasura-token");
+        if (!_token) return;
+        setToken(_token);
 
-      // Reading the token
-      const _tokens = _token.split(".");
-      if (_tokens.length != 3) {
-        throw new Error("Not a jwt");
+        // Read the token:
+        const _payload = jwtDecode(_token);
+        setHasura(_payload["https://hasura.io/jwt/claims"]);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
       }
-      const _roles = JSON.parse(atob(_tokens[1]))[
-        "https://hasura.io/jwt/claims"
-      ]["x-hasura-allowed-roles"];
-
-      setToken(_token);
-      setRoles(_roles);
-    } catch (err) {
-      setError(err);
-    }
+    }, 0);
   }, []);
 
-  // While loading the token:
-  if (!token && !error) return "...";
+  // Lock while loading
+  // if (!checked) return null;
 
   return (
-    <AuthContext.Provider value={{ token, roles, error }}>
+    <AuthContext.Provider value={{ loading, token, hasura, error }}>
       <Component {...props} />
     </AuthContext.Provider>
   );
@@ -43,6 +50,7 @@ export const useAuth = () => {
 
   return {
     ...data,
+    isLoading: data.loading,
     hasError: data.error !== null,
     needLogin: data.token === null
   };

@@ -1,41 +1,33 @@
-import { useState, createElement } from "react";
+import { useState, useEffect, createElement } from "react";
+import loadable from "./utils/loadable";
 import { useAuth } from "./utils/with-authorization";
 
-import BackofficeApp from "./views/BackofficeApp";
-import ManagerApp from "./views/ManagerApp";
+import LoadingView from "./views/LoadingView";
+const LoginView = loadable(() => import("./views/LoginView"));
+const ErrorView = loadable(() => import("./views/ErrorView"));
 
-const apps = {
-  backoffice: BackofficeApp,
-  manager: ManagerApp
+// All the role-based views (SubApps) are lazy loaded in order to save
+// loading time considering that they will be used one at the time.
+//
+// TODO: this map should be rendered by a router
+const rolesToViews = {
+  backoffice: loadable(() => import("./views/BackofficeView")),
+  manager: loadable(() => import("./views/ManagerView")),
+  engineer: loadable(() => import("./views/EngineerView"))
 };
 
 const App = () => {
-  const { needLogin, hasError, roles, error: authError } = useAuth();
-  const [currentApp, setCurrentApp] = useState("backoffice");
+  const auth = useAuth();
 
-  if (hasError) {
-    return authError.message;
-  }
+  if (auth.isLoading) return <LoadingView />;
+  if (auth.needLogin) return <LoginView />;
+  if (auth.hasError) return <ErrorView error={auth.error} />;
 
-  if (needLogin) {
-    return "login needed";
-  }
+  // Render Role-based View
+  const role = auth.hasura["x-hasura-default-role"];
+  if (role) return createElement(rolesToViews[role]);
 
-  // Render current app
-  if (currentApp) return createElement(apps[currentApp]);
-
-  return (
-    <div>
-      <h2>Menu: {currentApp}</h2>
-      <ul>
-        {roles.map((role) => (
-          <li key={role} onClick={() => setCurrentApp(role)}>
-            {role}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  return "waiting for a default role...";
 };
 
 export default App;

@@ -26,11 +26,13 @@
 
 import { lazy, Suspense } from "react";
 
-const applySuspense = (Component) => () =>
+const applySuspense = (Component) => (props) =>
   (
     <Suspense fallback={null}>
-      <Component />
+      <Component {...props} />
     </Suspense>
   );
 
-export const loadable = (module) => applySuspense(lazy(module));
+const loadable = (module) => applySuspense(lazy(module));
+
+export default loadable;

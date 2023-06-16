@@ -27,7 +27,7 @@ const ADD_RELATION = gql`
   }
 `;
 
-const BackofficeApp = () => {
+const BackofficeView = () => {
   const [manager, setManager] = useState(null);
   const [engineer, setEngineer] = useState(null);
 
@@ -73,4 +73,4 @@ const BackofficeApp = () => {
   );
 };
 
-export default BackofficeApp;
+export default BackofficeView;
