@@ -17,22 +17,20 @@ const withAuthorization = (Component) => (props) => {
   const [hasura, setHasura] = useState([]);
 
   useEffect(() => {
-    setTimeout(() => {
-      try {
-        // Fetch the token:
-        const _token = localStorage.getItem("hasura-token");
-        if (!_token) return;
-        setToken(_token);
+    try {
+      // Fetch the token:
+      const _token = localStorage.getItem("hasura-token");
+      if (!_token) return;
+      setToken(_token);
 
-        // Read the token:
-        const _payload = jwtDecode(_token);
-        setHasura(_payload["https://hasura.io/jwt/claims"]);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    }, 0);
+      // Read the token:
+      const _payload = jwtDecode(_token);
+      setHasura(_payload["https://hasura.io/jwt/claims"]);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   // Lock while loading

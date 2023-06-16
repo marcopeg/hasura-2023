@@ -1,5 +1,6 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { useState } from "react";
+import { removeLoadable } from "../utils/with-loadable";
 
 const GET_MANAGERS = gql`
   query getManagersAndEngineers {
@@ -73,4 +74,4 @@ const BackofficeView = () => {
   );
 };
 
-export default BackofficeView;
+export default removeLoadable(BackofficeView);
