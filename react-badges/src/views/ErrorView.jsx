@@ -1,3 +1,5 @@
+import { removeLoadable } from "../utils/with-loadable";
+
 const ErrorView = ({ error }) => {
   return (
     <>
@@ -7,4 +9,4 @@ const ErrorView = ({ error }) => {
   );
 };
 
-export default ErrorView;
+export default removeLoadable(ErrorView);

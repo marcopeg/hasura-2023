@@ -1,5 +1,6 @@
 import { removeLoadable } from "../utils/with-loadable";
+import BasicLayout from "../layouts/BasicLayout";
 
-const ManagerView = () => "manager app";
+const ManagerView = () => <BasicLayout>manager app</BasicLayout>;
 
 export default removeLoadable(ManagerView);

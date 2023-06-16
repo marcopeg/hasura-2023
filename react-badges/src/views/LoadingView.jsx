@@ -1,3 +1,3 @@
-const LoadingView = () => "warming up...";
+const LoadingView = () => "...";
 
 export default LoadingView;

@@ -2,6 +2,8 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import { useState } from "react";
 import { removeLoadable } from "../utils/with-loadable";
 
+import BasicLayout from "../layouts/BasicLayout";
+
 const GET_MANAGERS = gql`
   query getManagersAndEngineers {
     managers {
@@ -47,7 +49,7 @@ const BackofficeView = () => {
   if (r1.error) return "fuck ";
 
   return (
-    <div>
+    <BasicLayout>
       {manager} - {engineer}
       <div>
         <h4>Managers</h4>
@@ -70,7 +72,7 @@ const BackofficeView = () => {
         </select>
       </div>
       <button onClick={dothis}>Add</button>
-    </div>
+    </BasicLayout>
   );
 };
 
