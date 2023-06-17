@@ -30,8 +30,6 @@ const withApollo = (Component) => (props) => {
     cache: new InMemoryCache()
   });
 
-  console.log("@reload Apollo");
-
   return (
     <ApolloProvider client={client}>
       <Component {...props} />

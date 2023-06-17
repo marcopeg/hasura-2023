@@ -33,11 +33,19 @@ const withAuthorization = (Component) => (props) => {
     }
   }, []);
 
-  // Lock while loading
-  // if (!checked) return null;
+  const login = (_token) => {
+    try {
+      const _payload = jwtDecode(_token);
+      setHasura(_payload["https://hasura.io/jwt/claims"]);
+      setToken(_token);
+      localStorage.setItem("hasura-token", token);
+    } catch (err) {
+      setError(err);
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ loading, token, hasura, error }}>
+    <AuthContext.Provider value={{ loading, token, hasura, error, login }}>
       <Component {...props} />
     </AuthContext.Provider>
   );
