@@ -38,7 +38,7 @@ const withAuthorization = (Component) => (props) => {
       const _payload = jwtDecode(_token);
       setHasura(_payload["https://hasura.io/jwt/claims"]);
       setToken(_token);
-      localStorage.setItem("hasura-token", token);
+      localStorage.setItem("hasura-token", _token);
     } catch (err) {
       setError(err);
     }

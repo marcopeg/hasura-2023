@@ -1,3 +1,5 @@
+import { List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { removeLoadable } from "../utils/with-loadable";
 import { useAuth } from "../utils/with-authorization";
 import CenteredLayout from "../layouts/CenteredLayout";
@@ -40,15 +42,21 @@ const users = [
 const LoginView = () => {
   const { login } = useAuth();
   return (
-    <CenteredLayout bg="red">
+    <CenteredLayout>
       <h2>Login</h2>
-      <ul>
+      <List>
         {users.map((user) => (
-          <li key={user.id} onClick={() => login(user.token)}>
-            {user.name}
-          </li>
+          <ListItem key={user.id} onClick={() => login(user.token)}>
+            <ListItemText
+              primary={user.name}
+              secondary={user.roles.join(", ")}
+            />
+            <ListItemIcon sx={{ ml: 2 }}>
+              <ChevronRightIcon />
+            </ListItemIcon>
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </CenteredLayout>
   );
 };
