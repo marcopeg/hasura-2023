@@ -1,5 +1,6 @@
 import { removeLoadable } from "../utils/with-loadable";
 import { useAuth } from "../utils/with-authorization";
+import CenteredLayout from "../layouts/CenteredLayout";
 
 const users = [
   {
@@ -39,7 +40,7 @@ const users = [
 const LoginView = () => {
   const { login } = useAuth();
   return (
-    <div>
+    <CenteredLayout bg="red">
       <h2>Login</h2>
       <ul>
         {users.map((user) => (
@@ -48,7 +49,7 @@ const LoginView = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </CenteredLayout>
   );
 };
 
