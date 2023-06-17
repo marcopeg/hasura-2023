@@ -1,10 +1,24 @@
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
+import MUIButton from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import styled from "@emotion/styled";
 
 import CenteredLayout from "../layouts/CenteredLayout";
 import { removeLoadable } from "../utils/with-loadable";
 import { useAuth } from "../utils/with-authorization";
+
+const Button = styled(({ color, variant, ...props }) => (
+  <MUIButton color="primary" variant="contained" {...props} />
+))({
+  borderWidth: 1,
+  borderStyle: "solid",
+  backgroundColor: "#D43A45",
+  borderColor: "#D43A45",
+  color: "white",
+  "&:hover": {
+    borderColor: "#FFFFFF",
+    backgroundColor: "#D43A45"
+  }
+});
 
 const ErrorView = ({ error }) => {
   const { logout } = useAuth();
@@ -13,22 +27,7 @@ const ErrorView = ({ error }) => {
       <Typography variant="h6">Ooooops!</Typography>
       <Typography variant="body1">{error.message}</Typography>
 
-      <Button
-        variant="contained"
-        sx={{
-          marginTop: 4,
-          borderWidth: "1px",
-          borderStyle: "solid",
-          backgroundColor: "#D43A45",
-          borderColor: "#D43A45",
-          "&:hover": {
-            borderColor: "#FFFFFF",
-
-            backgroundColor: "#D43A45"
-          }
-        }}
-        onClick={logout}
-      >
+      <Button onClick={logout} sx={{ mt: 4 }}>
         Not much I can do about it
       </Button>
     </CenteredLayout>

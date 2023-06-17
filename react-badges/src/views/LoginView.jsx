@@ -49,7 +49,7 @@ const LoginView = () => {
   const { login } = useAuth();
   return (
     <CenteredLayout>
-      <h2>Login</h2>
+      <h2>Badges App</h2>
       <List>
         {users.map((user) => (
           <ListItem key={user.id}>

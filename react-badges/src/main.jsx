@@ -13,7 +13,11 @@ import App from "./App";
 // HOC Providers must be applied in reverse order
 // this is already better than [Provider Hell](https://marcopeg.com/context-provider-hell/#:~:text=the%20Galaxy%20and-,Context%20Providers,-to%20the%20index)
 // but the best way to manage this issue is using [ForrestJS](https://forrestjs.github.io/)
-const MuiApp = withMui(App);
+const MuiApp = withMui(App, {
+  palette: {
+    mode: "dark"
+  }
+});
 const LoadableApp = withLoadable(MuiApp, { text: "BADGES" });
 const ConnectedApp = withApollo(LoadableApp);
 const AuthorizedApp = withAuthorization(ConnectedApp);
