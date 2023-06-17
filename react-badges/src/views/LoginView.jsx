@@ -1,4 +1,10 @@
-import { List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon
+} from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { removeLoadable } from "../utils/with-loadable";
 import { useAuth } from "../utils/with-authorization";
@@ -46,14 +52,16 @@ const LoginView = () => {
       <h2>Login</h2>
       <List>
         {users.map((user) => (
-          <ListItem key={user.id} onClick={() => login(user.token)}>
-            <ListItemText
-              primary={user.name}
-              secondary={user.roles.join(", ")}
-            />
-            <ListItemIcon sx={{ ml: 2 }}>
-              <ChevronRightIcon />
-            </ListItemIcon>
+          <ListItem key={user.id}>
+            <ListItemButton onClick={() => login(user.token)}>
+              <ListItemText
+                primary={user.name}
+                secondary={user.roles.join(", ")}
+              />
+              <ListItemIcon sx={{ ml: 2 }}>
+                <ChevronRightIcon />
+              </ListItemIcon>
+            </ListItemButton>
           </ListItem>
         ))}
       </List>

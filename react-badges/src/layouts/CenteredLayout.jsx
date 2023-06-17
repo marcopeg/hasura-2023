@@ -9,7 +9,8 @@ const CenteredLayout = styled(Box)`
   min-height: 100vh;
   height: auto;
   padding-top: 20vh; // start content at 20% from the top
-  background-color: ${(props) => props.bgColor || "transparent"};
+  background-color: ${(props) => props.bgcolor || "transparent"};
+  color: ${(props) => props.color || "inherith"};
 `;
 
 export default CenteredLayout;

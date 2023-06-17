@@ -44,8 +44,17 @@ const withAuthorization = (Component) => (props) => {
     }
   };
 
+  const logout = () => {
+    setToken(null);
+    setHasura(null);
+    setError(null);
+    localStorage.removeItem("hasura-token");
+  };
+
   return (
-    <AuthContext.Provider value={{ loading, token, hasura, error, login }}>
+    <AuthContext.Provider
+      value={{ loading, token, hasura, error, login, logout }}
+    >
       <Component {...props} />
     </AuthContext.Provider>
   );
