@@ -49,7 +49,7 @@ const BackofficeView = () => {
   if (r1.error) return "fuck ";
 
   return (
-    <BasicLayout>
+    <BasicLayout title="Badges" subtitle="Backoffice View">
       {manager} - {engineer}
       <div>
         <h4>Managers</h4>
