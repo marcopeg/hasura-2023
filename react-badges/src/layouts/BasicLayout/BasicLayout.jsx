@@ -16,10 +16,13 @@ import Drawer from "./CollapsibleDrawer";
 
 import FakeContent from "./FakeContent";
 
+import { useThemeSwitcher } from "../../utils/with-mui";
+
 const drawerWidth = 240;
 const collapsedDrawerWidth = 70;
 
 const BasicLayout = ({ title, subtitle, children }) => {
+  const { switchTheme } = useThemeSwitcher();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -50,6 +53,8 @@ const BasicLayout = ({ title, subtitle, children }) => {
         setCollapsed={setCollapsed}
         onClose={toggleDrawer}
       >
+        <button onClick={() => switchTheme("light")}>light</button>
+        <button onClick={() => switchTheme("dark")}>dark</button>
         <FakeContent />
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1 }}>
