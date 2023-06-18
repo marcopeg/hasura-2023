@@ -1,5 +1,4 @@
-import MUIButton from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Typography, Button as MUIButton } from "@mui/material";
 import styled from "@emotion/styled";
 
 import CenteredLayout from "../layouts/CenteredLayout";
@@ -24,7 +23,7 @@ const ErrorView = ({ error }) => {
   const { logout } = useAuth();
   return (
     <CenteredLayout bgcolor="#FF4B5C" color="#fff">
-      <Typography variant="h6">Ooooops!</Typography>
+      <Typography variant="h1">Ooooops!</Typography>
       <Typography variant="body1">{error.message}</Typography>
 
       <Button onClick={logout} sx={{ mt: 4 }}>

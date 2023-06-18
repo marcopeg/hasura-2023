@@ -3,7 +3,8 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  ListItemIcon
+  ListItemIcon,
+  Typography
 } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { removeLoadable } from "../utils/with-loadable";
@@ -49,7 +50,7 @@ const LoginView = () => {
   const { login } = useAuth();
   return (
     <CenteredLayout>
-      <h2>Badges App</h2>
+      <Typography variant="h1">Badges App</Typography>
       <List>
         {users.map((user) => (
           <ListItem key={user.id}>
