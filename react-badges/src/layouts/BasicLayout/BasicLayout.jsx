@@ -1,31 +1,16 @@
 import React, { useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Box,
-  Stack,
-  useMediaQuery,
-  useTheme,
-  IconButton
-} from "@mui/material";
-
-import MenuIcon from "@mui/icons-material/Menu";
+import { Toolbar, Box } from "@mui/material";
 
 import Drawer from "./CollapsibleDrawer";
 
 import FakeContent from "./FakeContent";
 
-import { useThemeSwitcher } from "../../utils/with-mui";
+import TopBar from "./TopBar";
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 const collapsedDrawerWidth = 70;
 
 const BasicLayout = ({ title, subtitle, children }) => {
-  const { switchTheme } = useThemeSwitcher();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -33,19 +18,7 @@ const BasicLayout = ({ title, subtitle, children }) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed">
-        <Toolbar>
-          <Stack flexGrow={1}>
-            <Typography variant="h4">{title}</Typography>
-            <Typography variant="caption">{subtitle}</Typography>
-          </Stack>
-          {isMobile && (
-            <IconButton color="inherit" onClick={toggleDrawer}>
-              <MenuIcon />
-            </IconButton>
-          )}
-        </Toolbar>
-      </AppBar>
+      <TopBar title={title} subtitle={subtitle} toggleDrawer={toggleDrawer} />
       <Drawer
         width={collapsed ? collapsedDrawerWidth : drawerWidth}
         open={open}
@@ -53,8 +26,6 @@ const BasicLayout = ({ title, subtitle, children }) => {
         setCollapsed={setCollapsed}
         onClose={toggleDrawer}
       >
-        <button onClick={() => switchTheme("light")}>light</button>
-        <button onClick={() => switchTheme("dark")}>dark</button>
         <FakeContent />
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1 }}>

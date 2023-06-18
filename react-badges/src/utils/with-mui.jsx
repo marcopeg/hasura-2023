@@ -9,34 +9,36 @@ const withMui =
   (Component, { startWith = "auto", ...avaliableThemes } = {}) =>
   (props) => {
     const isDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-    const [theme, setTheme] = useState(null);
+    const [currentTheme, setCurrentTheme] = useState(null);
 
     // Load initial theme:
     useEffect(() => {
       if (startWith === "auto" && localStorage.getItem("mui-theme")) {
-        setTheme(localStorage.getItem("mui-theme"));
+        setCurrentTheme(localStorage.getItem("mui-theme"));
         return;
       }
 
       if (startWith === "auto") {
-        setTheme(isDarkMode ? "dark" : "light");
+        setCurrentTheme(isDarkMode ? "dark" : "light");
         return;
       }
 
-      setTheme(startWith);
+      setCurrentTheme(startWith);
     }, []);
 
     // Prevent rendering without a theme:
-    if (!theme) return null;
+    if (!currentTheme) return null;
 
     const switchTheme = (to) => {
       localStorage.setItem("mui-theme", to);
-      setTheme(to);
+      setCurrentTheme(to);
     };
 
     return (
-      <ThemeSwitcher.Provider value={{ avaliableThemes, theme, switchTheme }}>
-        <ThemeProvider theme={createTheme(avaliableThemes[theme])}>
+      <ThemeSwitcher.Provider
+        value={{ avaliableThemes, currentTheme, switchTheme }}
+      >
+        <ThemeProvider theme={createTheme(avaliableThemes[currentTheme])}>
           <CssBaseline />
           <Component {...props} />
         </ThemeProvider>
