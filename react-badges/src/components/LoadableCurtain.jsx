@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 
 import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 
-const Fullscreen = styled.div`
+const Fullscreen = styled.div(
+  ({ theme }) => `
   position: fixed;
   top: 0;
   left: 0;
@@ -13,10 +14,11 @@ const Fullscreen = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #007bff;
-  color: #fff;
+  background-color: ${theme.palette.background.default};
+  color: ${theme.palette.mode === "dark" ? "#fff" : theme.palette.primary.main};
   z-index: 9999;
-`;
+`
+);
 
 const LoadableCurtain = ({ text }) => (
   <Fullscreen>
