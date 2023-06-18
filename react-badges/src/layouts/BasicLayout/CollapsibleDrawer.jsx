@@ -29,7 +29,7 @@ const CollapsibleDrawer = ({
   children,
   width,
   collapsed,
-  setCollapsed,
+  toggleCollapsed,
   ...props
 }) => {
   const theme = useTheme();
@@ -52,7 +52,7 @@ const CollapsibleDrawer = ({
           <DrawerToolbar
             width={width}
             collapsed={collapsed}
-            setCollapsed={setCollapsed}
+            toggleCollapsed={toggleCollapsed}
           />
         </>
       )}

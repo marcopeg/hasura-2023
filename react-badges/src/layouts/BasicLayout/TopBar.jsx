@@ -17,6 +17,7 @@ import { useThemeSwitcher } from "../../utils/with-mui";
 const TopBar = ({ toggleDrawer, title, subtitle }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
   const { switchTheme } = useThemeSwitcher();
 
   const isDarkMode = theme.palette.mode === "dark";
@@ -29,12 +30,14 @@ const TopBar = ({ toggleDrawer, title, subtitle }) => {
           <Typography variant="caption">{subtitle}</Typography>
         </Stack>
 
-        <IconButton
-          color="inherit"
-          onClick={() => switchTheme(isDarkMode ? "light" : "dark")}
-        >
-          {isDarkMode ? <LightMode /> : <DarkMode />}
-        </IconButton>
+        {isDesktop && (
+          <IconButton
+            color="inherit"
+            onClick={() => switchTheme(isDarkMode ? "light" : "dark")}
+          >
+            {isDarkMode ? <LightMode /> : <DarkMode />}
+          </IconButton>
+        )}
 
         {isMobile && (
           <IconButton color="inherit" onClick={toggleDrawer}>

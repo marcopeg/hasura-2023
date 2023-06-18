@@ -15,11 +15,11 @@ const StyledToolbar = styled(Toolbar)(({ theme, width }) => ({
   borderTop: `1px solid ${theme.palette.divider}`
 }));
 
-const CollapsibleToolbar = ({ width, collapsed, setCollapsed }) => (
+const CollapsibleToolbar = ({ width, collapsed, toggleCollapsed }) => (
   <>
     <Toolbar />
     <StyledToolbar width={width}>
-      <IconButton onClick={() => setCollapsed(!collapsed)}>
+      <IconButton onClick={toggleCollapsed}>
         {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
       </IconButton>
     </StyledToolbar>
