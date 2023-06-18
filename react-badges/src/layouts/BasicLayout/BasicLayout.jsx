@@ -4,6 +4,7 @@ import {
   Toolbar,
   Typography,
   Box,
+  Stack,
   useMediaQuery,
   useTheme,
   IconButton
@@ -18,43 +19,42 @@ import FakeContent from "./FakeContent";
 const drawerWidth = 240;
 const collapsedDrawerWidth = 70;
 
-const BasicLayout = () => {
+const BasicLayout = ({ title, subtitle, children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const currWidth = collapsed ? collapsedDrawerWidth : drawerWidth;
-
-  const handleDrawerToggle = () => setOpen(!open);
+  const toggleDrawer = () => setOpen(!open);
 
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography variant="h6" flexGrow={1}>
-            MyApp
-          </Typography>
+          <Stack flexGrow={1}>
+            <Typography variant="h4">{title}</Typography>
+            <Typography variant="caption">{subtitle}</Typography>
+          </Stack>
           {isMobile && (
-            <IconButton color="inherit" onClick={handleDrawerToggle}>
+            <IconButton color="inherit" onClick={toggleDrawer}>
               <MenuIcon />
             </IconButton>
           )}
         </Toolbar>
       </AppBar>
       <Drawer
-        width={currWidth}
+        width={collapsed ? collapsedDrawerWidth : drawerWidth}
         open={open}
         collapsed={collapsed}
         setCollapsed={setCollapsed}
-        onClose={handleDrawerToggle}
+        onClose={toggleDrawer}
       >
         <FakeContent />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1 }}>
         <Toolbar />
-        <FakeContent />
+        {children}
       </Box>
     </Box>
   );
