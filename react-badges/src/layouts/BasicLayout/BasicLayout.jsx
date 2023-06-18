@@ -19,17 +19,15 @@ const drawerWidth = 240;
 const collapsedDrawerWidth = 70;
 
 const BasicLayout = () => {
-  const [isDrawerCollapsed, setDrawerCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const currWidth = isDrawerCollapsed ? collapsedDrawerWidth : drawerWidth;
+  const [collapsed, setCollapsed] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const currWidth = collapsed ? collapsedDrawerWidth : drawerWidth;
+
+  const handleDrawerToggle = () => setOpen(!open);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -38,7 +36,7 @@ const BasicLayout = () => {
           <Typography variant="h6" flexGrow={1}>
             MyApp
           </Typography>
-          {!matches && (
+          {isMobile && (
             <IconButton color="inherit" onClick={handleDrawerToggle}>
               <MenuIcon />
             </IconButton>
@@ -47,9 +45,9 @@ const BasicLayout = () => {
       </AppBar>
       <Drawer
         width={currWidth}
-        isDrawerCollapsed={isDrawerCollapsed}
-        setDrawerCollapsed={setDrawerCollapsed}
-        open={mobileOpen}
+        open={open}
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
         onClose={handleDrawerToggle}
       >
         <FakeContent />

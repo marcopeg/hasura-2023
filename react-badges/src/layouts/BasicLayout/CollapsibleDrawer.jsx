@@ -28,8 +28,8 @@ const MobileDrawer = styled(Drawer)(() => ({
 const CollapsibleDrawer = ({
   children,
   width,
-  isDrawerCollapsed,
-  setDrawerCollapsed,
+  collapsed,
+  setCollapsed,
   ...props
 }) => {
   const theme = useTheme();
@@ -51,8 +51,8 @@ const CollapsibleDrawer = ({
           <Toolbar />
           <DrawerToolbar
             width={width}
-            isDrawerCollapsed={isDrawerCollapsed}
-            setDrawerCollapsed={setDrawerCollapsed}
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
           />
         </>
       )}
