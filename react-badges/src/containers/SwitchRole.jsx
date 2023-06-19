@@ -11,7 +11,7 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 
-import { useAuth } from "../utils/with-authorization";
+import { useAuth } from "../state/with-authorization";
 import { useBasicLayout } from "../layouts/BasicLayout";
 
 const rolesToIcons = {

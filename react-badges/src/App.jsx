@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import loadable from "./utils/loadable";
-import { useAuth } from "./utils/with-authorization";
+import { useAuth } from "./state/with-authorization";
 
 import LoadingView from "./views/LoadingView";
 const LoginView = loadable(() => import("./views/LoginView"));

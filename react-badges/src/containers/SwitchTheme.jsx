@@ -11,7 +11,7 @@ import {
 import DarkMode from "@mui/icons-material/DarkMode";
 import LightMode from "@mui/icons-material/LightMode";
 
-import { useThemeSwitcher } from "../utils/with-mui";
+import { useThemeSwitcher } from "../state/with-mui";
 import { useBasicLayout } from "../layouts/BasicLayout";
 
 const SwitchTheme = () => {

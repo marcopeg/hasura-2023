@@ -1,6 +1,6 @@
-import { gql, useQuery, useMutation } from "@apollo/client";
 import { useState } from "react";
-import { removeLoadable } from "./utils/with-loadable";
+import { gql, useQuery, useMutation } from "@apollo/client";
+import { removeLoadable } from "./state/with-loadable";
 
 import BasicLayout from "./layouts/BasicLayout";
 import SwitchTheme from "./containers/SwitchTheme";

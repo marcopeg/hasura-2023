@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DarkMode from "@mui/icons-material/DarkMode";
 import LightMode from "@mui/icons-material/LightMode";
 
-import { useThemeSwitcher } from "../../utils/with-mui";
+import { useThemeSwitcher } from "../../state/with-mui";
 
 const TopBar = ({ toggleDrawer, title, subtitle }) => {
   const theme = useTheme();

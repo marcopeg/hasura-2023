@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { removeLoadable } from "../utils/with-loadable";
-import { useAuth } from "../utils/with-authorization";
+import { useAuth } from "../state/with-authorization";
 import CenteredLayout from "../layouts/CenteredLayout";
 
 const users = [

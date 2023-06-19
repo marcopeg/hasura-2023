@@ -3,11 +3,11 @@ import ReactDOM from "react-dom/client";
 
 // Import all the providers that will be used int the app
 // Those providers are exposed as HOC
-import withEmitter from "./utils/with-emitter";
-import withAuthorization from "./utils/with-authorization";
-import withApollo from "./utils/with-apollo";
-import withMui from "./utils/with-mui";
-import withLoadable from "./utils/with-loadable";
+import withEmitter from "./state/with-emitter";
+import withAuthorization from "./state/with-authorization";
+import withApollo from "./state/with-apollo";
+import withMui from "./state/with-mui";
+import withLoadable from "./state/with-loadable";
 import { light, dark } from "./theme";
 
 import App from "./App";

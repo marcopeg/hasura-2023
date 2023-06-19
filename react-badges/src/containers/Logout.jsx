@@ -7,7 +7,7 @@ import {
 
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import { useAuth } from "../utils/with-authorization";
+import { useAuth } from "../state/with-authorization";
 import { useBasicLayout } from "../layouts/BasicLayout";
 
 const Logout = () => {
