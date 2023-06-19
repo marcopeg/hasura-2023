@@ -1,11 +1,11 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { useState } from "react";
-import { removeLoadable } from "../utils/with-loadable";
+import { removeLoadable } from "./utils/with-loadable";
 
-import BasicLayout from "../layouts/BasicLayout";
-import SwitchTheme from "../containers/SwitchTheme";
-import SwitchRole from "../containers/SwitchRole";
-import Logout from "../containers/Logout";
+import BasicLayout from "./layouts/BasicLayout";
+import SwitchTheme from "./containers/SwitchTheme";
+import SwitchRole from "./containers/SwitchRole";
+import Logout from "./containers/Logout";
 
 const GET_MANAGERS = gql`
   query getManagersAndEngineers {
@@ -33,7 +33,7 @@ const ADD_RELATION = gql`
   }
 `;
 
-const BackofficeView = () => {
+const AppBackoffice = () => {
   const [manager, setManager] = useState(null);
   const [engineer, setEngineer] = useState(null);
 
@@ -84,4 +84,4 @@ const BackofficeView = () => {
   );
 };
 
-export default removeLoadable(BackofficeView);
+export default removeLoadable(AppBackoffice);

@@ -9,9 +9,9 @@ const ErrorView = loadable(() => import("./views/ErrorView"));
 // All the role-based views (SubApps) are lazy loaded in order to save
 // loading time considering that they will be used one at the time.
 const rolesToViews = {
-  backoffice: loadable(() => import("./views/BackofficeView")),
-  manager: loadable(() => import("./views/ManagerView")),
-  engineer: loadable(() => import("./views/EngineerView"))
+  backoffice: loadable(() => import("./AppBackoffice")),
+  manager: loadable(() => import("./AppManager")),
+  engineer: loadable(() => import("./AppEngineer"))
 };
 
 const App = () => {
