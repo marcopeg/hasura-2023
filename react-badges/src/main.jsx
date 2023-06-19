@@ -15,14 +15,25 @@ import App from "./App";
 // HOC Providers must be applied in reverse order
 // this is already better than [Provider Hell](https://marcopeg.com/context-provider-hell/#:~:text=the%20Galaxy%20and-,Context%20Providers,-to%20the%20index)
 // but the best way to manage this issue is using [ForrestJS](https://forrestjs.github.io/)
-const LoadableApp = withLoadable(App, { text: "BADGES" });
-const MuiApp = withMui(LoadableApp, { light, dark });
-const ConnectedApp = withApollo(MuiApp);
-const AuthorizedApp = withAuthorization(ConnectedApp);
-const EventsApp = withEmitter(AuthorizedApp);
+
+// Old way
+// const LoadableApp = withLoadable(App, { text: "BADGES" });
+// const MuiApp = withMui(LoadableApp, { light, dark });
+// const ConnectedApp = withApollo(MuiApp);
+// const AuthorizedApp = withAuthorization(ConnectedApp);
+// const EventsApp = withEmitter(AuthorizedApp);
+
+// New way
+const DecoratedApp = [
+  (app) => withEmitter(app),
+  (app) => withAuthorization(app),
+  (app) => withApollo(app),
+  (app) => withMui(app, { light, dark }),
+  (app) => withLoadable(app, { text: "BADGES" })
+].reduceRight((acc, curr) => curr(acc), App);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-  <EventsApp />
+  <DecoratedApp />
   // </React.StrictMode>
 );
