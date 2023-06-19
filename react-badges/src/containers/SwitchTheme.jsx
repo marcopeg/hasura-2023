@@ -19,7 +19,9 @@ const SwitchTheme = () => {
   const { showDetails } = useBasicLayout();
 
   return (
-    <List subheader={showDetails && <ListSubheader>Mode:</ListSubheader>}>
+    <List
+      subheader={showDetails && <ListSubheader>Switch Theme:</ListSubheader>}
+    >
       <ListItem disablePadding>
         <ListItemButton onClick={() => switchTheme("light")}>
           <ListItemIcon>

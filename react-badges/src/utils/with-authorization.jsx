@@ -20,25 +20,29 @@ const withAuthorization = (Component) => (props) => {
   const [role, setRole] = useState(null);
   const [roles, setRoles] = useState(null);
 
+  const applyToken = (_token) => {
+    // Read the token:
+    const _payload = jwtDecode(_token);
+    const _hasura = _payload["https://hasura.io/jwt/claims"];
+    const _roles = _hasura["x-hasura-allowed-roles"];
+    setHasura(_hasura);
+    setRoles(_roles);
+
+    // Apply the role from localStorage with a default on the JWT contents:
+    const _role = localStorage.getItem("hasura-role");
+    setRole(_roles.includes(_role) ? _role : _hasura["x-hasura-default-role"]);
+
+    setToken(_token);
+  };
+
   useEffect(() => {
     try {
       // Fetch the token:
       const _token = localStorage.getItem("hasura-token");
       if (!_token) return;
-      setToken(_token);
 
-      // Read the token:
-      const _payload = jwtDecode(_token);
-      const _hasura = _payload["https://hasura.io/jwt/claims"];
-      const _roles = _hasura["x-hasura-allowed-roles"];
-      setHasura(_hasura);
-      setRoles(_roles);
-
-      // Apply the role from localStorage with a default on the JWT contents:
-      const _role = localStorage.getItem("hasura-role");
-      setRole(
-        _roles.includes(_role) ? _role : _hasura["x-hasura-default-role"]
-      );
+      // Implement the token:
+      applyToken(_token);
     } catch (err) {
       setError(err);
     } finally {
@@ -48,9 +52,7 @@ const withAuthorization = (Component) => (props) => {
 
   const login = (_token) => {
     try {
-      const _payload = jwtDecode(_token);
-      setHasura(_payload["https://hasura.io/jwt/claims"]);
-      setToken(_token);
+      applyToken(_token);
       localStorage.setItem("hasura-token", _token);
     } catch (err) {
       setError(err);

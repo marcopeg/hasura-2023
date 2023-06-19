@@ -3,12 +3,14 @@ import BasicLayout from "../layouts/BasicLayout";
 
 import SwitchTheme from "../containers/SwitchTheme";
 import SwitchRole from "../containers/SwitchRole";
+import Logout from "../containers/Logout";
 
 const ManagerView = () => (
   <BasicLayout
     title="Badges"
     subtitle="Manager View"
     drawerContents={[<SwitchRole />, <SwitchTheme />]}
+    drawerUtils={[<Logout />]}
   >
     manager app
   </BasicLayout>

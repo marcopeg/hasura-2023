@@ -5,6 +5,7 @@ import { removeLoadable } from "../utils/with-loadable";
 import BasicLayout from "../layouts/BasicLayout";
 import SwitchTheme from "../containers/SwitchTheme";
 import SwitchRole from "../containers/SwitchRole";
+import Logout from "../containers/Logout";
 
 const GET_MANAGERS = gql`
   query getManagersAndEngineers {
@@ -55,6 +56,7 @@ const BackofficeView = () => {
       title="Badges"
       subtitle="Backoffice View"
       drawerContents={[<SwitchRole />, <SwitchTheme />]}
+      drawerUtils={[<Logout />]}
     >
       {manager} - {engineer}
       <div>

@@ -5,7 +5,15 @@ import {
   useContext,
   cloneElement
 } from "react";
-import { Toolbar, Box, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Toolbar,
+  Box,
+  Stack,
+  List,
+  ListSubheader,
+  useMediaQuery,
+  useTheme
+} from "@mui/material";
 
 import Drawer from "./CollapsibleDrawer";
 import TopBar from "./TopBar";
@@ -15,7 +23,13 @@ const collapsedDrawerWidth = 60;
 
 const BasicLayoutContext = createContext();
 
-const BasicLayout = ({ title, subtitle, children, drawerContents = [] }) => {
+const BasicLayout = ({
+  title,
+  subtitle,
+  children,
+  drawerContents = [],
+  drawerUtils = []
+}) => {
   const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -53,7 +67,20 @@ const BasicLayout = ({ title, subtitle, children, drawerContents = [] }) => {
           toggleCollapsed={toggleCollapsed}
           onClose={toggleDrawer}
         >
-          {drawerContents.map((item, key) => cloneElement(item, { key }))}
+          <Stack justifyContent="space-between" flexGrow={1}>
+            <Box>
+              {drawerContents.map((item, key) => cloneElement(item, { key }))}
+            </Box>
+            {drawerUtils.length && (
+              <List
+                subheader={
+                  showDetails && <ListSubheader>Utilities:</ListSubheader>
+                }
+              >
+                {drawerUtils.map((item, key) => cloneElement(item, { key }))}
+              </List>
+            )}
+          </Stack>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1 }}>
           <Toolbar />

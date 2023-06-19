@@ -1,14 +1,20 @@
 import styled from "@emotion/styled";
-import { Toolbar, Drawer, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Drawer,
+  Box,
+  Toolbar,
+  IconButton,
+  useMediaQuery,
+  useTheme
+} from "@mui/material";
 
-import DrawerToolbar from "./CollapsibleToolbar";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const DesktopDrawer = styled(Drawer)(({ width }) => ({
   width,
   flexShrink: 0,
   "& .MuiDrawer-paper": {
-    boxSizing: "border-box",
-    overflow: "auto",
     width,
     top: "64px",
     height: "calc(100% - 64px)"
@@ -19,10 +25,13 @@ const MobileDrawer = styled(Drawer)(() => ({
   width: "75vw",
   flexShrink: 0,
   "& .MuiDrawer-paper": {
-    boxSizing: "border-box",
-    overflow: "auto",
     width: "75vw"
   }
+}));
+
+const CollapsibleToolbar = styled(Toolbar)(({ theme, width }) => ({
+  justifyContent: "center",
+  borderTop: `1px solid ${theme.palette.divider}`
 }));
 
 const CollapsibleDrawer = ({
@@ -34,7 +43,6 @@ const CollapsibleDrawer = ({
 }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
-
   const Drawer = isDesktop ? DesktopDrawer : MobileDrawer;
 
   return (
@@ -45,16 +53,15 @@ const CollapsibleDrawer = ({
       variant={isDesktop ? "permanent" : "temporary"}
       anchor={isDesktop ? "left" : "right"}
     >
-      {children}
+      <Box sx={{ display: "flex", flexGrow: 1, overflow: "auto" }}>
+        {children}
+      </Box>
       {isDesktop && (
-        <>
-          <Toolbar />
-          <DrawerToolbar
-            width={width}
-            collapsed={collapsed}
-            toggleCollapsed={toggleCollapsed}
-          />
-        </>
+        <CollapsibleToolbar width={width}>
+          <IconButton onClick={toggleCollapsed}>
+            {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </CollapsibleToolbar>
       )}
     </Drawer>
   );

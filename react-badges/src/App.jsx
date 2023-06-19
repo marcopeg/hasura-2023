@@ -24,7 +24,7 @@ const App = () => {
   // Render Role-based View
   if (role) return createElement(rolesToViews[role]);
 
-  return "waiting for a default role...";
+  return <ErrorView error={new Error("No role was found in the JWT!")} />;
 };
 
 export default App;

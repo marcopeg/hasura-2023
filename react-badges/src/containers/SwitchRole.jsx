@@ -23,10 +23,14 @@ const rolesToIcons = {
 const SwitchRole = () => {
   const { roles, switchRole } = useAuth();
   const { showDetails } = useBasicLayout();
-  const switchTheme = () => {};
+
+  // Hide if no multiple roles are available:
+  if (roles.length === 1) return null;
 
   return (
-    <List subheader={showDetails && <ListSubheader>Switch to:</ListSubheader>}>
+    <List
+      subheader={showDetails && <ListSubheader>Switch Role:</ListSubheader>}
+    >
       {roles.map((role) => (
         <ListItem key={role} disablePadding>
           <ListItemButton onClick={() => switchRole(role)}>
