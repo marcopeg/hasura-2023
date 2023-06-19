@@ -1,6 +1,6 @@
 {
   "workbench.editorAssociations": {
-    "*.md": "vscode.markdown.preview.editor"
+    "*._md": "vscode.markdown.preview.editor"
   },
   "workbench.startupEditor": "none",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
