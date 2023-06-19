@@ -70,12 +70,14 @@ const withAuthorization = (Component) => (props) => {
   };
 
   const switchRole = (to) => {
+    if (to === role) return;
+
     if (!roles.includes(to)) {
       throw new Error("role not allowed!");
     }
 
     emitter.pub("loadable::show");
-    setTimeout(() => setRole(to));
+    setRole(to);
   };
 
   return (
