@@ -16,12 +16,13 @@ const withApollo = (Component) => (props) => {
   // Gets the authentication token from the Authorization provider
   // and avoid
   const auth = useAuth();
-  // if (auth.loading) return null;
 
   const authLink = setContext((_, { headers }) => ({
     headers: {
       ...headers,
-      ...(auth.token ? { authorization: `Bearer ${auth.token}` } : {})
+      // Send the full JWT as auth, but specify the selected role for the multi-app scenario.
+      ...(auth.token ? { authorization: `Bearer ${auth.token}` } : {}),
+      ...(auth.role ? { "x-hasura-role": auth.role } : {})
     }
   }));
 

@@ -1,4 +1,5 @@
 import { useState, createContext, useContext, useEffect, useRef } from "react";
+import { useEmitter } from "./with-emitter";
 import LoadableCurtain from "../components/LoadableCurtain";
 
 const LoadableContext = createContext();
@@ -16,13 +17,28 @@ const withLoadable =
     { minDuration = defaults.minDuration, text = defaults.text } = defaults
   ) =>
   (props) => {
+    const emitter = useEmitter();
     const displayedAt = useRef(new Date());
     const [isVisible, setIsVisible] = useState(true);
+    const triggerRef = useRef(setIsVisible);
+
+    useEffect(() =>
+      emitter.sub("loadable::show", () => {
+        displayedAt.current = new Date();
+        setIsVisible(true);
+      })
+    );
 
     return (
       <>
         <LoadableContext.Provider
-          value={{ minDuration, displayedAt, isVisible, setIsVisible }}
+          value={{
+            minDuration,
+            displayedAt,
+            triggerRef,
+            isVisible,
+            setIsVisible
+          }}
         >
           <Component {...props} />
         </LoadableContext.Provider>
@@ -30,6 +46,14 @@ const withLoadable =
       </>
     );
   };
+
+export const useLoadable = () => {
+  // const { triggerRef } = useContext(LoadableContext);
+
+  return {
+    showLoadable: () => {}
+  };
+};
 
 export const useRemoveLoadable = () => {
   const { minDuration, displayedAt, setIsVisible } =

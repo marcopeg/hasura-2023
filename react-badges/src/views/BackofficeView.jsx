@@ -3,6 +3,8 @@ import { useState } from "react";
 import { removeLoadable } from "../utils/with-loadable";
 
 import BasicLayout from "../layouts/BasicLayout";
+import SwitchTheme from "../containers/SwitchTheme";
+import SwitchRole from "../containers/SwitchRole";
 
 const GET_MANAGERS = gql`
   query getManagersAndEngineers {
@@ -46,10 +48,14 @@ const BackofficeView = () => {
   console.log(r2);
 
   if (r1.loading) return "loading...";
-  if (r1.error) return "fuck ";
+  if (r1.error) return "error loading stuff from backoffice ";
 
   return (
-    <BasicLayout title="Badges" subtitle="Backoffice View">
+    <BasicLayout
+      title="Badges"
+      subtitle="Backoffice View"
+      drawerContents={[<SwitchRole />, <SwitchTheme />]}
+    >
       {manager} - {engineer}
       <div>
         <h4>Managers</h4>

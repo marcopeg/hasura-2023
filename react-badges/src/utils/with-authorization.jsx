@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useEmitter } from "./with-emitter";
 
 const AuthContext = createContext();
 
@@ -11,10 +12,13 @@ const jwtDecode = (token) => {
 };
 
 const withAuthorization = (Component) => (props) => {
+  const emitter = useEmitter();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
   const [error, setError] = useState(null);
   const [hasura, setHasura] = useState([]);
+  const [role, setRole] = useState(null);
+  const [roles, setRoles] = useState(null);
 
   useEffect(() => {
     try {
@@ -25,7 +29,16 @@ const withAuthorization = (Component) => (props) => {
 
       // Read the token:
       const _payload = jwtDecode(_token);
-      setHasura(_payload["https://hasura.io/jwt/claims"]);
+      const _hasura = _payload["https://hasura.io/jwt/claims"];
+      const _roles = _hasura["x-hasura-allowed-roles"];
+      setHasura(_hasura);
+      setRoles(_roles);
+
+      // Apply the role from localStorage with a default on the JWT contents:
+      const _role = localStorage.getItem("hasura-role");
+      setRole(
+        _roles.includes(_role) ? _role : _hasura["x-hasura-default-role"]
+      );
     } catch (err) {
       setError(err);
     } finally {
@@ -48,12 +61,34 @@ const withAuthorization = (Component) => (props) => {
     setToken(null);
     setHasura(null);
     setError(null);
+    setRole(null);
+    setRoles(null);
     localStorage.removeItem("hasura-token");
+    localStorage.removeItem("hasura-role");
+  };
+
+  const switchRole = (to) => {
+    if (!roles.includes(to)) {
+      throw new Error("role not allowed!");
+    }
+
+    emitter.pub("loadable::show");
+    setRole(to);
   };
 
   return (
     <AuthContext.Provider
-      value={{ loading, token, hasura, error, login, logout }}
+      value={{
+        loading,
+        token,
+        hasura,
+        error,
+        role,
+        roles,
+        login,
+        logout,
+        switchRole
+      }}
     >
       <Component {...props} />
     </AuthContext.Provider>
