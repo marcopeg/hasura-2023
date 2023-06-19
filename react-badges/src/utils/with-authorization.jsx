@@ -75,7 +75,7 @@ const withAuthorization = (Component) => (props) => {
     }
 
     emitter.pub("loadable::show");
-    setRole(to);
+    setTimeout(() => setRole(to));
   };
 
   return (
