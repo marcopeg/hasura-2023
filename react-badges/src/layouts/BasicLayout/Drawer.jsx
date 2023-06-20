@@ -29,7 +29,7 @@ const MobileDrawer = styled(MUIDrawer)(() => ({
   }
 }));
 
-const CollapsibleToolbar = styled(Toolbar)(({ theme, width }) => ({
+const CollapsibleToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "center",
   borderTop: `1px solid ${theme.palette.divider}`
 }));

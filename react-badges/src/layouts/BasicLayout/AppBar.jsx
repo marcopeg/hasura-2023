@@ -23,7 +23,7 @@ const TopBar = ({ toggleDrawer, title, subtitle }) => {
   const isDarkMode = theme.palette.mode === "dark";
 
   return (
-    <MUIAppBar position="fixed">
+    <MUIAppBar position="fixed" sx={isMobile ? { top: "auto", bottom: 0 } : {}}>
       <Toolbar>
         <Stack flexGrow={1}>
           <Typography variant="h4">{title}</Typography>

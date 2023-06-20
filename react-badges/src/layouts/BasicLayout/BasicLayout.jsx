@@ -35,6 +35,7 @@ const BasicLayout = ({
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
   const showDetails = isMobile ? true : !collapsed;
 
   // Restore drawer collapsed state from LocalStorage:
@@ -82,9 +83,18 @@ const BasicLayout = ({
             )}
           </Stack>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1 }}>
-          <Toolbar />
+        <Box
+          component="main"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100vh",
+            width: "100%"
+          }}
+        >
+          {isDesktop && <Toolbar />}
           {children}
+          {isMobile && <Toolbar />}
         </Box>
       </Box>
     </BasicLayoutContext.Provider>

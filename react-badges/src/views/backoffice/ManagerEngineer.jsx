@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
+import BasicPage from "../../layouts/BasicPage/BasicPage";
+import FakeContent from "../../components/FakeContent";
 
 const GET_MANAGERS = gql`
   query getManagersAndEngineers {
@@ -46,7 +48,7 @@ const ManagerEngineer = () => {
   if (r1.error) return "error loading stuff from backoffice ";
 
   return (
-    <>
+    <BasicPage fullpage title="New Connection" subtitle="Engineer to Manager">
       {manager} - {engineer}
       <div>
         <h4>Managers</h4>
@@ -69,7 +71,9 @@ const ManagerEngineer = () => {
         </select>
       </div>
       <button onClick={dothis}>Add</button>
-    </>
+      <hr />
+      <FakeContent />
+    </BasicPage>
   );
 };
 
