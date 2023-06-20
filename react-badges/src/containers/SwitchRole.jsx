@@ -1,17 +1,11 @@
-import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListItemButton,
-  ListSubheader
-} from "@mui/material";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import { useAuth } from "../state/with-auth";
 import { useBasicLayout } from "../layouts/BasicLayout";
 import { useNavigate } from "react-router-dom";
+
+import MenuList from "../components/MenuList";
 
 const rolesToIcons = {
   backoffice: <AdminPanelSettingsIcon />,
@@ -33,18 +27,15 @@ const SwitchRole = () => {
   };
 
   return (
-    <List
-      subheader={showDetails && <ListSubheader>Switch Role:</ListSubheader>}
-    >
-      {roles.map((role) => (
-        <ListItem key={role} disablePadding>
-          <ListItemButton onClick={() => handleSwitchRole(role)}>
-            <ListItemIcon>{rolesToIcons[role]}</ListItemIcon>
-            {showDetails && <ListItemText primary={role} />}
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
+    <MenuList
+      showDetails={showDetails}
+      title={"Switch Role:"}
+      items={roles.map((role) => ({
+        onClick: () => handleSwitchRole(role),
+        text: role,
+        icon: rolesToIcons[role]
+      }))}
+    />
   );
 };
 
