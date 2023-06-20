@@ -1,3 +1,4 @@
+import React, { FC } from "react";
 import {
   AppBar as MUIAppBar,
   Toolbar,
@@ -5,7 +6,8 @@ import {
   Stack,
   useMediaQuery,
   useTheme,
-  IconButton
+  IconButton,
+  Theme
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -14,8 +16,14 @@ import LightMode from "@mui/icons-material/LightMode";
 
 import { useThemeSwitcher } from "../../state/with-mui";
 
-const TopBar = ({ toggleDrawer, title, subtitle }) => {
-  const theme = useTheme();
+interface TopBarProps {
+  toggleDrawer: () => void;
+  title: string;
+  subtitle: string;
+}
+
+const TopBar: FC<TopBarProps> = ({ toggleDrawer, title, subtitle }) => {
+  const theme = useTheme<Theme>();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
   const { switchTheme } = useThemeSwitcher();
