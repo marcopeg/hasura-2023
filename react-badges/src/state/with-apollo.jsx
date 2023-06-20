@@ -6,7 +6,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
-import { useAuth } from "./with-authorization";
+import { useAuth } from "./with-auth";
 
 const httpLink = createHttpLink({
   uri: "/v1/graphql"

@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 import CenteredLayout from "../layouts/CenteredLayout";
 import { removeLoadable } from "../utils/with-loadable";
-import { useAuth } from "../state/with-authorization";
+import { useAuth } from "../state/with-auth";
 
 const Button = styled(({ color, variant, ...props }) => (
   <MUIButton color="primary" variant="contained" {...props} />

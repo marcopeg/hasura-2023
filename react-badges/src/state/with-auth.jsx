@@ -11,7 +11,7 @@ const jwtDecode = (token) => {
   }
 };
 
-const withAuthorization = (Component) => (props) => {
+const withAuth = (Component) => (props) => {
   const emitter = useEmitter();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
@@ -116,4 +116,4 @@ export const useAuth = () => {
   };
 };
 
-export default withAuthorization;
+export default withAuth;

@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 // Import all the providers that will be used int the app
 // Those providers are exposed as HOC
 import withEmitter from "./state/with-emitter";
-import withAuthorization from "./state/with-authorization";
+import withAuth from "./state/with-auth";
 import withApollo from "./state/with-apollo";
 import withMui from "./state/with-mui";
 import withLoadable from "./state/with-loadable";
@@ -20,13 +20,13 @@ import App from "./App";
 // const LoadableApp = withLoadable(App, { text: "BADGES" });
 // const MuiApp = withMui(LoadableApp, { light, dark });
 // const ConnectedApp = withApollo(MuiApp);
-// const AuthorizedApp = withAuthorization(ConnectedApp);
+// const AuthorizedApp = withAuth(ConnectedApp);
 // const EventsApp = withEmitter(AuthorizedApp);
 
 // New way
 const DecoratedApp = [
   (app) => withEmitter(app),
-  (app) => withAuthorization(app),
+  (app) => withAuth(app),
   (app) => withApollo(app),
   (app) => withMui(app, { light, dark }),
   (app) => withLoadable(app, { text: "BADGES" })
