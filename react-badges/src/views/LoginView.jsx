@@ -7,7 +7,7 @@ import {
   Typography
 } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { removeLoadable } from "../utils/with-loadable";
+import { removeLoadable } from "../state/with-loadable";
 import { useAuth } from "../state/with-authorization";
 import CenteredLayout from "../layouts/CenteredLayout";
 

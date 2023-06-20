@@ -52,31 +52,37 @@ const withAuthorization = (Component) => (props) => {
 
   const login = (_token) => {
     try {
-      applyToken(_token);
+      emitter.pub("loadable::show");
       localStorage.setItem("hasura-token", _token);
+      localStorage.removeItem("hasura-role");
+      applyToken(_token);
     } catch (err) {
       setError(err);
     }
   };
 
   const logout = () => {
+    localStorage.removeItem("hasura-token");
+    localStorage.removeItem("hasura-role");
     setToken(null);
     setHasura(null);
     setError(null);
     setRole(null);
     setRoles(null);
-    localStorage.removeItem("hasura-token");
-    localStorage.removeItem("hasura-role");
   };
 
   const switchRole = (to) => {
+    // Same role, ignore
     if (to === role) return;
 
+    // Role not allowed, throws
     if (!roles.includes(to)) {
       throw new Error("role not allowed!");
     }
 
+    // Make the switch
     emitter.pub("loadable::show");
+    localStorage.setItem("hasura-role", to);
     setRole(to);
   };
 
