@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   List,
   ListItem,
@@ -11,7 +13,15 @@ import { removeLoadable } from "../state/with-loadable";
 import { useAuth } from "../state/with-auth";
 import CenteredLayout from "../layouts/CenteredLayout";
 
-const users = [
+interface User {
+  id: number;
+  name: string;
+  roles: string[];
+  default: string;
+  token: string;
+}
+
+const users: User[] = [
   {
     id: 3,
     name: "Darth Vaeder",

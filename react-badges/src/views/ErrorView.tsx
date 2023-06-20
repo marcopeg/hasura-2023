@@ -1,11 +1,16 @@
+import React from "react";
 import { Typography, Button as MUIButton } from "@mui/material";
 import styled from "@emotion/styled";
 
 import CenteredLayout from "../layouts/CenteredLayout";
-import { removeLoadable } from "../utils/with-loadable";
+import { removeLoadable } from "../state/with-loadable";
 import { useAuth } from "../state/with-auth";
 
-const Button = styled(({ color, variant, ...props }) => (
+interface ErrorViewProps {
+  error: Error;
+}
+
+const Button = styled(({ color, variant, ...props }: any) => (
   <MUIButton color="primary" variant="contained" {...props} />
 ))({
   borderWidth: 1,
@@ -19,7 +24,7 @@ const Button = styled(({ color, variant, ...props }) => (
   }
 });
 
-const ErrorView = ({ error }) => {
+const ErrorView: React.FC<ErrorViewProps> = ({ error }) => {
   const { logout } = useAuth();
   return (
     <CenteredLayout bgcolor="#FF4B5C" color="#fff">

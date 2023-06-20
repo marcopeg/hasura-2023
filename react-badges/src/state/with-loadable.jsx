@@ -1,5 +1,7 @@
 import { useState, createContext, useContext, useEffect, useRef } from "react";
 import { useEmitter } from "./with-emitter";
+
+import FullscreenLayout from "../layouts/FullscreenLayout";
 import LoadableCurtain from "../components/LoadableCurtain";
 
 const LoadableContext = createContext();
@@ -42,7 +44,11 @@ const withLoadable =
         >
           <Component {...props} />
         </LoadableContext.Provider>
-        {isVisible && <LoadableCurtain text={text} />}
+        {isVisible && (
+          <FullscreenLayout>
+            <LoadableCurtain text={text} />
+          </FullscreenLayout>
+        )}
       </>
     );
   };
