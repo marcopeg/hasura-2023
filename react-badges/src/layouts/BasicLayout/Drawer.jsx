@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import {
-  Drawer,
+  Drawer as MUIDrawer,
   Box,
   Toolbar,
   IconButton,
@@ -11,7 +11,7 @@ import {
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-const DesktopDrawer = styled(Drawer)(({ width }) => ({
+const DesktopDrawer = styled(MUIDrawer)(({ width }) => ({
   width,
   flexShrink: 0,
   "& .MuiDrawer-paper": {
@@ -21,7 +21,7 @@ const DesktopDrawer = styled(Drawer)(({ width }) => ({
   }
 }));
 
-const MobileDrawer = styled(Drawer)(() => ({
+const MobileDrawer = styled(MUIDrawer)(() => ({
   width: "75vw",
   flexShrink: 0,
   "& .MuiDrawer-paper": {
@@ -34,19 +34,13 @@ const CollapsibleToolbar = styled(Toolbar)(({ theme, width }) => ({
   borderTop: `1px solid ${theme.palette.divider}`
 }));
 
-const CollapsibleDrawer = ({
-  children,
-  width,
-  collapsed,
-  toggleCollapsed,
-  ...props
-}) => {
+const Drawer = ({ children, width, collapsed, toggleCollapsed, ...props }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
-  const Drawer = isDesktop ? DesktopDrawer : MobileDrawer;
+  const CustomDrawer = isDesktop ? DesktopDrawer : MobileDrawer;
 
   return (
-    <Drawer
+    <CustomDrawer
       {...props}
       desktop={isDesktop ? isDesktop.toString() : undefined}
       width={width}
@@ -63,8 +57,8 @@ const CollapsibleDrawer = ({
           </IconButton>
         </CollapsibleToolbar>
       )}
-    </Drawer>
+    </CustomDrawer>
   );
 };
 
-export default CollapsibleDrawer;
+export default Drawer;

@@ -1,5 +1,5 @@
 import {
-  AppBar,
+  AppBar as MUIAppBar,
   Toolbar,
   Typography,
   Stack,
@@ -23,7 +23,7 @@ const TopBar = ({ toggleDrawer, title, subtitle }) => {
   const isDarkMode = theme.palette.mode === "dark";
 
   return (
-    <AppBar position="fixed">
+    <MUIAppBar position="fixed">
       <Toolbar>
         <Stack flexGrow={1}>
           <Typography variant="h4">{title}</Typography>
@@ -45,7 +45,7 @@ const TopBar = ({ toggleDrawer, title, subtitle }) => {
           </IconButton>
         )}
       </Toolbar>
-    </AppBar>
+    </MUIAppBar>
   );
 };
 

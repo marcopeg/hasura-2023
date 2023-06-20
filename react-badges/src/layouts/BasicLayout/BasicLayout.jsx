@@ -15,8 +15,8 @@ import {
   useTheme
 } from "@mui/material";
 
-import Drawer from "./CollapsibleDrawer";
-import TopBar from "./TopBar";
+import Drawer from "./Drawer";
+import AppBar from "./AppBar";
 
 const drawerWidth = 250;
 const collapsedDrawerWidth = 60;
@@ -59,7 +59,7 @@ const BasicLayout = ({
       }}
     >
       <Box sx={{ display: "flex" }}>
-        <TopBar title={title} subtitle={subtitle} toggleDrawer={toggleDrawer} />
+        <AppBar title={title} subtitle={subtitle} toggleDrawer={toggleDrawer} />
         <Drawer
           width={collapsed ? collapsedDrawerWidth : drawerWidth}
           open={open}
