@@ -6,10 +6,10 @@ import {
   Navigate
 } from "react-router-dom";
 
-import { removeLoadable } from "../state/with-loadable";
-import BasicLayout from "../layouts/BasicLayout";
+import { removeLoadable } from "../../state/with-loadable";
+import BasicLayout from "../../layouts/BasicLayout";
 
-import Route404 from "../components/Route404";
+import Route404 from "../../components/Route404";
 import SwitchTheme from "./SwitchTheme";
 import SwitchRole from "./SwitchRole";
 import Logout from "./Logout";

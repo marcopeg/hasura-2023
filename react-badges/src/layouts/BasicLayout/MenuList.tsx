@@ -12,22 +12,24 @@ import {
 } from "@mui/material";
 import { ReactNode } from "react";
 
+import { useBasicLayout } from ".";
+
 interface MenuButtonProps {
   showDetails: boolean;
   icon: ReactNode;
-  to?: string;
-  onClick?: () => void;
   text: string;
+  link?: string;
+  onClick?: () => void;
 }
 
 const MenuButton: React.FC<MenuButtonProps> = ({
   showDetails,
   icon,
-  to,
-  onClick,
-  text
+  text,
+  link,
+  onClick
 }) => {
-  const props = onClick ? { onClick } : { component: Link, to };
+  const props = onClick ? { onClick } : { component: Link, to: link };
 
   const btn = (
     <ListItemButton {...props}>
@@ -50,30 +52,46 @@ const MenuButton: React.FC<MenuButtonProps> = ({
 };
 
 interface MenuListProps {
-  showDetails: boolean;
   withDivider?: boolean;
   title?: string;
   items: any[];
 }
 
 const MenuList: React.FC<MenuListProps> = ({
-  showDetails,
   withDivider = true,
   title,
   items
-}) => (
-  <>
-    <List subheader={showDetails && <ListSubheader>{title}</ListSubheader>}>
-      {items.map((item) => (
-        <MenuButton
-          {...item}
-          showDetails={showDetails}
-          key={item.text + item.to}
-        />
-      ))}
-    </List>
-    {withDivider && <Divider />}
-  </>
-);
+}) => {
+  const { showDetails } = useBasicLayout();
+  return (
+    <>
+      <List subheader={showDetails && <ListSubheader>{title}</ListSubheader>}>
+        {items.map((item) => (
+          <MenuButton
+            {...item}
+            showDetails={showDetails}
+            key={item.text + item.to}
+          />
+        ))}
+      </List>
+      {withDivider && <Divider />}
+    </>
+  );
+
+  return (
+    <>
+      <List subheader={showDetails && <ListSubheader>{title}</ListSubheader>}>
+        {items.map((item) => (
+          <MenuButton
+            {...item}
+            showDetails={showDetails}
+            key={item.text + item.to}
+          />
+        ))}
+      </List>
+      {withDivider && <Divider />}
+    </>
+  );
+};
 
 export default MenuList;

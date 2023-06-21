@@ -1,11 +1,11 @@
+import React from "react";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
-import { useAuth } from "../state/with-auth";
-import { useBasicLayout } from "../layouts/BasicLayout";
+import { useAuth } from "../../state/with-auth";
 import { useNavigate } from "react-router-dom";
 
-import MenuList from "../components/MenuList";
+import { DrawerMenu } from "../../layouts/BasicLayout";
 
 const rolesToIcons = {
   backoffice: <AdminPanelSettingsIcon />,
@@ -13,9 +13,8 @@ const rolesToIcons = {
   engineer: <LocalPoliceIcon />
 };
 
-const SwitchRole = () => {
+const SwitchRole: React.FC = () => {
   const { roles, switchRole } = useAuth();
-  const { showDetails } = useBasicLayout();
   const navigate = useNavigate();
 
   // Hide if no multiple roles are available:
@@ -27,8 +26,7 @@ const SwitchRole = () => {
   };
 
   return (
-    <MenuList
-      showDetails={showDetails}
+    <DrawerMenu
       title={"Switch Role:"}
       items={roles.map((role) => ({
         onClick: () => handleSwitchRole(role),

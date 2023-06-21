@@ -10,30 +10,32 @@ import {
 import AppEntrypoint from "./containers/AppEntrypoint";
 import ManagerEngineer from "./views/backoffice/ManagerEngineer";
 
-import BackofficeMenu from "./views/backoffice/BackofficeMenu";
+import { DrawerMenu } from "./layouts/BasicLayout";
+
+const menuItems = [
+  {
+    link: "managers",
+    text: "Managers",
+    icon: <ManagersIcon />
+  },
+  {
+    link: "engineers",
+    text: "Engineers",
+    icon: <EngineersIcon />
+  },
+  {
+    link: "badges",
+    text: "Badges Definitions",
+    icon: <ShieldIcon />
+  }
+];
 
 const AppBackoffice: React.FC = () => (
   <AppEntrypoint
     title="Backoffice"
     defaultRoute="managers"
-    drawerContents={[<BackofficeMenu />]}
-    mobileUtils={[
-      {
-        icon: <ManagersIcon />,
-        text: "managers",
-        link: "managers"
-      },
-      {
-        icon: <EngineersIcon />,
-        text: "engineers",
-        link: "engineers"
-      },
-      {
-        icon: <ShieldIcon />,
-        text: "badges",
-        link: "badges"
-      }
-    ]}
+    drawerContents={[<DrawerMenu title="Backoffice:" items={menuItems} />]}
+    mobileUtils={menuItems}
     routes={
       [
         {
