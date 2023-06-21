@@ -21,14 +21,16 @@ import {
 
 import MenuIcon from "@mui/icons-material/Menu";
 
+import ErrorBoundary from "../../utils/ErrorBoundary";
 import Drawer from "./Drawer";
 import AppBarDesktop from "./AppBarDesktop";
 import AppBarMobile, { AppBarActionType } from "./AppBarMobile";
 
 const drawerWidth = 250;
-const collapsedDrawerWidth = 60;
+const collapsedDrawerWidth = 70;
 
 interface BasicLayoutProps {
+  icon?: React.ReactElement;
   title: string;
   subtitle: string;
   drawerContents?: React.ReactElement[];
@@ -47,6 +49,7 @@ const BasicLayoutContext = createContext<BasicLayoutContextProps>(
 );
 
 const BasicLayout: FC<BasicLayoutProps> = ({
+  icon,
   title,
   subtitle,
   children,
@@ -94,7 +97,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({
             ]}
           />
         ) : (
-          <AppBarDesktop title={title} subtitle={subtitle} />
+          <AppBarDesktop icon={icon} title={title} subtitle={subtitle} />
         )}
         <Drawer
           width={collapsed ? collapsedDrawerWidth : drawerWidth}
@@ -103,20 +106,22 @@ const BasicLayout: FC<BasicLayoutProps> = ({
           toggleCollapsed={toggleCollapsed}
           onClose={() => setOpen(false)}
         >
-          <Stack justifyContent="space-between" flexGrow={1}>
-            <Box>
-              {drawerContents.map((item, key) => cloneElement(item, { key }))}
-            </Box>
-            {drawerUtils.length > 0 && (
-              <List
-                subheader={
-                  showDetails && <ListSubheader>Utilities:</ListSubheader>
-                }
-              >
-                {drawerUtils.map((item, key) => cloneElement(item, { key }))}
-              </List>
-            )}
-          </Stack>
+          <ErrorBoundary>
+            <Stack justifyContent="space-between" flexGrow={1}>
+              <Box>
+                {drawerContents.map((item, key) => cloneElement(item, { key }))}
+              </Box>
+              {drawerUtils.length > 0 && (
+                <List
+                  subheader={
+                    showDetails && <ListSubheader>Utilities:</ListSubheader>
+                  }
+                >
+                  {drawerUtils.map((item, key) => cloneElement(item, { key }))}
+                </List>
+              )}
+            </Stack>
+          </ErrorBoundary>
         </Drawer>
         <Box
           component="main"

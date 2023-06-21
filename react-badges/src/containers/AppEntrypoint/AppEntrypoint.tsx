@@ -7,6 +7,12 @@ import {
   Navigate
 } from "react-router-dom";
 
+export {
+  AdminPanelSettings as BackofficeIcon,
+  SupervisorAccount as ManagerIcon,
+  LocalPolice as EngineerIcon
+} from "@mui/icons-material";
+
 import { removeLoadable } from "../../state/with-loadable";
 import BasicLayout from "../../layouts/BasicLayout";
 import ErrorView from "../../views/ErrorView";
@@ -17,6 +23,7 @@ import SwitchRole from "./SwitchRole";
 import Logout from "./Logout";
 
 interface AppEntrypointProps {
+  icon?: React.ReactElement;
   title: string;
   subtitle?: string;
   drawerContents?: any[];
@@ -32,6 +39,7 @@ const ErrorBoundary: React.FC = () => {
 };
 
 const AppEntrypoint: React.FC<AppEntrypointProps> = ({
+  icon,
   title,
   subtitle = "Badges App",
   drawerContents = [],
@@ -45,6 +53,7 @@ const AppEntrypoint: React.FC<AppEntrypointProps> = ({
       path: "/",
       element: (
         <BasicLayout
+          icon={icon}
           title={title}
           subtitle={subtitle}
           drawerContents={[...drawerContents, <SwitchRole />, <SwitchTheme />]}

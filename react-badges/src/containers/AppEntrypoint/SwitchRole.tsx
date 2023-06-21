@@ -1,16 +1,15 @@
 import React from "react";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
-import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import { useAuth } from "../../state/with-auth";
 import { useNavigate } from "react-router-dom";
 
 import { DrawerMenu } from "../../layouts/BasicLayout";
 
+import { BackofficeIcon, ManagerIcon, EngineerIcon } from "./AppEntrypoint";
+
 const rolesToIcons = {
-  backoffice: <AdminPanelSettingsIcon />,
-  manager: <SupervisorAccountIcon />,
-  engineer: <LocalPoliceIcon />
+  backoffice: <BackofficeIcon />,
+  manager: <ManagerIcon />,
+  engineer: <EngineerIcon />
 };
 
 const SwitchRole: React.FC = () => {

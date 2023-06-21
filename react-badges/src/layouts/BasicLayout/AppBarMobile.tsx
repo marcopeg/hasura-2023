@@ -9,6 +9,8 @@ import {
   IconButton
 } from "@mui/material";
 
+import ErrorBoundary from "../../utils/ErrorBoundary";
+
 export interface AppBarActionType {
   icon: any;
   text: string;
@@ -23,22 +25,24 @@ export interface AppBarMobileProps {
 const AppBarMobile: FC<AppBarMobileProps> = ({ options }) => (
   <MUIAppBar position="fixed" sx={{ top: "auto", bottom: 0 }}>
     <Toolbar>
-      <Stack flexGrow={1} direction={"row"} justifyContent={"space-around"}>
-        {options.map((item) => {
-          const props = item.onClick
-            ? { onClick: item.onClick }
-            : { component: Link, to: item.link };
+      <ErrorBoundary>
+        <Stack flexGrow={1} direction={"row"} justifyContent={"space-around"}>
+          {options.map((item) => {
+            const props = item.onClick
+              ? { onClick: item.onClick }
+              : { component: Link, to: item.link };
 
-          return (
-            <Stack alignItems={"center"} key={item.text}>
-              <IconButton color="inherit" onClick={item.onClick} {...props}>
-                {item.icon}
-              </IconButton>
-              <Typography variant="caption">{item.text}</Typography>
-            </Stack>
-          );
-        })}
-      </Stack>
+            return (
+              <Stack alignItems={"center"} key={item.text}>
+                <IconButton color="inherit" onClick={item.onClick} {...props}>
+                  {item.icon}
+                </IconButton>
+                <Typography variant="caption">{item.text}</Typography>
+              </Stack>
+            );
+          })}
+        </Stack>
+      </ErrorBoundary>
     </Toolbar>
   </MUIAppBar>
 );

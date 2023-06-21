@@ -7,7 +7,7 @@ import {
   Security as ShieldIcon
 } from "@mui/icons-material";
 
-import AppEntrypoint from "./containers/AppEntrypoint";
+import AppEntrypoint, { BackofficeIcon } from "./containers/AppEntrypoint";
 import ManagerEngineer from "./views/backoffice/ManagerEngineer";
 
 import { DrawerMenu } from "./layouts/BasicLayout";
@@ -15,7 +15,7 @@ import { DrawerMenu } from "./layouts/BasicLayout";
 const menuItems = [
   {
     link: "managers",
-    text: "Managers",
+    text: "managers",
     icon: <ManagersIcon />
   },
   {
@@ -32,7 +32,8 @@ const menuItems = [
 
 const AppBackoffice: React.FC = () => (
   <AppEntrypoint
-    title="Backoffice"
+    icon={<BackofficeIcon />}
+    title={"Backoffice"}
     defaultRoute="managers"
     drawerContents={[<DrawerMenu title="Backoffice:" items={menuItems} />]}
     mobileUtils={menuItems}

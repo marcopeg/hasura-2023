@@ -32,8 +32,18 @@ const MenuButton: React.FC<MenuButtonProps> = ({
   const props = onClick ? { onClick } : { component: Link, to: link };
 
   const btn = (
-    <ListItemButton {...props}>
-      <ListItemIcon>{icon}</ListItemIcon>
+    <ListItemButton {...props} alignItems="center">
+      <ListItemIcon
+        sx={
+          {
+            // display: "flex",
+            // justifyContent: "center",
+            // alignItems: "center"
+          }
+        }
+      >
+        {icon}
+      </ListItemIcon>
       {showDetails && <ListItemText primary={text} />}
     </ListItemButton>
   );
@@ -63,21 +73,6 @@ const MenuList: React.FC<MenuListProps> = ({
   items
 }) => {
   const { showDetails } = useBasicLayout();
-  return (
-    <>
-      <List subheader={showDetails && <ListSubheader>{title}</ListSubheader>}>
-        {items.map((item) => (
-          <MenuButton
-            {...item}
-            showDetails={showDetails}
-            key={item.text + item.to}
-          />
-        ))}
-      </List>
-      {withDivider && <Divider />}
-    </>
-  );
-
   return (
     <>
       <List subheader={showDetails && <ListSubheader>{title}</ListSubheader>}>

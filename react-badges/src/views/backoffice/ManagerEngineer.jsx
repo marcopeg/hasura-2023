@@ -10,7 +10,7 @@ const GET_MANAGERS = gql`
       name
     }
     engineers {
-      id_
+      id
       name
     }
   }

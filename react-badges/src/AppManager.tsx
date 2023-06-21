@@ -1,8 +1,10 @@
 import React from "react";
-import AppEntrypoint from "./containers/AppEntrypoint";
+
+import AppEntrypoint, { ManagerIcon } from "./containers/AppEntrypoint";
 
 const AppManager: React.FC = () => (
   <AppEntrypoint
+    icon={<ManagerIcon />}
     title="Manager"
     defaultRoute="dashboard"
     routes={[
