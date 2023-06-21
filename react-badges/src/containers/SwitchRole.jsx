@@ -32,7 +32,7 @@ const SwitchRole = () => {
       title={"Switch Role:"}
       items={roles.map((role) => ({
         onClick: () => handleSwitchRole(role),
-        text: role,
+        text: `${role.charAt(0).toUpperCase()}${role.slice(1)}`,
         icon: rolesToIcons[role]
       }))}
     />
