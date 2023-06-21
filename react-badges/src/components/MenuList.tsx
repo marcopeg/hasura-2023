@@ -53,7 +53,7 @@ interface MenuListProps {
   showDetails: boolean;
   withDivider?: boolean;
   title?: string;
-  items: MenuButtonProps[];
+  items: any[];
 }
 
 const MenuList: React.FC<MenuListProps> = ({

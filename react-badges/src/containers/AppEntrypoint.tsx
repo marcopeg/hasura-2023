@@ -19,6 +19,7 @@ interface AppEntrypointProps {
   subtitle?: string;
   drawerContents?: any[];
   drawerUtils?: any[];
+  mobileUtils?: any[];
   routes?: any[];
   defaultRoute?: string;
 }
@@ -28,6 +29,7 @@ const AppEntrypoint: React.FC<AppEntrypointProps> = ({
   subtitle = "Badges App",
   drawerContents = [],
   drawerUtils = [],
+  mobileUtils = [],
   routes = [],
   defaultRoute = "_"
 }) => {
@@ -40,6 +42,7 @@ const AppEntrypoint: React.FC<AppEntrypointProps> = ({
           subtitle={subtitle}
           drawerContents={[...drawerContents, <SwitchRole />, <SwitchTheme />]}
           drawerUtils={[...drawerUtils, <Logout />]}
+          mobileUtils={mobileUtils}
         >
           <Outlet />
         </BasicLayout>
