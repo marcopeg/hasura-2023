@@ -3,7 +3,7 @@ import { Paper } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 
 interface PageWrapperProps {
-  theme: Theme;
+  theme?: Theme;
   spacing: number;
   fullpage?: string;
 }
