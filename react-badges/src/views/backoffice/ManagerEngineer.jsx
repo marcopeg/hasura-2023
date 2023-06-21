@@ -10,7 +10,7 @@ const GET_MANAGERS = gql`
       name
     }
     engineers {
-      id
+      id_
       name
     }
   }
@@ -42,10 +42,8 @@ const ManagerEngineer = () => {
     });
   };
 
-  console.log(r2);
-
   if (r1.loading) return "loading...";
-  if (r1.error) return "error loading stuff from backoffice ";
+  if (r1.error) throw r1.error;
 
   return (
     <BasicPage fullpage title="New Connection" subtitle="Engineer to Manager">

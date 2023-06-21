@@ -1,6 +1,7 @@
 import React from "react";
 import {
   createBrowserRouter,
+  useRouteError,
   RouterProvider,
   Outlet,
   Navigate
@@ -8,6 +9,7 @@ import {
 
 import { removeLoadable } from "../../state/with-loadable";
 import BasicLayout from "../../layouts/BasicLayout";
+import ErrorView from "../../views/ErrorView";
 
 import Route404 from "../../components/Route404";
 import SwitchTheme from "./SwitchTheme";
@@ -23,6 +25,11 @@ interface AppEntrypointProps {
   routes?: any[];
   defaultRoute?: string;
 }
+
+const ErrorBoundary: React.FC = () => {
+  const error = useRouteError();
+  return <ErrorView error={error} />;
+};
 
 const AppEntrypoint: React.FC<AppEntrypointProps> = ({
   title,
@@ -47,8 +54,12 @@ const AppEntrypoint: React.FC<AppEntrypointProps> = ({
           <Outlet />
         </BasicLayout>
       ),
+      errorElement: <ErrorBoundary />,
       children: [
-        ...routes,
+        ...routes.map((route) => ({
+          ...route,
+          ...(route.errorElement ? {} : { errorElement: <ErrorBoundary /> })
+        })),
         {
           path: "",
           element: <Navigate to={defaultRoute} replace />
