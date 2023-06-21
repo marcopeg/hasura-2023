@@ -35,7 +35,13 @@ const Drawer: FC<DrawerProps> = ({
       variant={isDesktop ? "permanent" : "temporary"}
       anchor={isDesktop ? "left" : "right"}
     >
-      <Box sx={{ display: "flex", flexGrow: 1, overflow: "auto" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexGrow: 1,
+          overflow: "auto"
+        }}
+      >
         {children}
       </Box>
       {isDesktop && (

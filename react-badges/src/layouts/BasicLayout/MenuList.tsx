@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import {
   List,
@@ -8,9 +8,9 @@ import {
   ListItemText,
   ListSubheader,
   Divider,
-  Tooltip
+  Tooltip,
+  useTheme
 } from "@mui/material";
-import { ReactNode } from "react";
 
 import { useBasicLayout } from ".";
 
@@ -29,19 +29,19 @@ const MenuButton: React.FC<MenuButtonProps> = ({
   link,
   onClick
 }) => {
+  const theme = useTheme();
   const props = onClick ? { onClick } : { component: Link, to: link };
 
   const btn = (
-    <ListItemButton {...props} alignItems="center">
-      <ListItemIcon
-        sx={
-          {
-            // display: "flex",
-            // justifyContent: "center",
-            // alignItems: "center"
-          }
-        }
-      >
+    <ListItemButton
+      {...props}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <ListItemIcon sx={showDetails ? {} : { minWidth: "auto" }}>
         {icon}
       </ListItemIcon>
       {showDetails && <ListItemText primary={text} />}
@@ -75,7 +75,11 @@ const MenuList: React.FC<MenuListProps> = ({
   const { showDetails } = useBasicLayout();
   return (
     <>
-      <List subheader={showDetails && <ListSubheader>{title}</ListSubheader>}>
+      <List
+        subheader={
+          showDetails && title && <ListSubheader>{title}</ListSubheader>
+        }
+      >
         {items.map((item) => (
           <MenuButton
             {...item}
