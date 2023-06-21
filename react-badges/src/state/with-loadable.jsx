@@ -53,14 +53,6 @@ const withLoadable =
     );
   };
 
-export const useLoadable = () => {
-  // const { triggerRef } = useContext(LoadableContext);
-
-  return {
-    showLoadable: () => {}
-  };
-};
-
 export const useRemoveLoadable = () => {
   const { minDuration, displayedAt, setIsVisible } =
     useContext(LoadableContext);
