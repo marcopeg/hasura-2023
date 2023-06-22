@@ -4,6 +4,7 @@ import {
   Toolbar,
   Stack,
   Typography,
+  Divider,
   useTheme,
   useMediaQuery
 } from "@mui/material";
@@ -19,13 +20,18 @@ const TitleBar: FC<TitleBarProps> = ({ title, subtitle }) => {
   if (!title && !subtitle) return;
 
   return (
-    <AppBar position={isMobile ? "sticky" : "static"}>
+    <AppBar
+      position={isMobile ? "sticky" : "static"}
+      elevation={0}
+      sx={{ backgroundColor: theme.palette.grey[900] }}
+    >
       <Toolbar>
         <Stack>
           <Typography variant="h3">{title}</Typography>
           <Typography variant="caption">{subtitle}</Typography>
         </Stack>
       </Toolbar>
+      <Divider />
     </AppBar>
   );
 };
