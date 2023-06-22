@@ -1,5 +1,12 @@
 import React, { FC } from "react";
-import { AppBar, Toolbar, Stack, Typography } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Stack,
+  Typography,
+  useTheme,
+  useMediaQuery
+} from "@mui/material";
 
 interface TitleBarProps {
   title?: string;
@@ -7,10 +14,12 @@ interface TitleBarProps {
 }
 
 const TitleBar: FC<TitleBarProps> = ({ title, subtitle }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   if (!title && !subtitle) return;
 
   return (
-    <AppBar position="static">
+    <AppBar position={isMobile ? "sticky" : "static"}>
       <Toolbar>
         <Stack>
           <Typography variant="h3">{title}</Typography>

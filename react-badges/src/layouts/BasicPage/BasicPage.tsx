@@ -6,6 +6,7 @@ import PageBody from "./styled/PageBody";
 
 interface BasicPageProps {
   fullpage?: boolean;
+  scrollable?: boolean;
   title?: string;
   subtitle?: string;
   children?: ReactNode;
@@ -22,6 +23,7 @@ const BasicPage: FC<BasicPageProps> = ({
 
   const wrapperProps = {
     fullpage: String(fullpage),
+    ismobile: String(isMobile),
     spacing: isMobile ? 0 : 2
   };
 
@@ -30,7 +32,9 @@ const BasicPage: FC<BasicPageProps> = ({
   return (
     <PageWrapper {...wrapperProps}>
       <TitleBar {...titleProps} />
-      <PageBody>{children}</PageBody>
+      <PageBody scrollable={String(isMobile ? false : true)}>
+        {children}
+      </PageBody>
     </PageWrapper>
   );
 };
