@@ -22,8 +22,8 @@ const PageWrapper = styled(Paper)<PageWrapperProps>(
           )} - ${theme.spacing(spacing)})`
         }),
     marginTop: theme.spacing(spacing),
-    marginLeft: theme.spacing(spacing),
-    marginRight: theme.spacing(spacing),
+    // marginLeft: theme.spacing(spacing),
+    // marginRight: theme.spacing(spacing),
     marginBottom: theme.spacing(spacing)
   })
 );

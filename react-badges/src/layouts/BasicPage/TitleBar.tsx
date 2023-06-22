@@ -19,11 +19,16 @@ const TitleBar: FC<TitleBarProps> = ({ title, subtitle }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   if (!title && !subtitle) return;
 
+  console.log(theme.palette);
+
   return (
     <AppBar
       position={isMobile ? "sticky" : "static"}
       elevation={0}
-      sx={{ backgroundColor: theme.palette.grey[900] }}
+      sx={{
+        backgroundColor: theme.palette.background.default,
+        color: theme.palette.getContrastText(theme.palette.background.default)
+      }}
     >
       <Toolbar>
         <Stack>

@@ -32,7 +32,10 @@ const BasicPage: FC<BasicPageProps> = ({
   return (
     <PageWrapper {...wrapperProps}>
       <TitleBar {...titleProps} />
-      <PageBody scrollable={String(isMobile ? false : true)}>
+      <PageBody
+        scrollable={String(isMobile ? false : true)}
+        spacing={isMobile ? 2 : 3}
+      >
         {children}
       </PageBody>
     </PageWrapper>
